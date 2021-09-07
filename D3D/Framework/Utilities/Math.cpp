@@ -72,13 +72,6 @@ D3DXCOLOR Math::RandomColor4()
 	return result;
 }
 
-float Math::Clamp(float value, float min, float max)
-{
-	value = value > max ? max : value;
-	value = value < min ? min : value;
-
-	return value;
-}
 
 void Math::LerpMatrix(OUT D3DXMATRIX & out, const D3DXMATRIX & m1, const D3DXMATRIX & m2, float amount)
 {

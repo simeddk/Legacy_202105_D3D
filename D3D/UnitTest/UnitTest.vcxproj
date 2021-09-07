@@ -131,18 +131,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IndeBufferDemo.cpp" />
     <ClCompile Include="VertexLineColorDemo.cpp" />
     <ClCompile Include="VertexLineDemo.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="VertexPrimitiveDemo.cpp" />
+    <ClCompile Include="VertexRectDemo.cpp" />
+    <ClCompile Include="VertexTriangleDemo.cpp" />
+    <ClCompile Include="World2Demo.cpp" />
+    <ClCompile Include="WorldDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IndeBufferDemo.h" />
     <ClInclude Include="VertexLineColorDemo.h" />
     <ClInclude Include="VertexLineDemo.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="VertexPrimitiveDemo.h" />
+    <ClInclude Include="VertexRectDemo.h" />
+    <ClInclude Include="VertexTriangleDemo.h" />
+    <ClInclude Include="World2Demo.h" />
+    <ClInclude Include="WorldDemo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

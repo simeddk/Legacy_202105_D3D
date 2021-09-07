@@ -41,7 +41,6 @@ void VertexLineColorDemo::Render()
 	D3D::GetDC()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-
 	shader->Draw(0, 0, 2);
 }
 

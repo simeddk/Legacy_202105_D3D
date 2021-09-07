@@ -4,10 +4,16 @@
 
 #include "VertexLineDemo.h"
 #include "VertexLineColorDemo.h"
+#include "VertexPrimitiveDemo.h"
+#include "VertexTriangleDemo.h"
+#include "VertexRectDemo.h"
+#include "WorldDemo.h"
+#include "World2Demo.h"
+#include "IndeBufferDemo.h"
 
 void Main::Initialize()
 {
-	Push(new VertexLineColorDemo());
+	Push(new IndeBufferDemo());
 }
 
 

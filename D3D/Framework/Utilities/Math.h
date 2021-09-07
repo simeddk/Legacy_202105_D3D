@@ -18,8 +18,13 @@ public:
 	static D3DXCOLOR RandomColor3();
 	static D3DXCOLOR RandomColor4();
 
-
-	static float Clamp(float value, float min, float max);
+	template<typename T>
+	static T Clamp(T value, T min, T max)
+	{
+		value = value > max ? max : value;
+		value = value < min ? min : value;
+		return value;
+	}
 
 	static void LerpMatrix(OUT D3DXMATRIX& out, const D3DXMATRIX& m1, const D3DXMATRIX& m2, float amount);
 

@@ -3,13 +3,68 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="VertexLineDemo.cpp" />
-    <ClCompile Include="VertexLineColorDemo.cpp" />
+    <ClCompile Include="VertexLineColorDemo.cpp">
+      <Filter>Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexLineDemo.cpp">
+      <Filter>Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexPrimitiveDemo.cpp">
+      <Filter>Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexTriangleDemo.cpp">
+      <Filter>Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexRectDemo.cpp">
+      <Filter>Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldDemo.cpp">
+      <Filter>Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="World2Demo.cpp">
+      <Filter>Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="IndeBufferDemo.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="VertexLineDemo.h" />
-    <ClInclude Include="VertexLineColorDemo.h" />
+    <ClInclude Include="VertexLineColorDemo.h">
+      <Filter>Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexLineDemo.h">
+      <Filter>Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexPrimitiveDemo.h">
+      <Filter>Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexTriangleDemo.h">
+      <Filter>Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexRectDemo.h">
+      <Filter>Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldDemo.h">
+      <Filter>Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="World2Demo.h">
+      <Filter>Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="IndeBufferDemo.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Vertex">
+      <UniqueIdentifier>{a4cf7909-ad1d-42a7-b0b7-aed04ae79a88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Transform">
+      <UniqueIdentifier>{a904a8f3-f5bb-48ef-a1f1-a7a3c8320f86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Grid">
+      <UniqueIdentifier>{611df50a-c071-4a7f-8d86-b66992303d63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
