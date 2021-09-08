@@ -27,6 +27,12 @@
     <ClCompile Include="IndeBufferDemo.cpp">
       <Filter>Grid</Filter>
     </ClCompile>
+    <ClCompile Include="GirdDemo.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeDemo.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -55,6 +61,12 @@
     <ClInclude Include="IndeBufferDemo.h">
       <Filter>Grid</Filter>
     </ClInclude>
+    <ClInclude Include="GirdDemo.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeDemo.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Vertex">
@@ -65,6 +77,9 @@
     </Filter>
     <Filter Include="Grid">
       <UniqueIdentifier>{611df50a-c071-4a7f-8d86-b66992303d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{e054b46b-5865-41e4-a675-3a5297f1829a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -10,10 +10,13 @@
 #include "WorldDemo.h"
 #include "World2Demo.h"
 #include "IndeBufferDemo.h"
+#include "GirdDemo.h"
+#include "CubeDemo.h"
 
 void Main::Initialize()
 {
-	Push(new IndeBufferDemo());
+	Push(new GirdDemo());
+	Push(new CubeDemo());
 }
 
 
