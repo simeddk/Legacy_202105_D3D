@@ -62,6 +62,9 @@
     <ClCompile Include="Viewer\Freedom.cpp">
       <Filter>Viewer</Filter>
     </ClCompile>
+    <ClCompile Include="Environment\Terrain.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -131,6 +134,9 @@
     <ClInclude Include="Viewer\Freedom.h">
       <Filter>Viewer</Filter>
     </ClInclude>
+    <ClInclude Include="Environment\Terrain.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Renders">
@@ -144,6 +150,9 @@
     </Filter>
     <Filter Include="Viewer">
       <UniqueIdentifier>{1efa4786-1c0e-4144-8f3f-87847e5ec7b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment">
+      <UniqueIdentifier>{5051d0eb-d563-41f5-8d87-e71564aadb01}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

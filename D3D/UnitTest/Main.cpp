@@ -12,11 +12,13 @@
 #include "IndeBufferDemo.h"
 #include "GirdDemo.h"
 #include "CubeDemo.h"
+#include "TextureSampleDemo.h"
+#include "TextureSamplerStateDemo.h"
+#include "TerrainDemo.h"
 
 void Main::Initialize()
 {
-	Push(new GirdDemo());
-	Push(new CubeDemo());
+	Push(new TerrainDemo());
 }
 
 

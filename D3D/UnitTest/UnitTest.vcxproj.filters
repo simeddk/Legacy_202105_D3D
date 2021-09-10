@@ -33,6 +33,15 @@
     <ClCompile Include="CubeDemo.cpp">
       <Filter>Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="TextureSampleDemo.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureSamplerStateDemo.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainDemo.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -67,6 +76,15 @@
     <ClInclude Include="CubeDemo.h">
       <Filter>Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="TextureSampleDemo.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureSamplerStateDemo.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainDemo.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Vertex">
@@ -80,6 +98,12 @@
     </Filter>
     <Filter Include="Mesh">
       <UniqueIdentifier>{e054b46b-5865-41e4-a675-3a5297f1829a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Texture">
+      <UniqueIdentifier>{b2353249-feb6-4ce2-9c42-81f962cca884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment">
+      <UniqueIdentifier>{9015c820-45f1-45f5-a7b9-d180ba5e4e33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

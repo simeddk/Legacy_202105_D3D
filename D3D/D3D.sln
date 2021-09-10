@@ -16,6 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{0C
 		_Shaders\02_LineColor.fx = _Shaders\02_LineColor.fx
 		_Shaders\03_LinePrimitive.fx = _Shaders\03_LinePrimitive.fx
 		_Shaders\04_World.fx = _Shaders\04_World.fx
+		_Shaders\05_TextureSample.fx = _Shaders\05_TextureSample.fx
+		_Shaders\06_TextureSamplerState.fx = _Shaders\06_TextureSamplerState.fx
+		_Shaders\07_Terrain.fx = _Shaders\07_Terrain.fx
 	EndProjectSection
 EndProject
 Global

@@ -81,3 +81,5 @@ typedef D3DXPLANE Plane;
 #include "Utilities/Math.h"
 #include "Utilities/String.h"
 #include "Utilities/Path.h"
+
+#include "Environment/Terrain.h"

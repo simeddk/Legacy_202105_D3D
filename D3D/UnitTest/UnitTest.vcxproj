@@ -134,6 +134,9 @@
     <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="GirdDemo.cpp" />
     <ClCompile Include="IndeBufferDemo.cpp" />
+    <ClCompile Include="TerrainDemo.cpp" />
+    <ClCompile Include="TextureSampleDemo.cpp" />
+    <ClCompile Include="TextureSamplerStateDemo.cpp" />
     <ClCompile Include="VertexLineColorDemo.cpp" />
     <ClCompile Include="VertexLineDemo.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -150,6 +153,9 @@
     <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="GirdDemo.h" />
     <ClInclude Include="IndeBufferDemo.h" />
+    <ClInclude Include="TerrainDemo.h" />
+    <ClInclude Include="TextureSampleDemo.h" />
+    <ClInclude Include="TextureSamplerStateDemo.h" />
     <ClInclude Include="VertexLineColorDemo.h" />
     <ClInclude Include="VertexLineDemo.h" />
     <ClInclude Include="Main.h" />
