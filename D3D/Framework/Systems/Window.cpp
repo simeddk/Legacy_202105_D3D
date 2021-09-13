@@ -20,7 +20,7 @@ WPARAM Window::Run(IExecute * main)
 
 	Gui::Create();
 	Context::Create();
-
+	DebugLine::Create();
 
 	mainExecute->Initialize();
 
@@ -44,7 +44,7 @@ WPARAM Window::Run(IExecute * main)
 	}
 	mainExecute->Destroy();
 
-	
+	DebugLine::Delete();
 	Context::Delete();
 	Gui::Delete();
 	Time::Delete();
@@ -188,6 +188,7 @@ void Window::MainRender()
 
 	Gui::Get()->Update();
 	Context::Get()->Update();
+	DebugLine::Get()->Update();
 
 	mainExecute->Update();
 
@@ -204,6 +205,8 @@ void Window::MainRender()
 		mainExecute->Render();
 
 		mainExecute->PostRender();
+
+		DebugLine::Get()->Render();
 		Gui::Get()->Render();
 	}
 	D3D::Get()->Present();

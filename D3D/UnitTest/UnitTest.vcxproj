@@ -132,8 +132,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CubeDemo.cpp" />
+    <ClCompile Include="GetHeightDemo.cpp" />
     <ClCompile Include="GirdDemo.cpp" />
     <ClCompile Include="IndeBufferDemo.cpp" />
+    <ClCompile Include="MeshDemo.cpp" />
     <ClCompile Include="TerrainDemo.cpp" />
     <ClCompile Include="TextureSampleDemo.cpp" />
     <ClCompile Include="TextureSamplerStateDemo.cpp" />
@@ -151,8 +153,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeDemo.h" />
+    <ClInclude Include="GetHeightDemo.h" />
     <ClInclude Include="GirdDemo.h" />
     <ClInclude Include="IndeBufferDemo.h" />
+    <ClInclude Include="MeshDemo.h" />
     <ClInclude Include="TerrainDemo.h" />
     <ClInclude Include="TextureSampleDemo.h" />
     <ClInclude Include="TextureSamplerStateDemo.h" />

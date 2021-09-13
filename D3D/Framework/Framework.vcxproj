@@ -23,7 +23,11 @@
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Meshes\Mesh.cpp" />
+    <ClCompile Include="Meshes\MeshPlane.cpp" />
+    <ClCompile Include="Meshes\MeshQuad.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
+    <ClCompile Include="Renders\DebugLine.cpp" />
     <ClCompile Include="Renders\Shader.cpp" />
     <ClCompile Include="Renders\Texture.cpp" />
     <ClCompile Include="Systems\D3D.cpp" />
@@ -47,10 +51,15 @@
   <ItemGroup>
     <ClInclude Include="Environment\Terrain.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Meshes\Mesh.h" />
+    <ClInclude Include="Meshes\MeshPlane.h" />
+    <ClInclude Include="Meshes\MeshQuad.h" />
     <ClInclude Include="Renders\Context.h" />
+    <ClInclude Include="Renders\DebugLine.h" />
     <ClInclude Include="Renders\Shader.h" />
     <ClInclude Include="Renders\Texture.h" />
     <ClInclude Include="Renders\VertexLayouts.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Systems\D3D.h" />
     <ClInclude Include="Systems\Gui.h" />
     <ClInclude Include="Systems\IExecute.h" />
@@ -69,6 +78,9 @@
     <ClInclude Include="Viewer\Perspective.h" />
     <ClInclude Include="Viewer\Projection.h" />
     <ClInclude Include="Viewer\Viewport.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Framework.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
