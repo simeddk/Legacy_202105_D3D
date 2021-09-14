@@ -1,7 +1,5 @@
 matrix World, View, Projection;
-float3 LightDirection;
-Texture2D DiffuseMap;
-uint Albedo = 0;
+TextureCube CubeMap;
 
 //------------------------------------------------------------------
 //Datas
@@ -9,15 +7,12 @@ uint Albedo = 0;
 struct VertexInput
 {
     float4 Position : Position;
-    float2 Uv : Uv;
-    float3 Normal : Nomral;
 };
 
 struct VertexOutput
 {
     float4 Position : SV_Position;
-    float2 Uv : Uv;
-    float3 Normal : Nomral;
+    float3 oPosition : Position1;
 };
 
 //------------------------------------------------------------------
@@ -42,26 +37,20 @@ VertexOutput VS(VertexInput input)
 {
     VertexOutput output;
 
+    output.oPosition = input.Position.xyz;
+
     output.Position = mul(input.Position, World);
     output.Position = mul(output.Position, View);
     output.Position = mul(output.Position, Projection);
-
-    output.Normal = mul(input.Normal, (float3x3)World);
-
-    output.Uv = input.Uv;
-
+  
     return output;
 }
 
 
 float4 PS(VertexOutput input) : SV_Target
 {
-    float3 N = normalize(input.Normal);
-    float3 L = LightDirection;
-    float lambert = dot(N, -L);
    
-    float4 diffuse = DiffuseMap.Sample(LinearWarpSampler, input.Uv);
-    return diffuse * lambert;
+    return CubeMap.Sample(LinearWarpSampler, input.oPosition);
 }
 
 

@@ -3,8 +3,8 @@
 
 MeshPlane::MeshPlane(Shader * shader, float offsetU, float offsetV)
 	: Mesh(shader)
-	, offsetU(offsetU),
-	offsetV(offsetV)
+	, offsetU(offsetU)
+	, offsetV(offsetV)
 {
 }
 

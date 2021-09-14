@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CubeDemo.cpp" />
+    <ClCompile Include="CubeMapMeshDemo.cpp" />
     <ClCompile Include="GetHeightDemo.cpp" />
     <ClCompile Include="GirdDemo.cpp" />
     <ClCompile Include="IndeBufferDemo.cpp" />
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeDemo.h" />
+    <ClInclude Include="CubeMapMeshDemo.h" />
     <ClInclude Include="GetHeightDemo.h" />
     <ClInclude Include="GirdDemo.h" />
     <ClInclude Include="IndeBufferDemo.h" />

@@ -77,6 +77,21 @@
     <ClCompile Include="Meshes\MeshPlane.cpp">
       <Filter>Meshes</Filter>
     </ClCompile>
+    <ClCompile Include="Meshes\MeshCube.cpp">
+      <Filter>Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\MeshCylinder.cpp">
+      <Filter>Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes\MeshSphere.cpp">
+      <Filter>Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\CubeMapMesh.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment\CubeSky.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -162,6 +177,21 @@
     <ClInclude Include="Meshes\MeshPlane.h">
       <Filter>Meshes</Filter>
     </ClInclude>
+    <ClInclude Include="Meshes\MeshCube.h">
+      <Filter>Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\MeshCylinder.h">
+      <Filter>Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\MeshSphere.h">
+      <Filter>Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\CubeMapMesh.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment\CubeSky.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Renders">
@@ -181,6 +211,9 @@
     </Filter>
     <Filter Include="Meshes">
       <UniqueIdentifier>{6e5b4c31-e989-43c1-beb7-b3d16db54106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{b0fc75e5-81de-4ad1-8ebf-b1128670da7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

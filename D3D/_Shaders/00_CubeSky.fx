@@ -1,7 +1,5 @@
 matrix World, View, Projection;
-float3 LightDirection;
-Texture2D DiffuseMap;
-uint Albedo = 0;
+TextureCube SkyCubeMap;
 
 //------------------------------------------------------------------
 //Datas
@@ -9,15 +7,12 @@ uint Albedo = 0;
 struct VertexInput
 {
     float4 Position : Position;
-    float2 Uv : Uv;
-    float3 Normal : Nomral;
 };
 
 struct VertexOutput
 {
     float4 Position : SV_Position;
-    float2 Uv : Uv;
-    float3 Normal : Nomral;
+    float3 oPosition : Position1;
 };
 
 //------------------------------------------------------------------
@@ -35,6 +30,16 @@ RasterizerState Wireframe
     FillMode = WireFrame;
 };
 
+RasterizerState CCW
+{
+    FrontCounterClockwise = true;
+};
+
+DepthStencilState DepthDisable
+{
+    DepthEnable = false;
+};
+
 //------------------------------------------------------------------
 //Function
 //------------------------------------------------------------------
@@ -42,26 +47,20 @@ VertexOutput VS(VertexInput input)
 {
     VertexOutput output;
 
+    output.oPosition = input.Position.xyz;
+
     output.Position = mul(input.Position, World);
     output.Position = mul(output.Position, View);
     output.Position = mul(output.Position, Projection);
-
-    output.Normal = mul(input.Normal, (float3x3)World);
-
-    output.Uv = input.Uv;
-
+  
     return output;
 }
 
 
 float4 PS(VertexOutput input) : SV_Target
 {
-    float3 N = normalize(input.Normal);
-    float3 L = LightDirection;
-    float lambert = dot(N, -L);
    
-    float4 diffuse = DiffuseMap.Sample(LinearWarpSampler, input.Uv);
-    return diffuse * lambert;
+    return SkyCubeMap.Sample(LinearWarpSampler, input.oPosition);
 }
 
 
@@ -78,7 +77,16 @@ technique11 T0
 
     pass P1
     {
-        SetRasterizerState(Wireframe);
+        SetRasterizerState(CCW);
+
+        SetVertexShader(CompileShader(vs_5_0, VS()));
+        SetPixelShader(CompileShader(ps_5_0, PS()));
+    }
+
+    pass P2
+    {
+        SetRasterizerState(CCW);
+        SetDepthStencilState(DepthDisable, 1);
 
         SetVertexShader(CompileShader(vs_5_0, VS()));
         SetPixelShader(CompileShader(ps_5_0, PS()));

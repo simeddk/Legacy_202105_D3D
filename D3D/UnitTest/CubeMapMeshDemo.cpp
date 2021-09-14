@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "MeshDemo.h"
+#include "CubeMapMeshDemo.h"
 
-void MeshDemo::Initialize()
+void CubeMapMeshDemo::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(20, 0, 0);
 	Context::Get()->GetCamera()->Position(1, 36, -85);
@@ -11,9 +11,17 @@ void MeshDemo::Initialize()
 	CreateMesh();
 
 	sDirection = shader->AsVector("LightDirection");
+
+	cubeMapShader = new Shader(L"10_CubeMap.fxo");
+	cubeMapMesh = new CubeMapMesh(cubeMapShader);
+	cubeMapMesh->Texture(L"Environment/skymap.dds");
+	cubeMapMesh->Position(0, 20, 0);
+	cubeMapMesh->Scale(10, 10, 10);
+
+	sky = new CubeSky(L"Environment/Mountain1024.dds");
 }
 
-void MeshDemo::Destroy()
+void CubeMapMeshDemo::Destroy()
 {
 	SafeDelete(shader);
 
@@ -26,20 +34,37 @@ void MeshDemo::Destroy()
 		SafeDelete(cylinders[i]);
 		SafeDelete(spheres[i]);
 	}
+
+	SafeDelete(cubeMapShader);
+	SafeDelete(cubeMapMesh);
+	SafeDelete(sky);
 }
 
-void MeshDemo::Update()
+void CubeMapMeshDemo::Update()
 {
+	//ImGui Test
 	ImGui::SliderFloat3("LightDirection", (float*)&lightDirection, -1, 1);
 	sDirection->SetFloatVector(lightDirection);
 
 	static bool bWireframe = false;
 	ImGui::Checkbox("Wireframe", &bWireframe);
 
+	sky->Update();
+
 	quad->Pass(bWireframe ? 1 : 0);
 	plane->Pass(bWireframe ? 1 : 0);
 	cube->Pass(bWireframe ? 1 : 0);
 
+	static UINT pass = sky->GetShader()->PassCount() - 1;
+	ImGui::InputInt("Pass", (int*)&pass);
+	pass %= sky->GetShader()->PassCount();
+	sky->Pass(pass);
+
+	const char* passMode[] = { "Node", "CCW", "Depth Disable" };
+	ImGui::LabelText("Mode", "%s", passMode[pass]);
+
+
+	//Object Update
 	quad->Update();
 	plane->Update();
 	cube->Update();
@@ -52,26 +77,30 @@ void MeshDemo::Update()
 		spheres[i]->Pass(bWireframe ? 1 : 0);
 		spheres[i]->Update();
 	}
+
+	cubeMapMesh->Update();
+	
 }
 
 
-void MeshDemo::Render()
+void CubeMapMeshDemo::Render()
 {
-	//quad->Pass(1);
-	//plane->Pass(1);
+	sky->Render();
 
 	quad->Render();
-	plane->Render();
 	cube->Render();
+	plane->Render();
 
 	for (UINT i = 0; i < 10; i++)
 	{
 		cylinders[i]->Render();
 		spheres[i]->Render();
 	}
+
+	cubeMapMesh->Render();
 }
 
-void MeshDemo::CreateMesh()
+void CubeMapMeshDemo::CreateMesh()
 {
 	quad = new MeshQuad(shader);
 	quad->DiffuseMap(L"Box.png");

@@ -19,13 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Environment\CubeSky.cpp" />
     <ClCompile Include="Environment\Terrain.cpp" />
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Meshes\Mesh.cpp" />
+    <ClCompile Include="Meshes\MeshCube.cpp" />
+    <ClCompile Include="Meshes\MeshCylinder.cpp" />
     <ClCompile Include="Meshes\MeshPlane.cpp" />
     <ClCompile Include="Meshes\MeshQuad.cpp" />
+    <ClCompile Include="Meshes\MeshSphere.cpp" />
+    <ClCompile Include="Objects\CubeMapMesh.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
     <ClCompile Include="Renders\DebugLine.cpp" />
     <ClCompile Include="Renders\Shader.cpp" />
@@ -49,11 +54,16 @@
     <ClCompile Include="Viewer\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Environment\CubeSky.h" />
     <ClInclude Include="Environment\Terrain.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Meshes\Mesh.h" />
+    <ClInclude Include="Meshes\MeshCube.h" />
+    <ClInclude Include="Meshes\MeshCylinder.h" />
     <ClInclude Include="Meshes\MeshPlane.h" />
     <ClInclude Include="Meshes\MeshQuad.h" />
+    <ClInclude Include="Meshes\MeshSphere.h" />
+    <ClInclude Include="Objects\CubeMapMesh.h" />
     <ClInclude Include="Renders\Context.h" />
     <ClInclude Include="Renders\DebugLine.h" />
     <ClInclude Include="Renders\Shader.h" />

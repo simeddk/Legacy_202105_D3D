@@ -16,10 +16,11 @@
 #include "TextureSamplerStateDemo.h"
 #include "GetHeightDemo.h"
 #include "MeshDemo.h"
+#include "CubeMapMeshDemo.h"
 
 void Main::Initialize()
 {
-	Push(new MeshDemo());
+	Push(new CubeMapMeshDemo());
 }
 
 
