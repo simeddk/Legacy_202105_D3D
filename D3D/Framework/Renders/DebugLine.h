@@ -34,11 +34,18 @@ private:
 
 
 private:
+	struct VertexLine
+	{
+		Vector3 Position;
+		Color Color;
+	};
+
+private:
 	Shader* shader;
 	
 	UINT drawCount = 0;
 
-	VertexColor* vertices;
+	VertexLine* vertices;
 	ID3D11Buffer* vertexBuffer;
 
 	Matrix world;

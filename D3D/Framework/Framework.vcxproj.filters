@@ -92,6 +92,12 @@
     <ClCompile Include="Environment\CubeSky.cpp">
       <Filter>Environment</Filter>
     </ClCompile>
+    <ClCompile Include="Renders\Buffers.cpp">
+      <Filter>Renders</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\Transform.cpp">
+      <Filter>Renders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -102,9 +108,6 @@
       <Filter>Renders</Filter>
     </ClInclude>
     <ClInclude Include="Renders\Texture.h">
-      <Filter>Renders</Filter>
-    </ClInclude>
-    <ClInclude Include="Renders\VertexLayouts.h">
       <Filter>Renders</Filter>
     </ClInclude>
     <ClInclude Include="Systems\D3D.h">
@@ -191,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="Environment\CubeSky.h">
       <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\Buffers.h">
+      <Filter>Renders</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\Transform.h">
+      <Filter>Renders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

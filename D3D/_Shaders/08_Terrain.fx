@@ -1,4 +1,5 @@
-matrix World, View, Projection;
+#include "00_Global.fx"
+
 float3 LightDirection;
 Texture2D BaseMap;
 uint Albedo = 0;
@@ -20,20 +21,6 @@ struct VertexOutput
     float3 Normal : Nomral;
 };
 
-//------------------------------------------------------------------
-//State
-//------------------------------------------------------------------
-SamplerState LinearWarpSampler
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = WRAP;
-    AddressV = WRAP;
-};
-
-RasterizerState Wireframe
-{
-    FillMode = WireFrame;
-};
 
 //------------------------------------------------------------------
 //Function
@@ -42,11 +29,10 @@ VertexOutput VS(VertexInput input)
 {
     VertexOutput output;
 
-    output.Position = mul(input.Position, World);
-    output.Position = mul(output.Position, View);
-    output.Position = mul(output.Position, Projection);
+    output.Position = WorldPosition(input.Position);
+    output.Position = ViewProjection(output.Position);
 
-    output.Normal = mul(input.Normal, (float3x3)World);
+    output.Normal = WorldNormal(input.Normal);
 
     output.Uv = input.Uv;
 
@@ -60,7 +46,7 @@ float4 PS(VertexOutput input) : SV_Target
     float3 L = LightDirection;
     float lambert = dot(N, -L);
 
-    float4 baseMap = BaseMap.Sample(LinearWarpSampler, input.Uv);
+    float4 baseMap = BaseMap.Sample(LinearSampler, input.Uv);
 
     if (Albedo == 1)
         return baseMap;
@@ -74,17 +60,7 @@ float4 PS(VertexOutput input) : SV_Target
 //------------------------------------------------------------------
 technique11 T0
 {
-    pass P0
-    {
-        SetVertexShader(CompileShader(vs_5_0, VS()));
-        SetPixelShader(CompileShader(ps_5_0, PS()));
-    }
+    P_VP(P0, VS, PS)
+    P_RS_VP(P1, FillMode_WireFrame, VS, PS)
 
-    pass P1
-    {
-        SetRasterizerState(Wireframe);
-
-        SetVertexShader(CompileShader(vs_5_0, VS()));
-        SetPixelShader(CompileShader(ps_5_0, PS()));
-    }
 }

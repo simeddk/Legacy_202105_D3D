@@ -1,4 +1,5 @@
-matrix World, View, Projection;
+#include "00_Global.fx"
+
 TextureCube SkyCubeMap;
 
 //------------------------------------------------------------------
@@ -15,30 +16,6 @@ struct VertexOutput
     float3 oPosition : Position1;
 };
 
-//------------------------------------------------------------------
-//State
-//------------------------------------------------------------------
-SamplerState LinearWarpSampler
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = WRAP;
-    AddressV = WRAP;
-};
-
-RasterizerState Wireframe
-{
-    FillMode = WireFrame;
-};
-
-RasterizerState CCW
-{
-    FrontCounterClockwise = true;
-};
-
-DepthStencilState DepthDisable
-{
-    DepthEnable = false;
-};
 
 //------------------------------------------------------------------
 //Function
@@ -49,9 +26,8 @@ VertexOutput VS(VertexInput input)
 
     output.oPosition = input.Position.xyz;
 
-    output.Position = mul(input.Position, World);
-    output.Position = mul(output.Position, View);
-    output.Position = mul(output.Position, Projection);
+    output.Position = WorldPosition(input.Position);
+    output.Position = ViewProjection(output.Position);
   
     return output;
 }
@@ -60,7 +36,7 @@ VertexOutput VS(VertexInput input)
 float4 PS(VertexOutput input) : SV_Target
 {
    
-    return SkyCubeMap.Sample(LinearWarpSampler, input.oPosition);
+    return SkyCubeMap.Sample(LinearSampler, input.oPosition);
 }
 
 
@@ -69,26 +45,7 @@ float4 PS(VertexOutput input) : SV_Target
 //------------------------------------------------------------------
 technique11 T0
 {
-    pass P0
-    {
-        SetVertexShader(CompileShader(vs_5_0, VS()));
-        SetPixelShader(CompileShader(ps_5_0, PS()));
-    }
-
-    pass P1
-    {
-        SetRasterizerState(CCW);
-
-        SetVertexShader(CompileShader(vs_5_0, VS()));
-        SetPixelShader(CompileShader(ps_5_0, PS()));
-    }
-
-    pass P2
-    {
-        SetRasterizerState(CCW);
-        SetDepthStencilState(DepthDisable, 1);
-
-        SetVertexShader(CompileShader(vs_5_0, VS()));
-        SetPixelShader(CompileShader(ps_5_0, PS()));
-    }
+    P_VP(P0, VS, PS)
+    P_RS_VP(P1, FrontCounterClockwise_True, VS, PS)
+    P_RS_DSS_VP(P2, FrontCounterClockwise_True, DepthEnable_False, VS, PS)
 }

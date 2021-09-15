@@ -21,14 +21,14 @@ DebugLine::DebugLine()
 
 	
 
-	vertices = new VertexColor[MAX_DEBUG_LINE];
-	ZeroMemory(vertices, sizeof(VertexColor) * MAX_DEBUG_LINE);
+	vertices = new VertexLine[MAX_DEBUG_LINE];
+	ZeroMemory(vertices, sizeof(VertexLine) * MAX_DEBUG_LINE);
 
 	//Create VertexBuffer
 	{
 		D3D11_BUFFER_DESC desc;
 		ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-		desc.ByteWidth = sizeof(VertexColor) * MAX_DEBUG_LINE;
+		desc.ByteWidth = sizeof(VertexLine) * MAX_DEBUG_LINE;
 		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 		D3D11_SUBRESOURCE_DATA subResource = { 0 };
@@ -66,9 +66,9 @@ void DebugLine::Render()
 {
 	if (drawCount < 1) return;
 
-	D3D::GetDC()->UpdateSubresource(vertexBuffer, 0, nullptr, vertices, sizeof(VertexColor) * drawCount, 0);
+	D3D::GetDC()->UpdateSubresource(vertexBuffer, 0, nullptr, vertices, sizeof(VertexLine) * drawCount, 0);
 
-	UINT stride = sizeof(VertexColor);
+	UINT stride = sizeof(VertexLine);
 	UINT offset = 0;
 	
 	D3D::GetDC()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
@@ -76,7 +76,7 @@ void DebugLine::Render()
 
 	shader->Draw(0, 0, drawCount);
 
-	ZeroMemory(vertices, sizeof(VertexColor) * MAX_DEBUG_LINE);
+	ZeroMemory(vertices, sizeof(VertexLine) * MAX_DEBUG_LINE);
 	drawCount = 0;
 }
 

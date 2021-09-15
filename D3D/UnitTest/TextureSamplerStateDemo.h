@@ -16,6 +16,13 @@ private:
 	void OnReadTexture(wstring path);
 
 private:
+	struct VertexTexture
+	{
+		Vector3 Position;
+		Vector2 Uv;
+	};
+
+private:
 	Shader* shader;
 
 	VertexTexture* vertices;

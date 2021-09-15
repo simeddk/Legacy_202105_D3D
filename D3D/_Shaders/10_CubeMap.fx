@@ -1,4 +1,5 @@
-matrix World, View, Projection;
+#include "00_Global.fx"
+
 TextureCube CubeMap;
 
 //------------------------------------------------------------------
@@ -15,20 +16,7 @@ struct VertexOutput
     float3 oPosition : Position1;
 };
 
-//------------------------------------------------------------------
-//State
-//------------------------------------------------------------------
-SamplerState LinearWarpSampler
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = WRAP;
-    AddressV = WRAP;
-};
 
-RasterizerState Wireframe
-{
-    FillMode = WireFrame;
-};
 
 //------------------------------------------------------------------
 //Function
@@ -39,9 +27,8 @@ VertexOutput VS(VertexInput input)
 
     output.oPosition = input.Position.xyz;
 
-    output.Position = mul(input.Position, World);
-    output.Position = mul(output.Position, View);
-    output.Position = mul(output.Position, Projection);
+    output.Position = WorldPosition(input.Position);
+    output.Position = ViewProjection(output.Position);
   
     return output;
 }
@@ -49,8 +36,7 @@ VertexOutput VS(VertexInput input)
 
 float4 PS(VertexOutput input) : SV_Target
 {
-   
-    return CubeMap.Sample(LinearWarpSampler, input.oPosition);
+    return CubeMap.Sample(LinearSampler, input.oPosition);
 }
 
 
@@ -59,17 +45,6 @@ float4 PS(VertexOutput input) : SV_Target
 //------------------------------------------------------------------
 technique11 T0
 {
-    pass P0
-    {
-        SetVertexShader(CompileShader(vs_5_0, VS()));
-        SetPixelShader(CompileShader(ps_5_0, PS()));
-    }
-
-    pass P1
-    {
-        SetRasterizerState(Wireframe);
-
-        SetVertexShader(CompileShader(vs_5_0, VS()));
-        SetPixelShader(CompileShader(ps_5_0, PS()));
-    }
+    P_VP(P0, VS, PS)
+    P_RS_VP(P1, FillMode_WireFrame, VS, PS)
 }

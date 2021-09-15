@@ -20,7 +20,7 @@
 
 void Main::Initialize()
 {
-	Push(new CubeMapMeshDemo());
+	Push(new GetHeightDemo());
 }
 
 

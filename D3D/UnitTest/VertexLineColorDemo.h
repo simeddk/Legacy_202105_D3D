@@ -13,6 +13,13 @@ public:
 	virtual void ResizeScreen() override {};
 
 private:
+	struct VertexColor
+	{
+		Vector3 Position;
+		Color Color;
+	};
+
+private:
 	Shader* shader;
 
 	VertexColor vertices[2];

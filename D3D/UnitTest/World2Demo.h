@@ -13,6 +13,12 @@ public:
 	virtual void ResizeScreen() override {};
 
 private:
+	struct Vertex
+	{
+		Vector3 Position;
+	};
+
+private:
 	Shader* shader;
 
 	Vertex vertices[6];

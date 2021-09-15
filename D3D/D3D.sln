@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{0C
 	ProjectSection(SolutionItems) = preProject
 		_Shaders\00_CubeSky.fx = _Shaders\00_CubeSky.fx
 		_Shaders\00_DebugLine.fx = _Shaders\00_DebugLine.fx
+		_Shaders\00_Global.fx = _Shaders\00_Global.fx
 		_Shaders\01_Line.fx = _Shaders\01_Line.fx
 		_Shaders\02_LineColor.fx = _Shaders\02_LineColor.fx
 		_Shaders\03_LinePrimitive.fx = _Shaders\03_LinePrimitive.fx
