@@ -27,30 +27,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{0C
 		_Shaders\10_CubeMap.fx = _Shaders\10_CubeMap.fx
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelEditor", "ModelEditor\ModelEditor.vcxproj", "{A35E45E3-53F2-40F9-9A40-E34C3A711691}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2B94F15D-F2C5-45F9-93BB-37B8D822AA81} = {2B94F15D-F2C5-45F9-93BB-37B8D822AA81}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2B94F15D-F2C5-45F9-93BB-37B8D822AA81}.Debug|x64.ActiveCfg = Debug|x64
-		{2B94F15D-F2C5-45F9-93BB-37B8D822AA81}.Debug|x64.Build.0 = Debug|x64
 		{2B94F15D-F2C5-45F9-93BB-37B8D822AA81}.Debug|x86.ActiveCfg = Debug|Win32
 		{2B94F15D-F2C5-45F9-93BB-37B8D822AA81}.Debug|x86.Build.0 = Debug|Win32
-		{2B94F15D-F2C5-45F9-93BB-37B8D822AA81}.Release|x64.ActiveCfg = Release|x64
-		{2B94F15D-F2C5-45F9-93BB-37B8D822AA81}.Release|x64.Build.0 = Release|x64
 		{2B94F15D-F2C5-45F9-93BB-37B8D822AA81}.Release|x86.ActiveCfg = Release|Win32
 		{2B94F15D-F2C5-45F9-93BB-37B8D822AA81}.Release|x86.Build.0 = Release|Win32
-		{91D9FDCF-8341-4431-9ECB-15497C2FC936}.Debug|x64.ActiveCfg = Debug|x64
-		{91D9FDCF-8341-4431-9ECB-15497C2FC936}.Debug|x64.Build.0 = Debug|x64
 		{91D9FDCF-8341-4431-9ECB-15497C2FC936}.Debug|x86.ActiveCfg = Debug|Win32
 		{91D9FDCF-8341-4431-9ECB-15497C2FC936}.Debug|x86.Build.0 = Debug|Win32
-		{91D9FDCF-8341-4431-9ECB-15497C2FC936}.Release|x64.ActiveCfg = Release|x64
-		{91D9FDCF-8341-4431-9ECB-15497C2FC936}.Release|x64.Build.0 = Release|x64
 		{91D9FDCF-8341-4431-9ECB-15497C2FC936}.Release|x86.ActiveCfg = Release|Win32
 		{91D9FDCF-8341-4431-9ECB-15497C2FC936}.Release|x86.Build.0 = Release|Win32
+		{A35E45E3-53F2-40F9-9A40-E34C3A711691}.Debug|x86.ActiveCfg = Debug|Win32
+		{A35E45E3-53F2-40F9-9A40-E34C3A711691}.Debug|x86.Build.0 = Debug|Win32
+		{A35E45E3-53F2-40F9-9A40-E34C3A711691}.Release|x86.ActiveCfg = Release|Win32
+		{A35E45E3-53F2-40F9-9A40-E34C3A711691}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

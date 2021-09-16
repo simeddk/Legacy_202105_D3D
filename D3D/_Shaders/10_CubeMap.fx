@@ -27,6 +27,9 @@ VertexOutput VS(VertexInput input)
 
     output.oPosition = input.Position.xyz;
 
+    input.Position.x += cos(Time);
+    input.Position.z += sin(Time);
+
     output.Position = WorldPosition(input.Position);
     output.Position = ViewProjection(output.Position);
   

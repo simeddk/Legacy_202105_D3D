@@ -2,7 +2,9 @@
 #include "Transform.h"
 
 Transform::Transform()
-	: position(0, 0, 0)
+	: shader(nullptr)
+	, buffer(nullptr)
+	, position(0, 0, 0)
 	, scale(1, 1, 1)
 	, rotation(0, 0, 0)
 {

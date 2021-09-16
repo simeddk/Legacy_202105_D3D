@@ -47,7 +47,9 @@ void Shader::CreateEffect()
 		{
 			if (error != NULL)
 			{
-				string str = (const char *)error->GetBufferPointer();
+				string str = "";
+				str += String::ToString(Path::GetFileName(file)) + string("\n");
+				str += (const char *)error->GetBufferPointer();
 				MessageBoxA(NULL, str.c_str(), "Shader Error", MB_OK);
 			}
 			exit(-1);

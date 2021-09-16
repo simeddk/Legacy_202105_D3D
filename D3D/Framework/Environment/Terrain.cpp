@@ -2,11 +2,9 @@
 #include "Terrain.h"
 
 Terrain::Terrain(Shader * shader, wstring heightMapFile)
-	: shader(shader)
+	: Renderer(shader)
 {
 	heightMap = new Texture(heightMapFile);
-
-	D3DXMatrixIdentity(&world);
 
 	CreateVertexData();
 	CreateIndexData();
@@ -21,55 +19,24 @@ Terrain::~Terrain()
 	SafeDeleteArray(vertices);
 	SafeDeleteArray(indices);
 
-	SafeDelete(vertexBuffer);
-	SafeDelete(indexBuffer);
-
 	SafeDelete(heightMap);
 }
 
 void Terrain::Update()
 {
+	Super::Update();
 }
 
 void Terrain::Render()
 {
-	static bool bVisibleNormal = false;
-	static UINT interval = 3;
-	ImGui::Checkbox("Visible Normal", &bVisibleNormal);
-	ImGui::SliderInt("Interval", (int*)&interval, 1, 5);
-
-	if (bVisibleNormal)
-	{
-		for (UINT y = 0; y < height; y += interval)
-		{
-			for (UINT x = 0; x < width; x += interval)
-			{
-				UINT index = width * y + x;
-
-				Vector3 start = vertices[index].Position;
-				Vector3 end = start + vertices[index].Normal;
-
-				DebugLine::Get()->RenderLine(start, end);
-			}
-		}
-	}
+	VisibleNormal();
 
 	if (baseMap != nullptr)
 		shader->AsSRV("BaseMap")->SetResource(baseMap->SRV());
 
-	shader->AsMatrix("World")->SetMatrix(world);
-	shader->AsMatrix("View")->SetMatrix(Context::Get()->View());
-	shader->AsMatrix("Projection")->SetMatrix(Context::Get()->Projection());
-
-	UINT stride = sizeof(VertexTerrain);
-	UINT offset = 0;
-
-	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	vertexBuffer->Render();
-	indexBuffer->Render();
+	Super::Render();
 	
-	shader->DrawIndexed(0, pass, indexCount);
+	shader->DrawIndexed(0, Pass(), indexCount);
 }
 
 void Terrain::BaseMap(wstring path)
@@ -226,5 +193,29 @@ void Terrain::CreateNormalData()
 
 	for (UINT i = 0; i < vertexCount; i++)
 		D3DXVec3Normalize(&vertices[i].Normal, &vertices[i].Normal);
+}
+
+void Terrain::VisibleNormal()
+{
+	static bool bVisibleNormal = false;
+	static UINT interval = 3;
+	ImGui::Checkbox("Visible Normal", &bVisibleNormal);
+	ImGui::SliderInt("Interval", (int*)&interval, 1, 5);
+
+	if (bVisibleNormal)
+	{
+		for (UINT y = 0; y < height; y += interval)
+		{
+			for (UINT x = 0; x < width; x += interval)
+			{
+				UINT index = width * y + x;
+
+				Vector3 start = vertices[index].Position;
+				Vector3 end = start + vertices[index].Normal;
+
+				DebugLine::Get()->RenderLine(start, end);
+			}
+		}
+	}
 }
 

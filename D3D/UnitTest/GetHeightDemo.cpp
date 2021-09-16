@@ -78,6 +78,8 @@ void GetHeightDemo::Update()
 	Matrix world;
 	world = R * T;
 	triangleShader->AsMatrix("World")->SetMatrix(world);
+
+	terrain->Update();
 }
 
 

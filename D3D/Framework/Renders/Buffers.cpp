@@ -111,10 +111,9 @@ ConstantBuffer::~ConstantBuffer()
 void ConstantBuffer::Render()
 {
 	D3D11_MAPPED_SUBRESOURCE subResource;
-	subResource.pData = data;
 	D3D::GetDC()->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
 	{
-		memcpy(&subResource.pData, data, dataSize);
+		memcpy(subResource.pData, data, dataSize);
 	}
 	D3D::GetDC()->Unmap(buffer, 0);
 }

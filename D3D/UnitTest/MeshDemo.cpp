@@ -77,35 +77,35 @@ void MeshDemo::CreateMesh()
 	quad->DiffuseMap(L"Box.png");
 
 	plane = new MeshPlane(shader, 10.0f, 10.0f);
-	plane->Scale(12, 1, 12);
+	plane->GetTransform()->Scale(12, 1, 12);
 	plane->DiffuseMap(L"Floor.png");
 
 	cube = new MeshCube(shader);
-	cube->Position(0, 5, 0);
-	cube->Scale(20, 10, 20);
+	cube->GetTransform()->Position(0, 5, 0);
+	cube->GetTransform()->Scale(20, 10, 20);
 	cube->DiffuseMap(L"Stones.png");
 
 	for (UINT i = 0; i < 5; i++)
 	{
 		cylinders[i * 2 + 0] = new MeshCylinder(shader,0.3f, 0.5f, 3, 1, 20);
-		cylinders[i * 2 + 0]->Position(-30, 6, (float)i * 15.0f - 30.0f);
-		cylinders[i * 2 + 0]->Scale(5, 5, 5);
+		cylinders[i * 2 + 0]->GetTransform()->Position(-30, 6, (float)i * 15.0f - 30.0f);
+		cylinders[i * 2 + 0]->GetTransform()->Scale(5, 5, 5);
 		cylinders[i * 2 + 0]->DiffuseMap(L"Bricks.png");
 
 		cylinders[i * 2 + 1] = new MeshCylinder(shader, 0.3f, 0.5f, 3, 1, 20);
-		cylinders[i * 2 + 1]->Position(+30, 6, (float)i * 15.0f - 30.0f);
-		cylinders[i * 2 + 1]->Scale(5, 5, 5);
+		cylinders[i * 2 + 1]->GetTransform()->Position(+30, 6, (float)i * 15.0f - 30.0f);
+		cylinders[i * 2 + 1]->GetTransform()->Scale(5, 5, 5);
 		cylinders[i * 2 + 1]->DiffuseMap(L"Bricks.png");
 
 
 		spheres[i * 2 + 0] = new MeshSphere(shader, 0.5f, 20, 20);
-		spheres[i * 2 + 0]->Position(-30, 16, (float)i * 15.0f - 30.0f);
-		spheres[i * 2 + 0]->Scale(5, 5, 5);
+		spheres[i * 2 + 0]->GetTransform()->Position(-30, 16, (float)i * 15.0f - 30.0f);
+		spheres[i * 2 + 0]->GetTransform()->Scale(5, 5, 5);
 		spheres[i * 2 + 0]->DiffuseMap(L"Wall.png");
 
 		spheres[i * 2 + 1] = new MeshSphere(shader, 0.5f, 20, 20);
-		spheres[i * 2 + 1]->Position(+30, 16, (float)i * 15.0f - 30.0f);
-		spheres[i * 2 + 1]->Scale(5, 5, 5);
+		spheres[i * 2 + 1]->GetTransform()->Position(+30, 16, (float)i * 15.0f - 30.0f);
+		spheres[i * 2 + 1]->GetTransform()->Scale(5, 5, 5);
 		spheres[i * 2 + 1]->DiffuseMap(L"Wall.png");
 	}
 }
