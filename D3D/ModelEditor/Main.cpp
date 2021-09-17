@@ -1,11 +1,12 @@
 #include "stdafx.h"
 #include "Main.h"
 #include "Systems/Window.h"
+#include "ExportFile.h"
 
 
 void Main::Initialize()
 {
-	//Push(new CubeMapMeshDemo());
+	Push(new ExportFile());
 }
 
 
