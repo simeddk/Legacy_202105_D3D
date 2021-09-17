@@ -107,6 +107,9 @@
     <ClCompile Include="Model\Model.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="Model\ModelMesh.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -217,6 +220,9 @@
       <Filter>Renders</Filter>
     </ClInclude>
     <ClInclude Include="Model\Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\ModelMesh.h">
       <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
