@@ -48,6 +48,21 @@ private:
 	ModelMesh();
 	~ModelMesh();
 
+	void Binding(Model* model);
+
+public:
+	void Pass(UINT val);
+	void SetShader(Shader* shader);
+
+	void Update();
+	void Render();
+
+	int BondIndex() { return boneIndex; }
+	class ModelBone* Bone() { return bone; }
+
+	void Transforms(Matrix* transforms);
+	void SetTransform(Transform* transform);
+
 private:
 	struct BoneDesc
 	{
@@ -57,12 +72,10 @@ private:
 		float Padding[3];
 	} boneDesc;
 
-	//TODO ¸â¹ö ÇÔ¼ö¸¦ ¸¸µé Â÷·Ê
-
 private:
 	Shader* shader;
 
-	Transform* trasnform = nullptr;
+	Transform* transform = nullptr;
 	PerFrame* perFrame = nullptr;
 
 	int boneIndex;
@@ -90,4 +103,29 @@ class ModelMeshPart
 public:
 	friend class Model;
 	friend class ModelMesh;
+
+private:
+	ModelMeshPart();
+	~ModelMeshPart();
+
+	void Update();
+	void Render();
+
+	void Binding(Model* model);
+	void SetShader(Shader* shader);
+
+	void Pass(UINT val) { pass = val; }
+
+private:
+	Shader* shader;
+	UINT pass = 0;
+
+	wstring materialName;
+
+	UINT startVertex;
+	UINT vertexCount;
+
+	UINT startIndex;
+	UINT indexCount;
 };
+
