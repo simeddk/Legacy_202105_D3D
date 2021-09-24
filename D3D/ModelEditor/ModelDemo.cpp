@@ -4,9 +4,13 @@
 
 void ModelDemo::Initialize()
 {
+	Context::Get()->GetCamera()->RotationDegree(23, 1, 0);
+	Context::Get()->GetCamera()->Position(0, 17, -30);
+
 	shader = new Shader(L"11_Model.fxo");
 
 	Tank();
+	Kachujin();
 
 	sky = new CubeSky(L"Environment/Mountain1024.dds");
 	sky->Pass(2);
@@ -21,6 +25,7 @@ void ModelDemo::Destroy()
 {
 	SafeDelete(shader);
 	SafeDelete(tank);
+	SafeDelete(kachujin);
 
 	SafeDelete(sky);
 	SafeDelete(planeShader);
@@ -44,6 +49,9 @@ void ModelDemo::Update()
 
 	if (tank != nullptr)
 		tank->Update();
+
+	if (kachujin != nullptr)
+		kachujin->Update();
 }
 
 void ModelDemo::Render()
@@ -53,11 +61,23 @@ void ModelDemo::Render()
 
 	if (tank != nullptr)
 		tank->Render();
+
+	if (kachujin != nullptr)
+		kachujin->Render();
 }
 
 void ModelDemo::Tank()
 {
 	tank = new ModelRender(shader);
 	tank->ReadMesh(L"Tank/Tank");
+}
+
+void ModelDemo::Kachujin()
+{
+	kachujin = new ModelRender(shader);
+	kachujin->ReadMesh(L"Kachujin/Mesh");
+
+	kachujin->GetTransform()->Position(5, 0, 0);
+	kachujin->GetTransform()->Scale(0.01f, 0.01f, 0.01f);
 }
 

@@ -7,7 +7,7 @@ ModelRender::ModelRender(Shader * shader)
 	model = new Model();
 
 	transform = new Transform();
-	transform->Scale(10, 10, 10);
+	//transform->Scale(10, 10, 10);
 }
 
 ModelRender::~ModelRender()
@@ -35,7 +35,10 @@ void ModelRender::Update()
 void ModelRender::Render()
 {
 	for (ModelMesh* mesh : model->Meshes())
+	{
+		mesh->SetTransform(transform);
 		mesh->Render();
+	}
 }
 
 void ModelRender::ReadMesh(wstring file)

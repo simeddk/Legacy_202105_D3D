@@ -164,3 +164,85 @@ void Converter::WriteMeshData(wstring savepath)
 
 	SafeDelete(w);
 }
+
+void Converter::ExportMaterial(wstring savePath, bool bOverWrite)
+{
+	savePath = L"../../_Textures/" + savePath + L".material";
+
+	if (bOverWrite == false)
+	{
+		if (Path::ExistFile(savePath) == true)
+			return;
+	}
+
+	ReadMaterialData();
+	WriteMaterialData(savePath);
+}
+
+void Converter::ReadMaterialData()
+{
+	for (UINT i = 0; i < scene->mNumMaterials; i++)
+	{
+		aiMaterial* srcMaterial = scene->mMaterials[i];
+		if (FoundMaterialData(srcMaterial) == false)
+			continue;
+
+		asMaterial* material = new asMaterial();
+		material->Name = srcMaterial->GetName().C_Str();
+
+		aiColor3D color;
+
+		srcMaterial->Get(AI_MATKEY_COLOR_AMBIENT, color);
+		material->Ambient = Color(color.r, color.g, color.b, 1.0f);
+
+		srcMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+		material->Diffuse = Color(color.r, color.g, color.b, 1.0f);
+
+		srcMaterial->Get(AI_MATKEY_COLOR_SPECULAR, color);
+		material->Specular = Color(color.r, color.g, color.b, 1.0f);
+
+		srcMaterial->Get(AI_MATKEY_SHININESS, material->Specular.a);
+
+		srcMaterial->Get(AI_MATKEY_COLOR_EMISSIVE, color);
+		material->Emissive = Color(color.r, color.g, color.b, 1.0f);
+
+		aiString file;
+		srcMaterial->GetTexture(aiTextureType_AMBIENT, 0, &file);
+		material->DiffuseFile = file.C_Str();
+
+		srcMaterial->GetTexture(aiTextureType_SPECULAR, 0, &file);
+		material->SpecularFile = file.C_Str();
+
+		srcMaterial->GetTexture(aiTextureType_NORMALS, 0, &file);
+		material->NormalFile = file.C_Str();
+
+		materials.push_back(material);
+	}
+}
+
+bool Converter::FoundMaterialData(aiMaterial * material)
+{
+	string materialName = material->GetName().C_Str();
+	bool bFound = false;
+
+
+	for (asMesh* mesh : meshes)
+	{
+		for (asMeshPart* part : mesh->MeshParts)
+		{
+			if (part->MaterialName == materialName)
+				return true;
+		}
+	}
+
+	return false;
+}
+
+void Converter::WriteMaterialData(wstring savePath)
+{
+}
+
+string Converter::WriteTexture(string saveFolder, string file)
+{
+	return string();
+}
