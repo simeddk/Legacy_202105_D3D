@@ -11,6 +11,8 @@ void ModelDemo::Initialize()
 
 	Tank();
 	Kachujin();
+	Tower();
+	Airplane();
 
 	sky = new CubeSky(L"Environment/Mountain1024.dds");
 	sky->Pass(2);
@@ -48,10 +50,28 @@ void ModelDemo::Update()
 	plane->Update();
 
 	if (tank != nullptr)
+	{
+		tank->Pass(pass);
 		tank->Update();
+	}
 
 	if (kachujin != nullptr)
+	{
+		kachujin->Pass(pass);
 		kachujin->Update();
+	}
+
+	if (tower != nullptr)
+	{
+		tower->Pass(pass);
+		tower->Update();
+	}
+
+	if (airplane != nullptr)
+	{
+		airplane->Pass(pass);
+		airplane->Update();
+	}
 }
 
 void ModelDemo::Render()
@@ -64,6 +84,12 @@ void ModelDemo::Render()
 
 	if (kachujin != nullptr)
 		kachujin->Render();
+
+	if (tower != nullptr)
+		tower->Render();
+
+	if (airplane != nullptr)
+		airplane->Render();
 }
 
 void ModelDemo::Tank()
@@ -79,5 +105,23 @@ void ModelDemo::Kachujin()
 
 	kachujin->GetTransform()->Position(5, 0, 0);
 	kachujin->GetTransform()->Scale(0.01f, 0.01f, 0.01f);
+}
+
+void ModelDemo::Tower()
+{
+	tower = new ModelRender(shader);
+	tower->ReadMesh(L"Tower/Tower");
+
+	tower->GetTransform()->Position(-5, 0, 0);
+	tower->GetTransform()->Scale(0.01f, 0.01f, 0.01f);
+}
+
+void ModelDemo::Airplane()
+{
+	airplane = new ModelRender(shader);
+	airplane->ReadMesh(L"B787/Airplane");
+
+	airplane->GetTransform()->Position(-10, 0, 0);
+	airplane->GetTransform()->Scale(0.001f, 0.001f, 0.001f);
 }
 

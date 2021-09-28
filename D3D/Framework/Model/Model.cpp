@@ -1,6 +1,7 @@
 #include "Framework.h"
 #include "Model.h"
 #include "Utilities/BinaryFile.h"
+#include "Utilities/Xml.h"
 
 Model::Model()
 {
@@ -13,6 +14,9 @@ Model::~Model()
 
 	for (ModelMesh* mesh : meshes)
 		SafeDelete(mesh);
+
+	for (Material* material : materials)
+		SafeDelete(material);
 }
 
 void Model::ReadMesh(wstring file)
@@ -101,7 +105,20 @@ void Model::ReadMesh(wstring file)
 	SafeDelete(r);
 
 	BindBone();
+	
+}
+
+void Model::ReadMaterial(wstring file)
+{
+	file = L"../../_Textures/" + file + L".material";
+
+	Xml::XMLDocument* document = new Xml::XMLDocument();
+	Xml::XMLError error = document->LoadFile(String::ToString(file).c_str());
+	assert(error == Xml::XML_SUCCESS);
+
 	BindMesh();
+
+	SafeDelete(document);
 }
 
 void Model::BindBone()
@@ -137,5 +154,10 @@ ModelBone * Model::BoneByName(wstring name)
 			return bone;
 	}
 
+	return nullptr;
+}
+
+Material * Model::MaterialByName(wstring name)
+{
 	return nullptr;
 }

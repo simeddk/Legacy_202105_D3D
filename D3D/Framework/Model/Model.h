@@ -18,6 +18,7 @@ private:
 
 private:
 	void ReadMesh(wstring file);
+	void ReadMaterial(wstring file);
 
 private:
 	void BindBone();
@@ -32,6 +33,11 @@ public:
 	UINT MeshCount() { return meshes.size(); }
 	vector<ModelMesh*>& Meshes() { return meshes; }
 	ModelMesh* MeshByInidex(UINT index) { return meshes[index]; }
+
+	UINT MaterialCount() { return materials.size(); }
+	vector<Material*>& Materials() { return materials; }
+	Material* MaterialByIndex(UINT index) { return materials[index]; }
+	Material* MaterialByName(wstring name);
 
 public:
 	struct VertexModel
@@ -59,4 +65,5 @@ private:
 
 	vector<ModelBone*> bones;
 	vector<ModelMesh*> meshes;
+	vector<Material*> materials;
 };
