@@ -56,6 +56,7 @@ void Converter::ReadFile(wstring file)
 void Converter::ExportMesh(wstring savePath)
 {
 	ReadBoneData(scene->mRootNode, -1, -1);
+	ReadSkinData();
 	WriteMeshData(L"../../_Models/" + savePath + L".mesh");
 }
 
@@ -134,6 +135,56 @@ void Converter::ReadMeshData(aiNode * node, int index)
 	}//for(i)
 
 	meshes.push_back(mesh);
+}
+
+void Converter::ReadSkinData()
+{
+	for (UINT i = 0; i < scene->mNumMeshes; i++)
+	{
+		aiMesh* aiMesh = scene->mMeshes[i];
+
+		if (aiMesh->HasBones() == false) continue;
+
+		asMesh* mesh = meshes[i];
+
+		vector<asBoneWeights> bonesWeights;
+		bonesWeights.assign(mesh->Vertices.size(), asBoneWeights());
+
+		for (UINT b = 0; b < aiMesh->mNumBones; b++)
+		{
+			aiBone* aiMeshBone = aiMesh->mBones[b];
+			UINT boneIndex = 0;
+
+			for (asBone* bone : bones)
+			{
+				if (bone->Name == aiMeshBone->mName.C_Str())
+				{
+					boneIndex = bone->Index;
+					break;
+				}
+			}//for(bone)
+
+			for (UINT w = 0; w < aiMeshBone->mNumWeights; w++)
+			{
+				UINT index = aiMeshBone->mWeights[w].mVertexId;
+				float weight = aiMeshBone->mWeights[w].mWeight;
+
+				bonesWeights[index].AddWeights(boneIndex, weight);
+			}//for(w)
+		}//for(b)
+
+		for (UINT v = 0; v < bonesWeights.size(); v++)
+		{
+			bonesWeights[v].Normalize();
+
+			asBlendWeight blendWeight;
+			bonesWeights[v].GetBlendWeights(blendWeight);
+
+			mesh->Vertices[v].BlendIndices = blendWeight.Indices;
+			mesh->Vertices[v].BlendWeights = blendWeight.Weights;
+		}
+
+	}//for(i)
 }
 
 void Converter::WriteMeshData(wstring savepath)
@@ -361,4 +412,21 @@ string Converter::WriteTexture(string saveFolder, string file)
 
 
 	return Path::GetFileName(path);
+}
+
+void Converter::ExportAnimClip(UINT index, wstring savePath)
+{
+}
+
+asClip * Converter::ReadClipData(aiAnimation * animation)
+{
+	return nullptr;
+}
+
+void Converter::ReadKeyframeData(asClip * clip, aiNode * node, vector<struct asClipNode>& aniNodeInfos)
+{
+}
+
+void Converter::WriteClipData(asClip * clip, wstring savePath)
+{
 }

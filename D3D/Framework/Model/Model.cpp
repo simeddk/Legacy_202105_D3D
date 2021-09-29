@@ -116,6 +116,73 @@ void Model::ReadMaterial(wstring file)
 	Xml::XMLError error = document->LoadFile(String::ToString(file).c_str());
 	assert(error == Xml::XML_SUCCESS);
 
+	Xml::XMLElement* root = document->FirstChildElement();
+	Xml::XMLElement* materialNode = root->FirstChildElement();
+
+	do
+	{
+		Material* material = new Material();
+
+		Xml::XMLElement* node = nullptr;
+
+		node = materialNode->FirstChildElement();
+		material->Name(String::ToWString(node->GetText()));
+
+		wstring directory = Path::GetDirectoryName(file);
+		String::Replace(&directory, L"../../_Textures/", L"");
+
+		wstring texture = L"";
+
+		node = node->NextSiblingElement();
+		texture = String::ToWString(node->GetText());
+		if (texture.length() > 0)
+			material->DiffuseMap(directory + texture);
+
+		node = node->NextSiblingElement();
+		texture = String::ToWString(node->GetText());
+		if (texture.length() > 0)
+			material->SpecularMap(directory + texture);
+
+		node = node->NextSiblingElement();
+		texture = String::ToWString(node->GetText());
+		if (texture.length() > 0)
+			material->NormalMap(directory + texture);
+
+		Color color;
+
+		node = node->NextSiblingElement();
+		color.r = node->FloatAttribute("R");
+		color.g = node->FloatAttribute("G");
+		color.b = node->FloatAttribute("B");
+		color.a = node->FloatAttribute("A");
+		material->Ambient(color);
+
+		node = node->NextSiblingElement();
+		color.r = node->FloatAttribute("R");
+		color.g = node->FloatAttribute("G");
+		color.b = node->FloatAttribute("B");
+		color.a = node->FloatAttribute("A");
+		material->Diffuse(color);
+
+		node = node->NextSiblingElement();
+		color.r = node->FloatAttribute("R");
+		color.g = node->FloatAttribute("G");
+		color.b = node->FloatAttribute("B");
+		color.a = node->FloatAttribute("A");
+		material->Specular(color);
+
+		node = node->NextSiblingElement();
+		color.r = node->FloatAttribute("R");
+		color.g = node->FloatAttribute("G");
+		color.b = node->FloatAttribute("B");
+		color.a = node->FloatAttribute("A");
+		material->Emissive(color);
+
+		materials.push_back(material);
+
+		materialNode = materialNode->NextSiblingElement();
+	} while (materialNode != nullptr);
+
 	BindMesh();
 
 	SafeDelete(document);
@@ -159,5 +226,11 @@ ModelBone * Model::BoneByName(wstring name)
 
 Material * Model::MaterialByName(wstring name)
 {
+	for (Material* material : materials)
+	{
+		if (material->Name() == name)
+			return material;
+	}
+
 	return nullptr;
 }

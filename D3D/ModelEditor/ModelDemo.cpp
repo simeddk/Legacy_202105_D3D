@@ -96,12 +96,14 @@ void ModelDemo::Tank()
 {
 	tank = new ModelRender(shader);
 	tank->ReadMesh(L"Tank/Tank");
+	tank->ReadMaterial(L"Tank/Tank");
 }
 
 void ModelDemo::Kachujin()
 {
 	kachujin = new ModelRender(shader);
 	kachujin->ReadMesh(L"Kachujin/Mesh");
+	kachujin->ReadMaterial(L"Kachujin/Mesh");
 
 	kachujin->GetTransform()->Position(5, 0, 0);
 	kachujin->GetTransform()->Scale(0.01f, 0.01f, 0.01f);
@@ -111,6 +113,7 @@ void ModelDemo::Tower()
 {
 	tower = new ModelRender(shader);
 	tower->ReadMesh(L"Tower/Tower");
+	tower->ReadMaterial(L"Tower/Tower");
 
 	tower->GetTransform()->Position(-5, 0, 0);
 	tower->GetTransform()->Scale(0.01f, 0.01f, 0.01f);
@@ -120,6 +123,7 @@ void ModelDemo::Airplane()
 {
 	airplane = new ModelRender(shader);
 	airplane->ReadMesh(L"B787/Airplane");
+	airplane->ReadMaterial(L"B787/Airplane");
 
 	airplane->GetTransform()->Position(-10, 0, 0);
 	airplane->GetTransform()->Scale(0.001f, 0.001f, 0.001f);
