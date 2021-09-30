@@ -31,6 +31,8 @@
     <ClCompile Include="Meshes\MeshQuad.cpp" />
     <ClCompile Include="Meshes\MeshSphere.cpp" />
     <ClCompile Include="Model\Model.cpp" />
+    <ClCompile Include="Model\ModelAnimator.cpp" />
+    <ClCompile Include="Model\ModelClip.cpp" />
     <ClCompile Include="Model\ModelMesh.cpp" />
     <ClCompile Include="Model\ModelRender.cpp" />
     <ClCompile Include="Objects\CubeMapMesh.cpp" />
@@ -72,6 +74,8 @@
     <ClInclude Include="Meshes\MeshQuad.h" />
     <ClInclude Include="Meshes\MeshSphere.h" />
     <ClInclude Include="Model\Model.h" />
+    <ClInclude Include="Model\ModelAnimator.h" />
+    <ClInclude Include="Model\ModelClip.h" />
     <ClInclude Include="Model\ModelMesh.h" />
     <ClInclude Include="Model\ModelRender.h" />
     <ClInclude Include="Objects\CubeMapMesh.h" />

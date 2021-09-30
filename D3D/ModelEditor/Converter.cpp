@@ -416,17 +416,156 @@ string Converter::WriteTexture(string saveFolder, string file)
 
 void Converter::ExportAnimClip(UINT index, wstring savePath)
 {
+	savePath = L"../../_Models/" + savePath + L".clip";
+
+	asClip* clip = ReadClipData(scene->mAnimations[index]);
+	WriteClipData(clip, savePath);
 }
 
 asClip * Converter::ReadClipData(aiAnimation * animation)
 {
-	return nullptr;
+	asClip* clip = new asClip();
+	clip->Name = animation->mName.C_Str();
+	clip->FrameRate = (float)animation->mTicksPerSecond;
+	clip->FrameCount = (UINT)animation->mDuration + 1;
+	
+	vector<asClipNode> aniNodeInfos;
+	for (UINT i = 0; i < animation->mNumChannels; i++)
+	{
+		aiNodeAnim* aniNode = animation->mChannels[i];
+
+		asClipNode aniNodeInfo;
+		aniNodeInfo.Name = aniNode->mNodeName;
+
+		UINT keyCount = max(aniNode->mNumPositionKeys, aniNode->mNumRotationKeys);
+		keyCount = max(keyCount, aniNode->mNumScalingKeys);
+
+		asKeyFrameData frameData;
+		for (UINT k = 0; k < keyCount; k++)
+		{
+			bool bFound = false;
+			UINT t = aniNodeInfo.KeyFrame.size();
+
+			//PositionKey
+			if (fabsf((float)aniNode->mPositionKeys[k].mTime - (float)t) <= D3DX_16F_EPSILON)
+			{
+				aiVectorKey key = aniNode->mPositionKeys[k];
+				memcpy_s(&frameData.Translation, sizeof(Vector3), &key.mValue, sizeof(aiVector3D));
+				frameData.Frame = (float)aniNode->mPositionKeys[k].mTime;
+
+				bFound = true;
+			}
+
+			//RotationKey
+			if (fabsf((float)aniNode->mRotationKeys[k].mTime - (float)t) <= D3DX_16F_EPSILON)
+			{
+				aiQuatKey key = aniNode->mRotationKeys[k];
+				
+				frameData.Rotation.x = key.mValue.x;
+				frameData.Rotation.y = key.mValue.y;
+				frameData.Rotation.z = key.mValue.z;
+				frameData.Rotation.w = key.mValue.w;
+				frameData.Frame = (float)aniNode->mScalingKeys[k].mTime;
+
+				bFound = true;
+			}
+
+			//ScalingKey
+			if (fabsf((float)aniNode->mScalingKeys[k].mTime - (float)t) <= D3DX_16F_EPSILON)
+			{
+				aiVectorKey key = aniNode->mScalingKeys[k];
+				memcpy_s(&frameData.Scale, sizeof(Vector3), &key.mValue, sizeof(aiVector3D));
+				frameData.Frame = (float)aniNode->mScalingKeys[k].mTime;
+
+				bFound = true;
+			}
+
+
+			if (bFound == true)
+				aniNodeInfo.KeyFrame.push_back(frameData);
+		}//for(k)
+
+		if (aniNodeInfo.KeyFrame.size() < clip->FrameCount)
+		{
+			UINT count = clip->FrameCount - aniNodeInfo.KeyFrame.size();
+			asKeyFrameData lastKeyFrame = aniNodeInfo.KeyFrame.back();
+
+			for (UINT f = 0; f < count; f++)
+				aniNodeInfo.KeyFrame.push_back(lastKeyFrame);
+		}
+
+		aniNodeInfos.push_back(aniNodeInfo);
+
+	}//for(i)
+
+	ReadKeyframeData(clip, scene->mRootNode, aniNodeInfos);
+
+	return clip;
 }
 
 void Converter::ReadKeyframeData(asClip * clip, aiNode * node, vector<struct asClipNode>& aniNodeInfos)
 {
+	asKeyFrame* keyframe = new asKeyFrame();
+	keyframe->BoneName = node->mName.C_Str();
+
+	asClipNode* asClipNode = nullptr;
+
+	for (UINT n = 0; n < aniNodeInfos.size(); n++)
+	{
+		if (aniNodeInfos[n].Name == node->mName)
+		{
+			asClipNode = &aniNodeInfos[n];
+			break;
+		}
+	}
+
+	for (UINT i = 0; i < clip->FrameCount; i++)
+	{
+		asKeyFrameData frameData;
+
+		if (asClipNode == nullptr)
+		{
+			frameData.Frame = (float)i;
+
+			Matrix transform(node->mTransformation[0]);
+			D3DXMatrixTranspose(&transform, &transform);
+
+			D3DXMatrixDecompose(&frameData.Scale, &frameData.Rotation, &frameData.Translation, &transform);
+		}
+		else
+		{
+			frameData = asClipNode->KeyFrame[i];
+		}
+
+		keyframe->Transforms.push_back(frameData);
+	}
+
+	clip->Keyframes.push_back(keyframe);
+
+	for (UINT i = 0; i < node->mNumChildren; i++)
+		ReadKeyframeData(clip, node->mChildren[i], aniNodeInfos);
 }
 
 void Converter::WriteClipData(asClip * clip, wstring savePath)
 {
+	Path::CreateFolders(Path::GetDirectoryName(savePath));
+
+	BinaryWriter* w = new BinaryWriter(savePath);
+
+	w->String(clip->Name);
+	w->Float(clip->FrameRate);
+	w->UInt(clip->FrameCount);
+
+	w->UInt(clip->Keyframes.size());
+	for (asKeyFrame* keyframe : clip->Keyframes)
+	{
+		w->String(keyframe->BoneName);
+		
+		w->UInt(keyframe->Transforms.size());
+		w->Byte(&keyframe->Transforms[0], sizeof(asKeyFrameData) * keyframe->Transforms.size());
+
+		SafeDelete(keyframe);
+	}
+
+	SafeDelete(w);
 }

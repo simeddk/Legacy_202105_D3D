@@ -6,7 +6,6 @@ void ModelDemo::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(23, 1, 0);
 	Context::Get()->GetCamera()->Position(0, 17, -30);
-
 	shader = new Shader(L"11_Model.fxo");
 
 	Tank();

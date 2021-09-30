@@ -30,7 +30,29 @@ void ExportFile::Kachujin()
 	SafeDelete(conv);
 
 	conv = new Converter();
-	conv->ReadFile();//Todo
+	conv->ReadFile(L"Kachujin/Idle.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Idle");
+	SafeDelete(conv);
+
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Walk.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Walk");
+	SafeDelete(conv);
+
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Run.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Run");
+	SafeDelete(conv);
+
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Slash.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Slash");
+	SafeDelete(conv);
+
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Uprock.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Uprock");
+	SafeDelete(conv);
 }
 
 void ExportFile::Tower()

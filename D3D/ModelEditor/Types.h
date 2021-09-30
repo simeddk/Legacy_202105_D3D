@@ -164,7 +164,7 @@ struct asClip
 	vector<asKeyFrame*> Keyframes;
 };
 
-//중간
+//중간(임시 저장소)
 struct asClipNode
 {
 	aiString Name;
