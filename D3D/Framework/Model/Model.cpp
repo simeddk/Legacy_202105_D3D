@@ -212,6 +212,8 @@ void Model::ReadClip(wstring file)
 		
 		if (size > 0)
 		{
+			keyframe->Transforms.assign(size, ModelKeyFrameData());
+
 			void* ptr = (void*)&keyframe->Transforms[0];
 			r->Byte(&ptr, sizeof(ModelKeyFrameData) * size);
 		}
