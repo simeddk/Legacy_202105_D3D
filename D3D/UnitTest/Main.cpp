@@ -17,10 +17,11 @@
 #include "GetHeightDemo.h"
 #include "MeshDemo.h"
 #include "CubeMapMeshDemo.h"
+#include "RawBufferDemo.h"
 
 void Main::Initialize()
 {
-	Push(new CubeMapMeshDemo());
+	Push(new RawBufferDemo());
 }
 
 

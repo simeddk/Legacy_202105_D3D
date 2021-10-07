@@ -51,6 +51,9 @@
     <ClCompile Include="CubeMapMeshDemo.cpp">
       <Filter>Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="RawBufferDemo.cpp">
+      <Filter>ComputeShader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -103,6 +106,9 @@
     <ClInclude Include="CubeMapMeshDemo.h">
       <Filter>Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="RawBufferDemo.h">
+      <Filter>ComputeShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Vertex">
@@ -122,6 +128,9 @@
     </Filter>
     <Filter Include="Environment">
       <UniqueIdentifier>{9015c820-45f1-45f5-a7b9-d180ba5e4e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ComputeShader">
+      <UniqueIdentifier>{801d0a6a-daa6-41ab-ac82-69f17c898855}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
