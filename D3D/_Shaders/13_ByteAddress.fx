@@ -1,3 +1,4 @@
+ByteAddressBuffer Input;
 RWByteAddressBuffer Output;
 
 struct Group
@@ -25,12 +26,16 @@ void CS(ComputeInput input)
     group.DispatchThreadID = asuint(input.DispatchThreadID);
     group.GroupIndex = asuint(input.GroupIndex);
 
-    uint OutAddress = (input.GroupId.x * 240 + input.GroupIndex) * 10 * 4;
+    uint inAddress = (input.GroupId.x * 240 + input.GroupIndex) * 4;
+    float fromCPP = asfloat(Input.Load(inAddress)) * 100;
 
-    Output.Store3(OutAddress + 0, asuint(input.GroupId));
-    Output.Store3(OutAddress + 12, asuint(input.GroupThreadID));
-    Output.Store3(OutAddress + 24, asuint(input.DispatchThreadID));
-    Output.Store(OutAddress + 36, asuint(input.GroupIndex));
+    uint outAddress = (input.GroupId.x * 240 + input.GroupIndex) * 11 * 4;
+
+    Output.Store3(outAddress + 0, asuint(input.GroupId));
+    Output.Store3(outAddress + 12, asuint(input.GroupThreadID));
+    Output.Store3(outAddress + 24, asuint(input.DispatchThreadID));
+    Output.Store(outAddress + 36, asuint(input.GroupIndex));
+    Output.Store(outAddress + 40, asuint(fromCPP));
 }
 
 technique11 T0

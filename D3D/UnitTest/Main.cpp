@@ -18,10 +18,11 @@
 #include "MeshDemo.h"
 #include "CubeMapMeshDemo.h"
 #include "RawBufferDemo.h"
+#include "TextureBufferDemo.h"
 
 void Main::Initialize()
 {
-	Push(new RawBufferDemo());
+	Push(new TextureBufferDemo());
 }
 
 

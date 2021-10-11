@@ -125,3 +125,71 @@ private:
 	UINT inputByte;
 	UINT outputByte;
 };
+
+//-------------------------------------------------------------------
+// TextureBuffer
+//-------------------------------------------------------------------
+class TextureBuffer : public CsResource
+{
+public:
+	TextureBuffer(ID3D11Texture2D* src);
+	~TextureBuffer();
+
+private:
+	void CreateSRV() override;
+
+	void CreateOutput() override;
+	void CreateUAV() override;
+
+public:
+	UINT Width() { return width; }
+	UINT Height() { return height; }
+	UINT ArraySize() { return arraySize; }
+
+	ID3D11ShaderResourceView* OutputSRV() { return outputSRV; }
+	ID3D11Texture2D* Result() { return (ID3D11Texture2D*)output; }
+
+	void CopyToInput(ID3D11Texture2D* texture);
+	ID3D11Texture2D* CopyFromOutput();
+
+private:
+	UINT width, height, arraySize;
+	DXGI_FORMAT format;
+
+	ID3D11ShaderResourceView* outputSRV;
+	ID3D11Texture2D* result = nullptr;
+};
+
+//-------------------------------------------------------------------
+// StructuredBuffer
+//-------------------------------------------------------------------
+class StructuredBuffer : public CsResource
+{
+public:
+	StructuredBuffer(void* inputData, UINT inputStride, UINT inputCount, UINT outputStride = 0, UINT outputCount = 0);
+	~StructuredBuffer();
+
+private:
+	void CreateInput() override;
+	void CreateSRV() override;
+
+	void CreateOutput() override;
+	void CreateUAV() override;
+
+public:
+	UINT InputByteWidth() { return inputStride * inputCount; }
+	UINT OutputByteWidth() { return outputStride * outputCount; }
+
+	void CopyToInput(void* data);
+	void CopyFromOutput(void* data);
+
+private:
+	void* inputData;
+
+	UINT inputStride;
+	UINT inputCount;
+
+	UINT outputStride;
+	UINT outputCount;
+
+};
