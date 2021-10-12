@@ -106,3 +106,4 @@ typedef D3DXPLANE Plane;
 
 #include "Objects/CubeMapMesh.h"
 #include "Objects/Render2D.h"
+#include "Objects/Collider.h"

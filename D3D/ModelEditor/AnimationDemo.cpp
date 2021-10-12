@@ -23,6 +23,7 @@ void AnimationDemo::Destroy()
 {
 	SafeDelete(shader);
 	SafeDelete(kachujin);
+	SafeDelete(colliderObject);
 
 	SafeDelete(sky);
 	SafeDelete(planeShader);
@@ -108,6 +109,10 @@ void AnimationDemo::Update()
 	{
 		kachujin->Pass(pass);
 		kachujin->Update();
+
+		kachujin->GetAttachBones(bones);
+		colliderObject->World->World(bones[40]);
+		colliderObject->Collision->Update();
 	}
 	
 }
@@ -118,7 +123,10 @@ void AnimationDemo::Render()
 	plane->Render();
 
 	if (kachujin != nullptr)
+	{
 		kachujin->Render();
+		colliderObject->Collision->Render();
+	}
 
 }
 
@@ -136,6 +144,12 @@ void AnimationDemo::Kachujin()
 	kachujin->ReadClip(L"Kachujin/Uprock");
 	
 
-	kachujin->GetTransform()->Position(5, 0, 0);
-	kachujin->GetTransform()->Scale(0.01f, 0.01f, 0.01f);
+	kachujin->GetTransform()->Position(0, 0, 0);
+	kachujin->GetTransform()->Scale(0.025f, 0.025f, 0.025f);
+
+	colliderObject = new ColliderObject();
+	colliderObject->Init->Position(-2.9f, 1.4f, -50.0f);
+	colliderObject->Init->Scale(5, 5, 75);
+	colliderObject->Init->Rotation(0, 0, 1);
+	ZeroMemory(&bones, sizeof(Matrix) * MAX_MODEL_TRANSFORMS);
 }

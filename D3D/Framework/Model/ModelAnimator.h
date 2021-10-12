@@ -28,6 +28,8 @@ public:
 	void Pass(UINT pass);
 	Transform* GetTransform(){ return transform; }
 	Model* GetModel() { return model; }
+
+	void GetAttachBones(Matrix* matrix);
 	
 private:
 	void CreateTexture();
@@ -118,4 +120,19 @@ private:
 	Model* model;
 
 	Transform* transform;
+
+private:
+	float frameRate = 30.0f;
+	float frameTime = 0.0f;
+
+	Shader* computeShader;
+
+	ID3DX11EffectMatrixVariable* sComputeWorld;
+	ID3DX11EffectConstantBuffer* sComputeFrameBuffer;
+	ID3DX11EffectConstantBuffer* sComputeBlendBuffer;
+	ID3DX11EffectShaderResourceVariable* sComputeTransformSRV;
+
+	StructuredBuffer* computeBoneBuffer;
+	ID3DX11EffectShaderResourceVariable* sComputeInputBoneBuffer;
+	ID3DX11EffectUnorderedAccessViewVariable* sComputeOutputBoneBuffer;
 };

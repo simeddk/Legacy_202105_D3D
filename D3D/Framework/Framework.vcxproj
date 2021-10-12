@@ -35,6 +35,7 @@
     <ClCompile Include="Model\ModelClip.cpp" />
     <ClCompile Include="Model\ModelMesh.cpp" />
     <ClCompile Include="Model\ModelRender.cpp" />
+    <ClCompile Include="Objects\Collider.cpp" />
     <ClCompile Include="Objects\CubeMapMesh.cpp" />
     <ClCompile Include="Objects\Render2D.cpp" />
     <ClCompile Include="Renders\Buffers.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Model\ModelClip.h" />
     <ClInclude Include="Model\ModelMesh.h" />
     <ClInclude Include="Model\ModelRender.h" />
+    <ClInclude Include="Objects\Collider.h" />
     <ClInclude Include="Objects\CubeMapMesh.h" />
     <ClInclude Include="Objects\Render2D.h" />
     <ClInclude Include="Renders\Buffers.h" />

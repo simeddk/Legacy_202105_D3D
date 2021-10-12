@@ -9,6 +9,21 @@ ModelAnimator::ModelAnimator(Shader * shader)
 
 	frameBuffer = new ConstantBuffer(&tweenDesc, sizeof(TweenDesc));
 	blendBuffer = new ConstantBuffer(&blendDesc, sizeof(BlendDesc));
+
+	//Create ComputeShader
+	{
+		computeShader = new Shader(L"16_GetBones.fxo");
+
+		sComputeWorld = computeShader->AsMatrix("World");
+
+		sComputeFrameBuffer = computeShader->AsConstantBuffer("CB_AnimationFrames");
+		sComputeBlendBuffer = computeShader->AsConstantBuffer("CB_BlendingFrames");
+		sComputeTransformSRV = computeShader->AsSRV("TransformMap");
+
+		computeBoneBuffer = new StructuredBuffer(nullptr, sizeof(Matrix), MAX_MODEL_TRANSFORMS, sizeof(Matrix), MAX_MODEL_TRANSFORMS);
+		sComputeInputBoneBuffer = computeShader->AsSRV("InputBones");
+		sComputeOutputBoneBuffer = computeShader->AsUAV("OutputBones");
+	}
 	 
 }
 
@@ -23,6 +38,9 @@ ModelAnimator::~ModelAnimator()
 
 	SafeDelete(frameBuffer);
 	SafeDelete(blendBuffer);
+
+	SafeDelete(computeShader);
+	SafeDelete(computeBoneBuffer);
 }
 
 void ModelAnimator::Update()
@@ -31,6 +49,12 @@ void ModelAnimator::Update()
 	{
 		SetShader(shader, true);
 		CreateTexture();
+
+		Matrix bones[MAX_MODEL_TRANSFORMS];
+		for (UINT i = 0; i < model->BoneCount(); i++)
+			bones[i] = model->BoneByIndex(i)->Transform();
+
+		computeBoneBuffer->CopyToInput(bones);
 	}
 
 	if (blendDesc.Mode == 0)
@@ -38,6 +62,25 @@ void ModelAnimator::Update()
 	else
 		UpdateBledningFrame();
 
+	frameBuffer->Render();
+	blendBuffer->Render();
+
+	frameTime += Time::Delta();
+	if (frameTime > (1.0f / frameRate))
+	{
+		sComputeWorld->SetMatrix(transform->World());
+
+		sComputeFrameBuffer->SetConstantBuffer(frameBuffer->Buffer());
+		sComputeBlendBuffer->SetConstantBuffer(blendBuffer->Buffer());
+		sComputeTransformSRV->SetResource(transformSRV);
+
+		sComputeInputBoneBuffer->SetResource(computeBoneBuffer->SRV());
+		sComputeOutputBoneBuffer->SetUnorderedAccessView(computeBoneBuffer->UAV());
+
+		shader->Dispatch(0, 0, 1, 1, 1);
+	}
+	frameTime = fmod(frameTime, (1.0f / frameRate));
+	
 
 	for (ModelMesh* mesh : model->Meshes())
 		mesh->Update();
@@ -45,10 +88,9 @@ void ModelAnimator::Update()
 
 void ModelAnimator::Render()
 {
-	frameBuffer->Render();
+	
+	
 	sFrameBuffer->SetConstantBuffer(frameBuffer->Buffer());
-
-	blendBuffer->Render();
 	sBlendBuffer->SetConstantBuffer(blendBuffer->Buffer());
 	
 	sTransformSRV->SetResource(transformSRV);
@@ -206,6 +248,11 @@ void ModelAnimator::Pass(UINT pass)
 {
 	for (ModelMesh* mesh : model->Meshes())
 		mesh->Pass(pass);
+}
+
+void ModelAnimator::GetAttachBones(Matrix * matrix)
+{
+	computeBoneBuffer->CopyFromOutput(matrix);
 }
 
 void ModelAnimator::CreateTexture()
