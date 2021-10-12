@@ -191,5 +191,4 @@ private:
 
 	UINT outputStride;
 	UINT outputCount;
-
 };

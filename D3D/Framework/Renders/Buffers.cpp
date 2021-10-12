@@ -379,7 +379,7 @@ ID3D11Texture2D * TextureBuffer::CopyFromOutput()
 //-------------------------------------------------------------------
 // StructuredBuffer
 //-------------------------------------------------------------------
-StructuredBuffer::StructuredBuffer(void * inputData, UINT inputStride, UINT inputCount, UINT outputStride, UINT outputCount)
+StructuredBuffer::StructuredBuffer(void* inputData, UINT inputStride, UINT inputCount, UINT outputStride, UINT outputCount)
 	: CsResource()
 	, inputData(inputData)
 	, inputStride(inputStride)
@@ -398,6 +398,7 @@ StructuredBuffer::StructuredBuffer(void * inputData, UINT inputStride, UINT inpu
 
 StructuredBuffer::~StructuredBuffer()
 {
+
 }
 
 void StructuredBuffer::CreateInput()
@@ -415,15 +416,16 @@ void StructuredBuffer::CreateInput()
 
 	D3D11_SUBRESOURCE_DATA subResource = { 0 };
 	subResource.pSysMem = inputData;
-
+	
 	Check(D3D::GetDevice()->CreateBuffer(&desc, input != nullptr ? &subResource : nullptr, &buffer));
-
+	
 	input = (ID3D11Resource*)buffer;
+
 }
 
 void StructuredBuffer::CreateSRV()
 {
-	ID3D11Buffer* buffer =(ID3D11Buffer*)input;
+	ID3D11Buffer* buffer = (ID3D11Buffer*)input;
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 	ZeroMemory(&srvDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
@@ -440,6 +442,7 @@ void StructuredBuffer::CreateOutput()
 
 	D3D11_BUFFER_DESC desc;
 	ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+
 	desc.ByteWidth = OutputByteWidth();
 	desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS;
 	desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
@@ -448,12 +451,12 @@ void StructuredBuffer::CreateOutput()
 
 	Check(D3D::GetDevice()->CreateBuffer(&desc, nullptr, &buffer));
 
-	output = (ID3D11Resource*)buffer;
+	output = (ID3D11Resource *)buffer;
 }
 
 void StructuredBuffer::CreateUAV()
 {
-	ID3D11Buffer* buffer = (ID3D11Buffer*)output;
+	ID3D11Buffer* buffer = (ID3D11Buffer *)output;
 
 	D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc;
 	ZeroMemory(&uavDesc, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));

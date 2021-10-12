@@ -15,11 +15,9 @@ ModelAnimator::ModelAnimator(Shader * shader)
 		computeShader = new Shader(L"16_GetBones.fxo");
 
 		sComputeWorld = computeShader->AsMatrix("World");
-
 		sComputeFrameBuffer = computeShader->AsConstantBuffer("CB_AnimationFrames");
 		sComputeBlendBuffer = computeShader->AsConstantBuffer("CB_BlendingFrames");
 		sComputeTransformSRV = computeShader->AsSRV("TransformMap");
-
 		computeBoneBuffer = new StructuredBuffer(nullptr, sizeof(Matrix), MAX_MODEL_TRANSFORMS, sizeof(Matrix), MAX_MODEL_TRANSFORMS);
 		sComputeInputBoneBuffer = computeShader->AsSRV("InputBones");
 		sComputeOutputBoneBuffer = computeShader->AsUAV("OutputBones");
@@ -77,10 +75,9 @@ void ModelAnimator::Update()
 		sComputeInputBoneBuffer->SetResource(computeBoneBuffer->SRV());
 		sComputeOutputBoneBuffer->SetUnorderedAccessView(computeBoneBuffer->UAV());
 
-		shader->Dispatch(0, 0, 1, 1, 1);
+		computeShader->Dispatch(0, 0, 1, 1, 1); //TODO. Shit...
 	}
 	frameTime = fmod(frameTime, (1.0f / frameRate));
-	
 
 	for (ModelMesh* mesh : model->Meshes())
 		mesh->Update();
@@ -253,6 +250,7 @@ void ModelAnimator::Pass(UINT pass)
 void ModelAnimator::GetAttachBones(Matrix * matrix)
 {
 	computeBoneBuffer->CopyFromOutput(matrix);
+	int a = 0;
 }
 
 void ModelAnimator::CreateTexture()
