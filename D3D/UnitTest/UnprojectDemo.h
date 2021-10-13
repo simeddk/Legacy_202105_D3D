@@ -1,7 +1,7 @@
 #pragma once
 #include "Systems/IExecute.h"
 
-class AnimationDemo : public IExecute
+class UnprojectDemo : public IExecute
 {
 public:
 	virtual void Initialize() override;
@@ -13,21 +13,8 @@ public:
 	virtual void ResizeScreen() override {};
 
 private:
-	void Kachujin();
-	
-private:
 	Shader* shader;
-	ModelAnimator* kachujin = nullptr;
 
-	Shader* weaponShader;
-	ModelRender* weapon = nullptr;
-	Transform* weaponInitTransform = nullptr;
-
-	ColliderObject* colliderObject;
-	Matrix bones[MAX_MODEL_TRANSFORMS];
-
-	CubeSky* sky;
-	Shader* planeShader;
-	MeshPlane* plane;
+	Terrain* terrain;
 
 };

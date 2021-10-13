@@ -4,9 +4,11 @@
 
 void AnimationDemo::Initialize()
 {
-	Context::Get()->GetCamera()->RotationDegree(5, 3, 0);
-	Context::Get()->GetCamera()->Position(5, 1, -4);
+	Context::Get()->GetCamera()->RotationDegree(19, 0, 0);
+	Context::Get()->GetCamera()->Position(0, 5, -8);
+
 	shader = new Shader(L"12_Animation.fxo");
+	weaponShader = new Shader(L"11_Model.fxo");
 
 	Kachujin();
 
@@ -28,6 +30,10 @@ void AnimationDemo::Destroy()
 	SafeDelete(sky);
 	SafeDelete(planeShader);
 	SafeDelete(plane);
+
+	SafeDelete(weaponShader);
+	SafeDelete(weapon);
+	SafeDelete(weaponInitTransform);
 }
 
 void AnimationDemo::Update()
@@ -111,8 +117,14 @@ void AnimationDemo::Update()
 		kachujin->Update();
 
 		kachujin->GetAttachBones(bones);
+
+		Transform* weaponTransform = weapon->GetTransform();
+		weaponTransform->World(weaponInitTransform->World() * bones[40]);
+		weapon->Update();
+
 		colliderObject->World->World(bones[40]);
 		colliderObject->Collision->Update();
+
 	}
 	
 }
@@ -125,7 +137,9 @@ void AnimationDemo::Render()
 	if (kachujin != nullptr)
 	{
 		kachujin->Render();
+
 		colliderObject->Collision->Render();
+		weapon->Render();
 	}
 
 }
@@ -152,4 +166,14 @@ void AnimationDemo::Kachujin()
 	colliderObject->Init->Scale(5, 5, 75);
 	colliderObject->Init->Rotation(0, 0, 1);
 	ZeroMemory(&bones, sizeof(Matrix) * MAX_MODEL_TRANSFORMS);
+
+	weapon = new ModelRender(weaponShader);
+	weapon->ReadMesh(L"Weapon/Sword");
+	weapon->ReadMaterial(L"Weapon/Sword");
+
+	weaponInitTransform = new Transform();
+	weaponInitTransform->Position(-2.9f, 1.4f, -6.45f);
+	weaponInitTransform->Scale(0.5f, 0.5f, 0.75f);
+	//weaponInitTransform->Rotation(0, 0, 1);
+	
 }

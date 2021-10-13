@@ -117,6 +117,51 @@ float Terrain::GetHeight_Raycast(Vector3 & position)
 	return result.y;
 }
 
+Vector3 Terrain::GetMousePosition()
+{
+	Matrix W = GetTransform()->World();
+	Matrix V = Context::Get()->View();
+	Matrix P = Context::Get()->Projection();
+	Viewport* Vp = Context::Get()->GetViewport();
+
+	Vector3 mouse = Mouse::Get()->GetPosition();
+
+	mouse.z = 0.0f;
+	Vector3 n = Vp->Unproject(mouse, W, V, P);
+
+	mouse.z = 1.0f;
+	Vector3 f = Vp->Unproject(mouse, W, V, P);
+
+	Vector3 start = n;
+	Vector3 direction = f - n;
+
+	for (UINT z = 0; z < height - 1; z++)
+	{
+		for (UINT x = 0; x < width - 1; x++)
+		{
+			UINT index[4];
+			index[0] = width * z + x;
+			index[1] = width * (z + 1) + x;
+			index[2] = width * z + (x + 1);
+			index[3] = width * (z + 1) + (x + 1);
+
+			Vector3 p[4];
+			for (UINT i = 0; i < 4; i++)
+				p[i] = vertices[index[i]].Position;
+
+			float u, v, distance;
+			
+			if (D3DXIntersectTri(&p[0], &p[1], &p[2], &start, &direction, &u, &v, &distance))
+				return p[0] + (p[1] - p[0]) * u + (p[2] - p[0])* v;
+
+			if (D3DXIntersectTri(&p[3], &p[1], &p[2], &start, &direction, &u, &v, &distance))
+				return p[3] + (p[1] - p[3]) * u + (p[2] - p[3]) * v;
+		}
+	}
+
+	return Vector3(-1, -1, -1);
+}
+
 void Terrain::CreateVertexData()
 {
 	width = heightMap->GetWidth();

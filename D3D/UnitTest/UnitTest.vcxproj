@@ -137,11 +137,13 @@
     <ClCompile Include="GirdDemo.cpp" />
     <ClCompile Include="IndeBufferDemo.cpp" />
     <ClCompile Include="MeshDemo.cpp" />
+    <ClCompile Include="ProjectDemo.cpp" />
     <ClCompile Include="RawBufferDemo.cpp" />
     <ClCompile Include="TerrainDemo.cpp" />
     <ClCompile Include="TextureBufferDemo.cpp" />
     <ClCompile Include="TextureSampleDemo.cpp" />
     <ClCompile Include="TextureSamplerStateDemo.cpp" />
+    <ClCompile Include="UnprojectDemo.cpp" />
     <ClCompile Include="VertexLineColorDemo.cpp" />
     <ClCompile Include="VertexLineDemo.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -151,6 +153,7 @@
     <ClCompile Include="VertexPrimitiveDemo.cpp" />
     <ClCompile Include="VertexRectDemo.cpp" />
     <ClCompile Include="VertexTriangleDemo.cpp" />
+    <ClCompile Include="ViewportDemo.cpp" />
     <ClCompile Include="World2Demo.cpp" />
     <ClCompile Include="WorldDemo.cpp" />
   </ItemGroup>
@@ -161,11 +164,13 @@
     <ClInclude Include="GirdDemo.h" />
     <ClInclude Include="IndeBufferDemo.h" />
     <ClInclude Include="MeshDemo.h" />
+    <ClInclude Include="ProjectDemo.h" />
     <ClInclude Include="RawBufferDemo.h" />
     <ClInclude Include="TerrainDemo.h" />
     <ClInclude Include="TextureBufferDemo.h" />
     <ClInclude Include="TextureSampleDemo.h" />
     <ClInclude Include="TextureSamplerStateDemo.h" />
+    <ClInclude Include="UnprojectDemo.h" />
     <ClInclude Include="VertexLineColorDemo.h" />
     <ClInclude Include="VertexLineDemo.h" />
     <ClInclude Include="Main.h" />
@@ -173,6 +178,7 @@
     <ClInclude Include="VertexPrimitiveDemo.h" />
     <ClInclude Include="VertexRectDemo.h" />
     <ClInclude Include="VertexTriangleDemo.h" />
+    <ClInclude Include="ViewportDemo.h" />
     <ClInclude Include="World2Demo.h" />
     <ClInclude Include="WorldDemo.h" />
   </ItemGroup>

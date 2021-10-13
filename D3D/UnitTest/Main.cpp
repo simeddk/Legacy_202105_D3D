@@ -19,10 +19,13 @@
 #include "CubeMapMeshDemo.h"
 #include "RawBufferDemo.h"
 #include "TextureBufferDemo.h"
+#include "ViewportDemo.h"
+#include "ProjectDemo.h"
+#include "UnprojectDemo.h"
 
 void Main::Initialize()
 {
-	Push(new GetHeightDemo());
+	Push(new UnprojectDemo());
 }
 
 

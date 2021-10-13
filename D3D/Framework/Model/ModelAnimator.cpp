@@ -75,7 +75,7 @@ void ModelAnimator::Update()
 		sComputeInputBoneBuffer->SetResource(computeBoneBuffer->SRV());
 		sComputeOutputBoneBuffer->SetUnorderedAccessView(computeBoneBuffer->UAV());
 
-		computeShader->Dispatch(0, 0, 1, 1, 1); //TODO. Shit...
+		computeShader->Dispatch(0, 0, 1, 1, 1);
 	}
 	frameTime = fmod(frameTime, (1.0f / frameRate));
 

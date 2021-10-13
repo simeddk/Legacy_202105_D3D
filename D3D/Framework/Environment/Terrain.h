@@ -13,6 +13,7 @@ public:
 
 	float GetHeight(Vector3& position);
 	float GetHeight_Raycast(Vector3& position);
+	Vector3 GetMousePosition();
 
 private:
 	void CreateVertexData();
