@@ -18,16 +18,10 @@ private:
 private:
 	Shader* shader;
 	ModelAnimator* kachujin = nullptr;
-
-	Shader* weaponShader;
-	ModelRender* weapon = nullptr;
-	Transform* weaponInitTransform = nullptr;
+	
 
 	ColliderObject* colliderObject;
 	Matrix bones[MAX_MODEL_TRANSFORMS];
 
-	CubeSky* sky;
-	Shader* planeShader;
-	MeshPlane* plane;
-
+	
 };

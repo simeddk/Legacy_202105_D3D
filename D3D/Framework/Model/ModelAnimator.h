@@ -82,7 +82,7 @@ private:
 private:
 	struct TweenDesc
 	{
-		float TakeTime = 1.0f;
+		float TakeTime = 0.1f;
 		float TweenTime = 0.0f;
 		float ChangeTime = 0.0f;
 		float Padding;

@@ -16,7 +16,7 @@ protected:
 	virtual void Create() = 0;
 
 
-protected:
+public:
 	struct VertexMesh
 	{
 		Vector3 Position;

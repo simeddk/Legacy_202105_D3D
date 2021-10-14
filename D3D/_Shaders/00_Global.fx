@@ -20,6 +20,19 @@ cbuffer CB_World
 };
 
 //-----------------------------------------------------------------------------
+//MeshOutput(Out - RS)
+//-----------------------------------------------------------------------------
+struct MeshOutput
+{
+    float4 Position : SV_Position; //Rasterizing Position
+    float3 oPosition : Position1; //NDC Position
+    float3 wPosition : Position2; //World Position
+
+    float3 Normal : Normal;
+    float2 Uv : Uv;
+};
+
+//-----------------------------------------------------------------------------
 //Functions
 //-----------------------------------------------------------------------------
 float4 WorldPosition(float4 position)

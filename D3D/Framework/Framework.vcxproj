@@ -29,6 +29,7 @@
     <ClCompile Include="Meshes\MeshCylinder.cpp" />
     <ClCompile Include="Meshes\MeshPlane.cpp" />
     <ClCompile Include="Meshes\MeshQuad.cpp" />
+    <ClCompile Include="Meshes\MeshRender.cpp" />
     <ClCompile Include="Meshes\MeshSphere.cpp" />
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Model\ModelAnimator.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="Meshes\MeshCylinder.h" />
     <ClInclude Include="Meshes\MeshPlane.h" />
     <ClInclude Include="Meshes\MeshQuad.h" />
+    <ClInclude Include="Meshes\MeshRender.h" />
     <ClInclude Include="Meshes\MeshSphere.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Model\ModelAnimator.h" />

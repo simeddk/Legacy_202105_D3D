@@ -9,6 +9,7 @@
 void Main::Initialize()
 {
 	Push(new ExportFile());
+	Push(new ModelDemo());
 	Push(new AnimationDemo());
 }
 

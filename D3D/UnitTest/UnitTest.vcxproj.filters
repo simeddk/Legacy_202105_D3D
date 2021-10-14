@@ -66,6 +66,9 @@
     <ClCompile Include="UnprojectDemo.cpp">
       <Filter>Viewport</Filter>
     </ClCompile>
+    <ClCompile Include="InstanceDemo.cpp">
+      <Filter>Transform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -132,6 +135,9 @@
     </ClInclude>
     <ClInclude Include="UnprojectDemo.h">
       <Filter>Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="InstanceDemo.h">
+      <Filter>Transform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

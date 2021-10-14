@@ -126,6 +126,9 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Collider.cpp" />
+    <ClCompile Include="Meshes\MeshRender.cpp">
+      <Filter>Meshes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -258,6 +261,9 @@
     </ClInclude>
     <ClInclude Include="Objects\Collider.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes\MeshRender.h">
+      <Filter>Meshes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

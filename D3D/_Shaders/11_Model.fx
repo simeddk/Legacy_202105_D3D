@@ -1,8 +1,6 @@
 #include "00_Global.fx"
 #include "00_Light.fx"
 
-StructuredBuffer<T> Input;
-
 float3 LightDirection = float3(-1, -1, 1);
 
 struct VertexModel
