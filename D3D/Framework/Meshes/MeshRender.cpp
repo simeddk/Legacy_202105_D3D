@@ -21,24 +21,52 @@ MeshRender::~MeshRender()
 		SafeDelete(transform);
 }
 
-//TODO
+
 void MeshRender::Update()
 {
+	mesh->Update();
 }
 
 void MeshRender::Render()
 {
+	instanceBuffer->Render();
+	instanceColorBuffer->Render();
+
+	mesh->Render(transforms.size());
 }
 
 Transform * MeshRender::AddTransform()
 {
-	return nullptr;
+	Transform* transform = new Transform();
+
+	transforms.push_back(transform);
+	colors[transforms.size() - 1] = Color(0, 0, 0, 1);
+
+	return transform;
 }
 
 void MeshRender::UpdateTransforms()
 {
+	for (UINT i = 0; i < transforms.size(); i++)
+		memcpy(worlds[i], transforms[i]->World(), sizeof(Matrix));
+
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	//Instance Transform
+	D3D::GetDC()->Map(instanceBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, worlds, sizeof(Matrix) * MAX_MESH_INSTANCE);
+	}
+	D3D::GetDC()->Unmap(instanceBuffer->Buffer(), 0);
+
+	//Instance Color
+	D3D::GetDC()->Map(instanceColorBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, colors, sizeof(Color) * MAX_MESH_INSTANCE);
+	}
+	D3D::GetDC()->Unmap(instanceColorBuffer->Buffer(), 0);
 }
 
 void MeshRender::SetColor(UINT instance, Color & color)
 {
+	colors[instance] = color;
 }

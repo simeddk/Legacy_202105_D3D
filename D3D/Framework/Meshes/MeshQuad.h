@@ -3,7 +3,7 @@
 class MeshQuad : public Mesh
 {
 public:
-	MeshQuad(Shader* shader);
+	MeshQuad();
 	~MeshQuad();
 
 private:

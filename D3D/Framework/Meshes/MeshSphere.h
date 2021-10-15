@@ -3,7 +3,7 @@
 class MeshSphere : public Mesh
 {
 public:
-	MeshSphere(Shader* shader, float radius, UINT stackCount = 20, UINT sliceCount = 20);
+	MeshSphere(float radius, UINT stackCount = 20, UINT sliceCount = 20);
 	~MeshSphere();
 
 private:

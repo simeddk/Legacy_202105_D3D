@@ -3,8 +3,8 @@
 class MeshCylinder : public Mesh
 {
 public:
-	MeshCylinder(Shader* shader, float radius, float height, UINT stackCount, UINT sliceCount);
-	MeshCylinder(Shader* shader, float topRadius, float bottomRadius, float height, UINT stackCount, UINT sliceCount);
+	MeshCylinder(float radius, float height, UINT stackCount, UINT sliceCount);
+	MeshCylinder(float topRadius, float bottomRadius, float height, UINT stackCount, UINT sliceCount);
 	~MeshCylinder();
 
 private:

@@ -30,6 +30,7 @@ struct MeshOutput
 
     float3 Normal : Normal;
     float2 Uv : Uv;
+    float4 Color : Color;
 };
 
 //-----------------------------------------------------------------------------

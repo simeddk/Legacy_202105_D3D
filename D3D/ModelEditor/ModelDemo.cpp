@@ -6,27 +6,22 @@ void ModelDemo::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(23, 1, 0);
 	Context::Get()->GetCamera()->Position(0, 17, -30);
-	shader = new Shader(L"17_Surface.fxo");
+	shader = new Shader(L"19_Surface.fxo");
 
 	Tank();
 	Tower();
 	Airplane();
 
-	sky = new CubeSky(L"Environment/Mountain1024.dds");
-	sky->Pass(2);
-
-	plane = new MeshPlane(shader, 6, 6);
-	plane->GetTransform()->Scale(12, 1, 12);
-	plane->DiffuseMap(L"Floor.png");
+	
 }
 
 void ModelDemo::Destroy()
 {
 	SafeDelete(shader);
 	SafeDelete(tank);
-
-	SafeDelete(sky);
-	SafeDelete(plane);
+	SafeDelete(airplane);
+	SafeDelete(tower);
+	
 }
 
 void ModelDemo::Update()
@@ -35,9 +30,7 @@ void ModelDemo::Update()
 	ImGui::SliderFloat3("LightDirection", LightDirection, -1, 1);
 	shader->AsVector("LightDirection")->SetFloatVector(LightDirection);
 
-	sky->Update();
-	plane->Update();
-
+	
 	if (tank != nullptr)
 	{
 		tank->Update();
@@ -56,11 +49,7 @@ void ModelDemo::Update()
 
 void ModelDemo::Render()
 {
-	sky->Render();
-
-	plane->Pass(0);
-	plane->Render();
-
+	
 	if (tank != nullptr)
 	{
 		tank->Pass(1);
@@ -85,6 +74,15 @@ void ModelDemo::Tank()
 	tank = new ModelRender(shader);
 	tank->ReadMesh(L"Tank/Tank");
 	tank->ReadMaterial(L"Tank/Tank");
+
+	for (float x = -50; x <= 50; x += 2.5f)
+	{
+		Transform* transform = tank->AddTransform();
+		transform->Scale(0.1f, 0.1f, 0.1f);
+		transform->Position(x, 0, 5);
+		transform->RotationDegree(0, Math::Random(-180, 180), 0);
+	}
+	tank->UpdateTransforms();
 }
 
 void ModelDemo::Tower()
@@ -93,8 +91,8 @@ void ModelDemo::Tower()
 	tower->ReadMesh(L"Tower/Tower");
 	tower->ReadMaterial(L"Tower/Tower");
 
-	tower->GetTransform()->Position(-5, 0, 0);
-	tower->GetTransform()->Scale(0.01f, 0.01f, 0.01f);
+	//tower->GetTransform()->Position(-5, 0, 0);
+	//tower->GetTransform()->Scale(0.01f, 0.01f, 0.01f);
 }
 
 void ModelDemo::Airplane()
@@ -103,7 +101,7 @@ void ModelDemo::Airplane()
 	airplane->ReadMesh(L"B787/Airplane");
 	airplane->ReadMaterial(L"B787/Airplane");
 
-	airplane->GetTransform()->Position(-10, 0, 0);
-	airplane->GetTransform()->Scale(0.001f, 0.001f, 0.001f);
+	//airplane->GetTransform()->Position(-10, 0, 0);
+	//airplane->GetTransform()->Scale(0.001f, 0.001f, 0.001f);
 }
 

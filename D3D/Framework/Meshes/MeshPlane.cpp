@@ -1,9 +1,8 @@
 #include "Framework.h"
 #include "MeshPlane.h"
 
-MeshPlane::MeshPlane(Shader * shader, float offsetU, float offsetV)
-	: Mesh(shader)
-	, offsetU(offsetU)
+MeshPlane::MeshPlane(float offsetU, float offsetV)
+	: offsetU(offsetU)
 	, offsetV(offsetV)
 {
 }

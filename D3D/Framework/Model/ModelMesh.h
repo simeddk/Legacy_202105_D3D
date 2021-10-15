@@ -56,6 +56,7 @@ public:
 
 	void Update();
 	void Render();
+	void Render(UINT drawCount);
 
 	int BondIndex() { return boneIndex; }
 	class ModelBone* Bone() { return bone; }
@@ -110,6 +111,7 @@ private:
 
 	void Update();
 	void Render();
+	void Render(UINT drawCount);
 
 	void Binding(Model* model);
 	void SetShader(Shader* shader);

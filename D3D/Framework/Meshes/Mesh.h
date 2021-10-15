@@ -1,16 +1,17 @@
 #pragma once
 
-class Mesh : public Renderer
+class Mesh
 {
 public:
-	Mesh(Shader* shader);
+	Mesh();
 	virtual ~Mesh();
 
 	void Update();
-	void Render();
+	void Render(UINT instanceCount);
 
-public:
-	void DiffuseMap(wstring file);
+	void SetShader(Shader* shader);
+	void Pass(UINT val) { pass = val; }
+
 
 protected:
 	virtual void Create() = 0;
@@ -46,10 +47,18 @@ public:
 	};
 
 protected:
+	Shader* shader;
+	UINT pass = 0;
+
+	PerFrame* perFrame = nullptr;
+
+	VertexBuffer* vertexBuffer = nullptr;
+	IndexBuffer* indexBuffer = nullptr;
+
 	VertexMesh* vertices = nullptr;
 	UINT* indices = nullptr;
 
-private:
-	Texture* diffuseMap = nullptr;
-	ID3DX11EffectShaderResourceVariable* sDiffuseMap;
+	UINT vertexCount, indexCount;
+
+
 };

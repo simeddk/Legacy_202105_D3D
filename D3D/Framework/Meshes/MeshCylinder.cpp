@@ -1,14 +1,14 @@
 #include "Framework.h"
 #include "MeshCylinder.h"
 
-MeshCylinder::MeshCylinder(Shader * shader, float radius, float height, UINT stackCount, UINT sliceCount)
-	: Mesh(shader), topRadius(radius), bottomRadius(radius), height(height), stackCount(stackCount), sliceCount(sliceCount)
+MeshCylinder::MeshCylinder(float radius, float height, UINT stackCount, UINT sliceCount)
+	: topRadius(radius), bottomRadius(radius), height(height), stackCount(stackCount), sliceCount(sliceCount)
 {
 
 }
 
-MeshCylinder::MeshCylinder(Shader * shader, float topRadius, float bottomRadius, float height, UINT stackCount, UINT sliceCount)
-	: Mesh(shader), topRadius(topRadius), bottomRadius(bottomRadius), height(height), stackCount(stackCount), sliceCount(sliceCount)
+MeshCylinder::MeshCylinder(float topRadius, float bottomRadius, float height, UINT stackCount, UINT sliceCount)
+	:topRadius(topRadius), bottomRadius(bottomRadius), height(height), stackCount(stackCount), sliceCount(sliceCount)
 {
 
 }

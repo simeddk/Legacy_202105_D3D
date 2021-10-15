@@ -1,8 +1,7 @@
 #include "Framework.h"
 #include "MeshCube.h"
 
-MeshCube::MeshCube(Shader * shader, float offsetU, float offsetV)
-	: Mesh(shader)
+MeshCube::MeshCube()
 {
 }
 

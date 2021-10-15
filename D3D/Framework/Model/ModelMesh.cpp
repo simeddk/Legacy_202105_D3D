@@ -97,6 +97,22 @@ void ModelMesh::Render()
 		part->Render();
 }
 
+void ModelMesh::Render(UINT drawCount)
+{
+	boneBuffer->Render();
+	sBoneBuffer->SetConstantBuffer(boneBuffer->Buffer());
+
+	perFrame->Render();
+
+	vertexBuffer->Render();
+	indexBuffer->Render();
+
+	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	for (ModelMeshPart* part : meshParts)
+		part->Render(drawCount);
+}
+
 void ModelMesh::Transforms(Matrix * transforms)
 {
 	memcpy(boneDesc.Transforms, transforms, sizeof(Matrix) * MAX_MODEL_TRANSFORMS);
@@ -128,6 +144,13 @@ void ModelMeshPart::Render()
 	material->Render();
 
 	shader->DrawIndexed(0, pass, indexCount, startIndex);
+}
+
+void ModelMeshPart::Render(UINT drawCount)
+{
+	material->Render();
+
+	shader->DrawIndexedInstanced(0, pass, indexCount, drawCount, startIndex);
 }
 
 void ModelMeshPart::Binding(Model * model)

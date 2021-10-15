@@ -1,8 +1,8 @@
 #include "Framework.h"
 #include "MeshSphere.h"
 
-MeshSphere::MeshSphere(Shader * shader, float radius, UINT stackCount, UINT sliceCount)
-	: Mesh(shader), radius(radius), stackCount(stackCount), sliceCount(sliceCount)
+MeshSphere::MeshSphere(float radius, UINT stackCount, UINT sliceCount)
+	: radius(radius), stackCount(stackCount), sliceCount(sliceCount)
 {
 
 }

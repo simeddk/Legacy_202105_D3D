@@ -1,26 +1,28 @@
 #include "Framework.h"
 #include "Mesh.h"
 
-Mesh::Mesh(Shader * shader)
-	: Renderer(shader)
+Mesh::Mesh()
 {
-	sDiffuseMap = shader->AsSRV("DiffuseMap");
+	
 }
 
 Mesh::~Mesh()
 {
+	SafeDelete(perFrame);
+
+	SafeDelete(vertexBuffer);
+	SafeDelete(indexBuffer);
+
 	SafeDeleteArray(vertices);
 	SafeDeleteArray(indices);
-
-	SafeDelete(diffuseMap);
 }
 
 void Mesh::Update()
 {
-	Super::Update();
+	perFrame->Update();
 }
 
-void Mesh::Render()
+void Mesh::Render(UINT instanceCount)
 {
 	if (vertexBuffer == nullptr || indexBuffer == nullptr)
 	{
@@ -30,20 +32,21 @@ void Mesh::Render()
 		indexBuffer = new IndexBuffer(indices, indexCount);
 	}
 
-	Super::Render();
+	perFrame->Render();
+	vertexBuffer->Render();
+	indexBuffer->Render();
 
-	if (diffuseMap != nullptr)
-		sDiffuseMap->SetResource(diffuseMap->SRV());
+	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	shader->DrawIndexed(0, Pass(), indexCount);
+	shader->DrawIndexedInstanced(0, pass, indexCount, instanceCount);
 }
 
-
-void Mesh::DiffuseMap(wstring file)
+void Mesh::SetShader(Shader * shader)
 {
-	SafeDelete(diffuseMap);
+	this->shader = shader;
 
-	diffuseMap = new Texture(file);
+	SafeDelete(perFrame);
+	perFrame = new PerFrame(shader);
 }
 
 
