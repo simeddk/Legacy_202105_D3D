@@ -19,9 +19,9 @@ public:
 	Transform* GetTransform(UINT index) { return transforms[index]; }
 	void UpdateTransforms();
 	void SetColor(UINT instance, Color& color);
-
+	
 	UINT TransformCount() { return transforms.size(); }
-
+	
 	void Pass(UINT pass);
 
 private:
@@ -29,6 +29,7 @@ private:
 
 private:
 	Shader* shader;
+
 	Model* model;
 
 	vector<Transform*> transforms;
@@ -37,10 +38,10 @@ private:
 
 	Color colors[MAX_MODEL_INSTANCE];
 	VertexBuffer* instanceColorBuffer;
-
+	
 	Matrix boneTransforms[MAX_MODEL_INSTANCE][MAX_MODEL_TRANSFORMS];
-
 	ID3D11Texture2D* texture = nullptr;
 	ID3D11ShaderResourceView* transformSRV;
 	ID3DX11EffectShaderResourceVariable* sTransformSRV;
+
 };
