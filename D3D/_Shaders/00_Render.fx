@@ -97,6 +97,7 @@ MeshOutput VS_Model(VertexModel input)
 //Animation(Skeletal - Kachujin)
 //-----------------------------------------------------------------------------
 #define MAX_MODEL_KEYFRAMES 500
+#define MAX_MODEL_INSTANCE 500
 
 struct AnimationFrame
 {
@@ -126,7 +127,7 @@ struct TweenFrame
 
 cbuffer CB_AnimationFrames
 {
-    TweenFrame TweenFrames;
+    TweenFrame TweenFrames[MAX_MODEL_INSTANCE];
 };
 
 
@@ -139,15 +140,15 @@ void SetAnimationWorld(inout matrix world, VertexModel input)
     int currFrame[2], nextFrame[2];
     float time[2];
 
-    clip[0] = TweenFrames.Curr.Clip;
-    currFrame[0] = TweenFrames.Curr.CurrFrame;
-    nextFrame[0] = TweenFrames.Curr.NextFrame;
-    time[0] = TweenFrames.Curr.Time;
+    clip[0] = TweenFrames[input.InstanceID].Curr.Clip;
+    currFrame[0] = TweenFrames[input.InstanceID].Curr.CurrFrame;
+    nextFrame[0] = TweenFrames[input.InstanceID].Curr.NextFrame;
+    time[0] = TweenFrames[input.InstanceID].Curr.Time;
 
-    clip[1] = TweenFrames.Next.Clip;
-    currFrame[1] = TweenFrames.Next.CurrFrame;
-    nextFrame[1] = TweenFrames.Next.NextFrame;
-    time[1] = TweenFrames.Next.Time;
+    clip[1] = TweenFrames[input.InstanceID].Next.Clip;
+    currFrame[1] = TweenFrames[input.InstanceID].Next.CurrFrame;
+    nextFrame[1] = TweenFrames[input.InstanceID].Next.NextFrame;
+    time[1] = TweenFrames[input.InstanceID].Next.Time;
 
     float4 c0, c1, c2, c3;
     float4 n0, n1, n2, n3;
@@ -190,7 +191,7 @@ void SetAnimationWorld(inout matrix world, VertexModel input)
 
             nextAnim = lerp(curr, next, time[1]);
 
-            currAnim = lerp(currAnim, nextAnim, TweenFrames.TweenTime);
+            currAnim = lerp(currAnim, nextAnim, TweenFrames[input.InstanceID].TweenTime);
         }
 
         transform += mul(weights[i], currAnim);
@@ -211,7 +212,7 @@ struct BlendFrame
 
 cbuffer CB_BlendFrames
 {
-    BlendFrame BlendFrames;
+    BlendFrame BlendFrames[MAX_MODEL_INSTANCE];
 }
 
 void SetBlendWorld(inout matrix world, VertexModel input)
@@ -234,22 +235,22 @@ void SetBlendWorld(inout matrix world, VertexModel input)
         [unroll(3)]
         for (int k = 0; k < 3; k++)
         {
-            c0 = TransformMap.Load(int4(indices[i] * 4 + 0, BlendFrames.Clips[k].CurrFrame, BlendFrames.Clips[k].Clip, 0));
-            c1 = TransformMap.Load(int4(indices[i] * 4 + 1, BlendFrames.Clips[k].CurrFrame, BlendFrames.Clips[k].Clip, 0));
-            c2 = TransformMap.Load(int4(indices[i] * 4 + 2, BlendFrames.Clips[k].CurrFrame, BlendFrames.Clips[k].Clip, 0));
-            c3 = TransformMap.Load(int4(indices[i] * 4 + 3, BlendFrames.Clips[k].CurrFrame, BlendFrames.Clips[k].Clip, 0));
+            c0 = TransformMap.Load(int4(indices[i] * 4 + 0, BlendFrames[input.InstanceID].Clips[k].CurrFrame, BlendFrames[input.InstanceID].Clips[k].Clip, 0));
+            c1 = TransformMap.Load(int4(indices[i] * 4 + 1, BlendFrames[input.InstanceID].Clips[k].CurrFrame, BlendFrames[input.InstanceID].Clips[k].Clip, 0));
+            c2 = TransformMap.Load(int4(indices[i] * 4 + 2, BlendFrames[input.InstanceID].Clips[k].CurrFrame, BlendFrames[input.InstanceID].Clips[k].Clip, 0));
+            c3 = TransformMap.Load(int4(indices[i] * 4 + 3, BlendFrames[input.InstanceID].Clips[k].CurrFrame, BlendFrames[input.InstanceID].Clips[k].Clip, 0));
             curr = matrix(c0, c1, c2, c3);
 
-            n0 = TransformMap.Load(int4(indices[i] * 4 + 0, BlendFrames.Clips[k].NextFrame, BlendFrames.Clips[k].Clip, 0));;
-            n1 = TransformMap.Load(int4(indices[i] * 4 + 1, BlendFrames.Clips[k].NextFrame, BlendFrames.Clips[k].Clip, 0));;
-            n2 = TransformMap.Load(int4(indices[i] * 4 + 2, BlendFrames.Clips[k].NextFrame, BlendFrames.Clips[k].Clip, 0));;
-            n3 = TransformMap.Load(int4(indices[i] * 4 + 3, BlendFrames.Clips[k].NextFrame, BlendFrames.Clips[k].Clip, 0));;
+            n0 = TransformMap.Load(int4(indices[i] * 4 + 0, BlendFrames[input.InstanceID].Clips[k].NextFrame, BlendFrames[input.InstanceID].Clips[k].Clip, 0));;
+            n1 = TransformMap.Load(int4(indices[i] * 4 + 1, BlendFrames[input.InstanceID].Clips[k].NextFrame, BlendFrames[input.InstanceID].Clips[k].Clip, 0));;
+            n2 = TransformMap.Load(int4(indices[i] * 4 + 2, BlendFrames[input.InstanceID].Clips[k].NextFrame, BlendFrames[input.InstanceID].Clips[k].Clip, 0));;
+            n3 = TransformMap.Load(int4(indices[i] * 4 + 3, BlendFrames[input.InstanceID].Clips[k].NextFrame, BlendFrames[input.InstanceID].Clips[k].Clip, 0));;
             next = matrix(n0, n1, n2, n3);
 
-            currAnim[k] = lerp(curr, next, BlendFrames.Clips[k].Time);
+            currAnim[k] = lerp(curr, next, BlendFrames[input.InstanceID].Clips[k].Time);
         }
 
-        float alpha = BlendFrames.Alpha;
+        float alpha = BlendFrames[input.InstanceID].Alpha;
         int clipIndex[2] = { 0, 1 };
         
         if (alpha > 1)
@@ -272,7 +273,9 @@ MeshOutput VS_Animation(VertexModel input)
 {
     MeshOutput output;
 
-    if (BlendFrames.Mode == 0)
+    World = input.Transform;
+
+    if (BlendFrames[input.InstanceID].Mode == 0)
         SetAnimationWorld(World, input);
     else
         SetBlendWorld(World, input);

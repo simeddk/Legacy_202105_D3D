@@ -48,7 +48,7 @@ void ModelRender::Render()
 
 	for (ModelMesh* mesh : model->Meshes())
 	{
-		mesh->Render(TransformCount()); //TODO 드로카운트를 까먹음
+		mesh->Render(TransformCount());
 	}
 }
 

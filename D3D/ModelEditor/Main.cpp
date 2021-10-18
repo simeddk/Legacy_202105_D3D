@@ -11,8 +11,8 @@ void Main::Initialize()
 {
 	Push(new ExportFile());
 	Push(new ModelDemo());
-	//Push(new AnimationDemo());
 	Push(new MeshDemo());
+	Push(new AnimationDemo());
 }
 
 

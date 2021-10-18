@@ -10,7 +10,7 @@ float4 PS(MeshOutput input) : SV_Target
     float lambert = dot(normal, -LightDirection);
    
     float4 diffuse = DiffuseMap.Sample(LinearSampler, input.Uv);
-    return diffuse * lambert;
+    return diffuse * lambert + input.Color;
 }
 
 technique11 T0

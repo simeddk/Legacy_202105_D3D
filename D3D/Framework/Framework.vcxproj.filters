@@ -11,9 +11,6 @@
     <ClCompile Include="Renders\Texture.cpp">
       <Filter>Renders</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\D3D.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Systems\Gui.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -126,6 +123,9 @@
     <ClCompile Include="Meshes\MeshRender.cpp">
       <Filter>Meshes</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\D3D.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -137,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="Renders\Texture.h">
       <Filter>Renders</Filter>
-    </ClInclude>
-    <ClInclude Include="Systems\D3D.h">
-      <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Systems\Gui.h">
       <Filter>Systems</Filter>
@@ -258,6 +255,9 @@
     </ClInclude>
     <ClInclude Include="Meshes\MeshRender.h">
       <Filter>Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\D3D.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

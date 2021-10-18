@@ -5,22 +5,52 @@ ModelAnimator::ModelAnimator(Shader * shader)
 	: shader(shader)
 {
 	model = new Model();
-	transform = new Transform(shader);
+	instanceBuffer = new VertexBuffer(worlds, MAX_MODEL_INSTANCE, sizeof(Matrix), 1, true);
+	instanceColorBuffer = new VertexBuffer(colors, MAX_MODEL_INSTANCE, sizeof(Color), 2, true);
 
-	frameBuffer = new ConstantBuffer(&tweenDesc, sizeof(TweenDesc));
-	blendBuffer = new ConstantBuffer(&blendDesc, sizeof(BlendDesc));
+	frameBuffer = new ConstantBuffer(&tweenDesc, sizeof(TweenDesc) * MAX_MODEL_INSTANCE);
+	blendBuffer = new ConstantBuffer(&blendDesc, sizeof(BlendDesc) * MAX_MODEL_INSTANCE);
+
+	sTransformSRV = shader->AsSRV("TransformMap");
+
+	sFrameBuffer = shader->AsConstantBuffer("CB_AnimationFrames");
+	sBlendBuffer = shader->AsConstantBuffer("CB_BlendFrames");
 
 	//Create ComputeShader
 	{
-		computeShader = new Shader(L"16_GetBones.fxo");
+		computeShader = new Shader(L"20_GetBones.fxo");
 
 		sComputeWorld = computeShader->AsMatrix("World");
+
 		sComputeFrameBuffer = computeShader->AsConstantBuffer("CB_AnimationFrames");
 		sComputeBlendBuffer = computeShader->AsConstantBuffer("CB_BlendingFrames");
 		sComputeTransformSRV = computeShader->AsSRV("TransformMap");
-		computeBoneBuffer = new StructuredBuffer(nullptr, sizeof(Matrix), MAX_MODEL_TRANSFORMS, sizeof(Matrix), MAX_MODEL_TRANSFORMS);
+
+		computeBoneBuffer = new StructuredBuffer(nullptr, sizeof(Matrix), MAX_MODEL_TRANSFORMS);
 		sComputeInputBoneBuffer = computeShader->AsSRV("InputBones");
-		sComputeOutputBoneBuffer = computeShader->AsUAV("OutputBones");
+
+		computeWorldBuffer = new StructuredBuffer(nullptr, sizeof(Matrix), MAX_MODEL_INSTANCE);
+		sComputeInputWorldBuffer = computeShader->AsSRV("InputWorlds");
+
+		ID3D11Texture2D* texture;
+		D3D11_TEXTURE2D_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
+		desc.Width = MAX_MODEL_TRANSFORMS * 4;
+		desc.Height = MAX_MODEL_INSTANCE;
+		desc.ArraySize = 1;
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		desc.MipLevels = 1;
+		desc.SampleDesc.Count = 1;
+		Check(D3D::GetDevice()->CreateTexture2D(&desc, nullptr, &texture));
+
+		computeOutputBuffer = new TextureBuffer(texture);
+		sComputeOutputBuffer = computeShader->AsUAV("Output");
+
+		SafeRelease(texture); //TODO 부활
+
+		attachBones = new Matrix*[MAX_MODEL_INSTANCE];
+		for (UINT i = 0; i < MAX_MODEL_INSTANCE; i++)
+			attachBones[i] = new Matrix[MAX_MODEL_TRANSFORMS];
 	}
 	 
 }
@@ -28,10 +58,15 @@ ModelAnimator::ModelAnimator(Shader * shader)
 ModelAnimator::~ModelAnimator()
 {
 	SafeDelete(model);
-	SafeDelete(transform);
 
-	SafeDeleteArray(clipTransforms);
+	for (Transform* transform : transforms)
+		SafeDelete(transform);
+
+	SafeDelete(instanceBuffer);
+	SafeDelete(instanceColorBuffer);
+
 	SafeRelease(texture);
+	SafeDeleteArray(clipTransforms);
 	SafeRelease(transformSRV);
 
 	SafeDelete(frameBuffer);
@@ -39,13 +74,21 @@ ModelAnimator::~ModelAnimator()
 
 	SafeDelete(computeShader);
 	SafeDelete(computeBoneBuffer);
+	SafeDelete(computeWorldBuffer);
+	SafeDelete(computeOutputBuffer);
+
+	for (UINT i = 0; i < MAX_MODEL_INSTANCE; i++)
+		SafeDeleteArray(attachBones[i]);
+	SafeDeleteArray(attachBones);
 }
 
 void ModelAnimator::Update()
 {
 	if (texture == nullptr)
 	{
-		SetShader(shader, true);
+		for (ModelMesh* mesh : model->Meshes())
+			mesh->SetShader(shader);
+
 		CreateTexture();
 
 		Matrix bones[MAX_MODEL_TRANSFORMS];
@@ -55,10 +98,13 @@ void ModelAnimator::Update()
 		computeBoneBuffer->CopyToInput(bones);
 	}
 
-	if (blendDesc.Mode == 0)
-		UpdateAnimationFrame();
-	else
-		UpdateBledningFrame();
+	for (UINT i = 0; i < transforms.size(); i++)
+	{
+		if (blendDesc[i].Mode == 0)
+			UpdateAnimationFrame(i);
+		else
+			UpdateBlendFrame(i);
+	}
 
 	frameBuffer->Render();
 	blendBuffer->Render();
@@ -66,16 +112,28 @@ void ModelAnimator::Update()
 	frameTime += Time::Delta();
 	if (frameTime > (1.0f / frameRate))
 	{
-		sComputeWorld->SetMatrix(transform->World());
-
 		sComputeFrameBuffer->SetConstantBuffer(frameBuffer->Buffer());
 		sComputeBlendBuffer->SetConstantBuffer(blendBuffer->Buffer());
 		sComputeTransformSRV->SetResource(transformSRV);
 
 		sComputeInputBoneBuffer->SetResource(computeBoneBuffer->SRV());
-		sComputeOutputBoneBuffer->SetUnorderedAccessView(computeBoneBuffer->UAV());
+		sComputeInputWorldBuffer->SetResource(computeWorldBuffer->SRV());
+		sComputeOutputBuffer->SetUnorderedAccessView(computeOutputBuffer->UAV());
 
-		computeShader->Dispatch(0, 0, 1, 1, 1);
+		computeShader->Dispatch(0, 0, 1, MAX_MODEL_INSTANCE, 1);
+
+		ID3D11Texture2D* texture = computeOutputBuffer->CopyFromOutput();
+		D3D11_MAPPED_SUBRESOURCE subResource;
+		D3D::GetDC()->Map(texture, 0, D3D11_MAP_READ, 0, &subResource);
+		{
+			for (UINT i = 0; i < transforms.size(); i++)
+			{
+				BYTE* start = (BYTE*)subResource.pData + (i * subResource.RowPitch);
+
+				memcpy(attachBones[i], start, sizeof(Matrix) * MAX_MODEL_TRANSFORMS);
+			}
+		}
+		D3D::GetDC()->Unmap(texture, 0);
 	}
 	frameTime = fmod(frameTime, (1.0f / frameRate));
 
@@ -85,23 +143,24 @@ void ModelAnimator::Update()
 
 void ModelAnimator::Render()
 {
-	
-	
 	sFrameBuffer->SetConstantBuffer(frameBuffer->Buffer());
 	sBlendBuffer->SetConstantBuffer(blendBuffer->Buffer());
 	
 	sTransformSRV->SetResource(transformSRV);
 
+	instanceBuffer->Render();
+	instanceColorBuffer->Render();
+
 	for (ModelMesh* mesh : model->Meshes())
 	{
-		mesh->SetTransform(transform);
-		mesh->Render();
+		mesh->Render(transforms.size());
 	}
 }
 
-void ModelAnimator::UpdateAnimationFrame()
+
+void ModelAnimator::UpdateAnimationFrame(UINT instance)
 {
-	TweenDesc& desc = tweenDesc;
+	TweenDesc& desc = tweenDesc[instance];
 	ModelClip* clip = model->ClipByIndex(desc.Curr.Clip);
 
 	desc.Curr.RunningTime += Time::Delta();
@@ -157,26 +216,25 @@ void ModelAnimator::UpdateAnimationFrame()
 	}
 }
 
-void ModelAnimator::UpdateBledningFrame()
+void ModelAnimator::UpdateBlendFrame(UINT instance)
 {
-	BlendDesc& desc = blendDesc;
+	BlendDesc& desc = blendDesc[instance]; //Todo 14_2. 배열기호로
 
 	for (UINT i = 0; i < 3; i++)
 	{
 		ModelClip* clip = model->ClipByIndex(desc.Clips[i].Clip);
-		
+
 		desc.Clips[i].RunningTime += Time::Delta();
 
 		float time = 1.0f / clip->FrameRate() / desc.Clips[i].Speed;
 
 		if (desc.Clips[i].Time >= 1.0f)
 		{
-			desc.Clips[i].RunningTime = 0.0f;
+			desc.Clips[i].RunningTime = 0;
 
 			desc.Clips[i].CurrFrame = (desc.Clips[i].CurrFrame + 1) % clip->FrameCount();
 			desc.Clips[i].NextFrame = (desc.Clips[i].CurrFrame + 1) % clip->FrameCount();
 		}
-
 		desc.Clips[i].Time = desc.Clips[i].RunningTime / time;
 	}
 
@@ -198,48 +256,28 @@ void ModelAnimator::ReadClip(wstring file)
 	model->ReadClip(file);
 }
 
-void ModelAnimator::PlayTweenMode(UINT clip, float speed, float takeTime)
+void ModelAnimator::PlayTweenMode(UINT instance, UINT clip, float speed, float takeTime)
 {
-	tweenDesc.TakeTime = takeTime;
-	tweenDesc.Next.Clip = clip;
-	tweenDesc.Next.Speed = speed;
+	tweenDesc[instance].TakeTime = takeTime;
+	tweenDesc[instance].Next.Clip = clip;
+	tweenDesc[instance].Next.Speed = speed;
 }
 
-void ModelAnimator::PlayBlendMode(UINT clip1, UINT clip2, UINT clip3)
+void ModelAnimator::PlayBlendMode(UINT instance, UINT clip1, UINT clip2, UINT clip3)
 {
-	blendDesc.Mode = 1;
-
-	blendDesc.Clips[0].Clip = clip1;
-	blendDesc.Clips[1].Clip = clip2;
-	blendDesc.Clips[2].Clip = clip3;
+	blendDesc[instance].Mode = 1;
+	blendDesc[instance].Clips[0].Clip = clip1;
+	blendDesc[instance].Clips[1].Clip = clip2;
+	blendDesc[instance].Clips[2].Clip = clip3;
 }
 
-void ModelAnimator::SetBlendAlpha(float alpha)
+void ModelAnimator::SetBlendAlpha(UINT instance, float alpha)
 {
 	alpha = Math::Clamp<float>(alpha, 0.0f, 2.0f);
 
-	blendDesc.Alpha = alpha;
+	blendDesc[instance].Alpha = alpha;
 }
 
-void ModelAnimator::SetShader(Shader * shader, bool bFirst)
-{
-	this->shader = shader;
-
-	if (bFirst == false)
-	{
-		SafeDelete(transform);
-		transform = new Transform(shader);
-	}
-
-	sTransformSRV = shader->AsSRV("TransformMap");
-
-	sFrameBuffer = shader->AsConstantBuffer("CB_AnimationFrames");
-	sBlendBuffer = shader->AsConstantBuffer("CB_BlendFrames");
-
-	for (ModelMesh* mesh : model->Meshes())
-		mesh->SetShader(shader);
-
-}
 
 void ModelAnimator::Pass(UINT pass)
 {
@@ -247,10 +285,47 @@ void ModelAnimator::Pass(UINT pass)
 		mesh->Pass(pass);
 }
 
-void ModelAnimator::GetAttachBones(Matrix * matrix)
+Transform * ModelAnimator::AddTransform()
 {
-	computeBoneBuffer->CopyFromOutput(matrix);
-	int a = 0;
+	Transform* transform = new Transform();
+	transforms.push_back(transform);
+
+	colors[transforms.size() - 1] = Color(0, 0, 0, 1);
+
+	return transform;
+}
+
+void ModelAnimator::UpdateTransforms()
+{
+	for (UINT i = 0; i < transforms.size(); i++)
+		memcpy(worlds[i], transforms[i]->World(), sizeof(Matrix));
+
+	computeWorldBuffer->CopyToInput(worlds);
+
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	//Instance Transform
+	D3D::GetDC()->Map(instanceBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, worlds, sizeof(Matrix) * MAX_MODEL_INSTANCE);
+	}
+	D3D::GetDC()->Unmap(instanceBuffer->Buffer(), 0);
+
+	//Instance Color
+	D3D::GetDC()->Map(instanceColorBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, colors, sizeof(Color) * MAX_MODEL_INSTANCE);
+	}
+	D3D::GetDC()->Unmap(instanceColorBuffer->Buffer(), 0);
+}
+
+void ModelAnimator::SetColor(UINT instance, Color & color)
+{
+	colors[instance] = color;
+}
+
+void ModelAnimator::GetAttachBones(UINT instance, Matrix * matrix)
+{
+	memcpy(matrix, attachBones[instance], sizeof(Matrix) * MAX_MODEL_TRANSFORMS);
 }
 
 void ModelAnimator::CreateTexture()
