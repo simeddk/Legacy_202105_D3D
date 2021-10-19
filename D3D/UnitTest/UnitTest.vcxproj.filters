@@ -3,167 +3,26 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="VertexLineColorDemo.cpp">
-      <Filter>Vertex</Filter>
+    <ClCompile Include="FrameworkDemo.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="VertexLineDemo.cpp">
-      <Filter>Vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexPrimitiveDemo.cpp">
-      <Filter>Vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexTriangleDemo.cpp">
-      <Filter>Vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexRectDemo.cpp">
-      <Filter>Vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldDemo.cpp">
-      <Filter>Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="World2Demo.cpp">
-      <Filter>Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="IndeBufferDemo.cpp">
-      <Filter>Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="GirdDemo.cpp">
-      <Filter>Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="CubeDemo.cpp">
-      <Filter>Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureSampleDemo.cpp">
-      <Filter>Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureSamplerStateDemo.cpp">
-      <Filter>Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="TerrainDemo.cpp">
-      <Filter>Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="GetHeightDemo.cpp">
-      <Filter>Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshDemo.cpp">
-      <Filter>Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="CubeMapMeshDemo.cpp">
-      <Filter>Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="RawBufferDemo.cpp">
-      <Filter>ComputeShader</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureBufferDemo.cpp">
-      <Filter>ComputeShader</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewportDemo.cpp">
-      <Filter>Viewport</Filter>
-    </ClCompile>
-    <ClCompile Include="ProjectDemo.cpp">
-      <Filter>Viewport</Filter>
-    </ClCompile>
-    <ClCompile Include="UnprojectDemo.cpp">
-      <Filter>Viewport</Filter>
-    </ClCompile>
-    <ClCompile Include="InstanceDemo.cpp">
-      <Filter>Transform</Filter>
+    <ClCompile Include="ObbDemo.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="VertexLineColorDemo.h">
-      <Filter>Vertex</Filter>
+    <ClInclude Include="FrameworkDemo.h">
+      <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="VertexLineDemo.h">
-      <Filter>Vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexPrimitiveDemo.h">
-      <Filter>Vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexTriangleDemo.h">
-      <Filter>Vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexRectDemo.h">
-      <Filter>Vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldDemo.h">
-      <Filter>Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="World2Demo.h">
-      <Filter>Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="IndeBufferDemo.h">
-      <Filter>Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="GirdDemo.h">
-      <Filter>Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeDemo.h">
-      <Filter>Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureSampleDemo.h">
-      <Filter>Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureSamplerStateDemo.h">
-      <Filter>Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="TerrainDemo.h">
-      <Filter>Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="GetHeightDemo.h">
-      <Filter>Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshDemo.h">
-      <Filter>Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeMapMeshDemo.h">
-      <Filter>Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="RawBufferDemo.h">
-      <Filter>ComputeShader</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureBufferDemo.h">
-      <Filter>ComputeShader</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewportDemo.h">
-      <Filter>Viewport</Filter>
-    </ClInclude>
-    <ClInclude Include="ProjectDemo.h">
-      <Filter>Viewport</Filter>
-    </ClInclude>
-    <ClInclude Include="UnprojectDemo.h">
-      <Filter>Viewport</Filter>
-    </ClInclude>
-    <ClInclude Include="InstanceDemo.h">
-      <Filter>Transform</Filter>
+    <ClInclude Include="ObbDemo.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Vertex">
-      <UniqueIdentifier>{a4cf7909-ad1d-42a7-b0b7-aed04ae79a88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Transform">
-      <UniqueIdentifier>{a904a8f3-f5bb-48ef-a1f1-a7a3c8320f86}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Grid">
-      <UniqueIdentifier>{611df50a-c071-4a7f-8d86-b66992303d63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mesh">
-      <UniqueIdentifier>{e054b46b-5865-41e4-a675-3a5297f1829a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Texture">
-      <UniqueIdentifier>{b2353249-feb6-4ce2-9c42-81f962cca884}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Environment">
-      <UniqueIdentifier>{9015c820-45f1-45f5-a7b9-d180ba5e4e33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ComputeShader">
-      <UniqueIdentifier>{801d0a6a-daa6-41ab-ac82-69f17c898855}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Viewport">
-      <UniqueIdentifier>{4dd3fafd-205b-4384-9b23-b86edfbe06d4}</UniqueIdentifier>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{3aea70ad-80e2-4a54-aba4-4957fcff93c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

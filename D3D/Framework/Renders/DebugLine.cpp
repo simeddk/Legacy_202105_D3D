@@ -19,8 +19,6 @@ DebugLine::DebugLine()
 {
 	shader = new Shader(L"00_DebugLine.fxo");
 
-	
-
 	vertices = new VertexLine[MAX_DEBUG_LINE];
 	ZeroMemory(vertices, sizeof(VertexLine) * MAX_DEBUG_LINE);
 
@@ -37,12 +35,16 @@ DebugLine::DebugLine()
 		Check(D3D::GetDevice()->CreateBuffer(&desc, &subResource, &vertexBuffer));
 	}
 
-	D3DXMatrixIdentity(&world);
+	transform = new Transform(shader);
+	perFrame = new PerFrame(shader);
 }
 
 DebugLine::~DebugLine()
 {
 	SafeDelete(shader);
+	SafeDelete(transform);
+	SafeDelete(perFrame);
+
 	SafeDeleteArray(vertices);
 	SafeRelease(vertexBuffer);
 }
@@ -57,9 +59,7 @@ DebugLine * DebugLine::Get()
 
 void DebugLine::Update()
 {
-	shader->AsMatrix("World")->SetMatrix(world);
-	shader->AsMatrix("View")->SetMatrix(Context::Get()->View());
-	shader->AsMatrix("Projection")->SetMatrix(Context::Get()->Projection());
+	perFrame->Update();
 }
 
 void DebugLine::Render()
@@ -73,6 +73,9 @@ void DebugLine::Render()
 	
 	D3D::GetDC()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+	transform->Render();
+	perFrame->Render();
 
 	shader->Draw(0, 0, drawCount);
 

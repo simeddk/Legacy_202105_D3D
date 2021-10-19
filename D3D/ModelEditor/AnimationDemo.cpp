@@ -5,7 +5,7 @@
 void AnimationDemo::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(19, 0, 0);
-	Context::Get()->GetCamera()->Position(0, 5, -8);
+	Context::Get()->GetCamera()->Position(0, 5, -16);
 
 	shader = new Shader(L"19_Surface.fxo");
 

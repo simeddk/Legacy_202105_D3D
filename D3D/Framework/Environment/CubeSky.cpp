@@ -28,12 +28,13 @@ void CubeSky::Update()
 	Vector3 position;
 	Context::Get()->GetCamera()->Position(&position);
 
-	//sphere->GetTransform()->Position(position);
+	sphere->GetTransform(0)->Position(position);
+	sphere->UpdateTransforms();
 	sphere->Update();
 }
 
 void CubeSky::Render()
 {
 	sSrv->SetResource(srv);
-	//sphere->Render();
+	sphere->Render();
 }

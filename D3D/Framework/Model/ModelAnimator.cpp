@@ -23,7 +23,7 @@ ModelAnimator::ModelAnimator(Shader * shader)
 		sComputeWorld = computeShader->AsMatrix("World");
 
 		sComputeFrameBuffer = computeShader->AsConstantBuffer("CB_AnimationFrames");
-		sComputeBlendBuffer = computeShader->AsConstantBuffer("CB_BlendingFrames");
+		sComputeBlendBuffer = computeShader->AsConstantBuffer("CB_BlendFrames");
 		sComputeTransformSRV = computeShader->AsSRV("TransformMap");
 
 		computeBoneBuffer = new StructuredBuffer(nullptr, sizeof(Matrix), MAX_MODEL_TRANSFORMS);
@@ -46,7 +46,6 @@ ModelAnimator::ModelAnimator(Shader * shader)
 		computeOutputBuffer = new TextureBuffer(texture);
 		sComputeOutputBuffer = computeShader->AsUAV("Output");
 
-		SafeRelease(texture); //TODO 부활
 
 		attachBones = new Matrix*[MAX_MODEL_INSTANCE];
 		for (UINT i = 0; i < MAX_MODEL_INSTANCE; i++)
@@ -218,7 +217,7 @@ void ModelAnimator::UpdateAnimationFrame(UINT instance)
 
 void ModelAnimator::UpdateBlendFrame(UINT instance)
 {
-	BlendDesc& desc = blendDesc[instance]; //Todo 14_2. 배열기호로
+	BlendDesc& desc = blendDesc[instance];
 
 	for (UINT i = 0; i < 3; i++)
 	{

@@ -2,31 +2,12 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include "VertexLineDemo.h"
-#include "VertexLineColorDemo.h"
-#include "VertexPrimitiveDemo.h"
-#include "VertexTriangleDemo.h"
-#include "VertexRectDemo.h"
-#include "WorldDemo.h"
-#include "World2Demo.h"
-#include "IndeBufferDemo.h"
-#include "GirdDemo.h"
-#include "CubeDemo.h"
-#include "TextureSampleDemo.h"
-#include "TextureSamplerStateDemo.h"
-#include "GetHeightDemo.h"
-#include "MeshDemo.h"
-#include "CubeMapMeshDemo.h"
-#include "RawBufferDemo.h"
-#include "TextureBufferDemo.h"
-#include "ViewportDemo.h"
-#include "ProjectDemo.h"
-#include "UnprojectDemo.h"
-#include "InstanceDemo.h"
+
+#include "FrameworkDemo.h"
 
 void Main::Initialize()
 {
-	Push(new InstanceDemo());
+	Push(new FrameworkDemo());
 }
 
 

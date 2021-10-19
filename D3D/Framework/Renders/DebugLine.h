@@ -42,11 +42,12 @@ private:
 
 private:
 	Shader* shader;
-	
-	UINT drawCount = 0;
 
+	class Transform* transform;
+	class PerFrame* perFrame;
+	
 	VertexLine* vertices;
 	ID3D11Buffer* vertexBuffer;
 
-	Matrix world;
+	UINT drawCount = 0;
 };
