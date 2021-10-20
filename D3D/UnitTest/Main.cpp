@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "Main.h"
 #include "Systems/Window.h"
-
-
 #include "FrameworkDemo.h"
+#include "ObbDemo.h"
+#include "LightingDemo.h"
 
 void Main::Initialize()
 {
-	Push(new FrameworkDemo());
+	Push(new LightingDemo());
 }
 
 

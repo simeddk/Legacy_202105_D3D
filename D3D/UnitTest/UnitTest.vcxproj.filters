@@ -9,6 +9,9 @@
     <ClCompile Include="ObbDemo.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="LightingDemo.cpp">
+      <Filter>Lighting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -19,10 +22,16 @@
     <ClInclude Include="ObbDemo.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="LightingDemo.h">
+      <Filter>Lighting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Objects">
       <UniqueIdentifier>{3aea70ad-80e2-4a54-aba4-4957fcff93c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lighting">
+      <UniqueIdentifier>{06e528a1-5491-44d4-bd90-64c5b035bc8f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
