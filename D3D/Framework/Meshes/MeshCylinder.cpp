@@ -44,6 +44,7 @@ void MeshCylinder::Create()
 
 
 			Vector3 tangent = Vector3(-s, 0.0f, c);
+			vertex.Tangent = tangent;
 
 			float dr = bottomRadius - topRadius;
 			Vector3 biTangent = Vector3(dr * c, -height, dr * s);
@@ -98,9 +99,9 @@ void MeshCylinder::BuildTopCap(vector<VertexMesh>& vertices, vector<UINT>& indic
 		float u = x / height + 0.5f;
 		float v = z / height + 0.5f;
 
-		vertices.push_back(VertexMesh(x, y, z, u, v, 0, 1, 0));
+		vertices.push_back(VertexMesh(Vector3(x, y, z), Vector2(u, v), Vector3(0, 1, 0), Vector3(-1, 0, 0)));
 	}
-	vertices.push_back(VertexMesh(0, y, 0, 0.5f, 0.5f, 0, 1, 0));
+	vertices.push_back(VertexMesh(Vector3(0, y, 0), Vector2(0.5f, 0.5f), Vector3(0, 1, 0), Vector3(-1, 0, 0)));
 
 
 	UINT baseIndex = vertices.size() - sliceCount - 2;
@@ -127,9 +128,9 @@ void MeshCylinder::BuildBottomCap(vector<VertexMesh>& vertices, vector<UINT>& in
 		float u = x / height + 0.5f;
 		float v = z / height + 0.5f;
 
-		vertices.push_back(VertexMesh(x, y, z, u, v, 0, -1, 0));
+		vertices.push_back(VertexMesh(Vector3(x, y, z), Vector2(u, v), Vector3(0, -1, 0), Vector3(1, 0, 0)));
 	}
-	vertices.push_back(VertexMesh(0, y, 0, 0.5f, 0.5f, 0, -1, 0));
+	vertices.push_back(VertexMesh(Vector3(0, y, 0), Vector2(0.5f, 0.5f), Vector3(0, -1, 0), Vector3(1, 0, 0)));
 
 
 	UINT baseIndex = vertices.size() - sliceCount - 2;

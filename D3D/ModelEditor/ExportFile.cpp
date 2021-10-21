@@ -4,11 +4,11 @@
 
 void ExportFile::Initialize()
 {
-	//Tank();
-	//Kachujin();
-	//Tower();
-	//Airplane();
-	//Weapons();
+	Tank();
+	Kachujin();
+	Tower();
+	Airplane();
+	Weapons();
 }
 
 void ExportFile::Tank()

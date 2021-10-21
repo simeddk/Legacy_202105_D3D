@@ -58,7 +58,6 @@ void Texture(inout float4 color, Texture2D t, float2 uv)
 float3 MaterialToColor(MaterialDesc result)
 {
     return float4(result.Ambient + result.Diffuse + result.Specular + result.Emissive).rgb;
-
 }
 
 //-----------------------------------------------------------------------------
@@ -104,7 +103,31 @@ void ComputeLight(out MaterialDesc output, float3 normal, float3 wPosition)
         float emissive = smoothstep(1.0f - Material.Emissive.a, 1.0f, 1.0f - NdotE);
 
         output.Emissive = Material.Emissive * emissive;
-
     }
+}
 
+void NormalMapping(float2 uv, float3 normal, float3 tangent, SamplerState samp)
+{
+    float3 map = NormalMap.Sample(samp, uv).rgb;
+
+    [flatten]
+    if (any(map.rgb) == false)
+        return;
+
+    float3 pxDirection = map.rgb * 2.0f - 1.0f; //px color -> direction
+
+    float3 N = normalize(normal);
+    float3 T = normalize(tangent - max(dot(tangent, N) * N, 0.0001f));
+    float3 B = cross(N, T);
+
+    float3x3 TBN = float3x3(T, B, N);
+
+    pxDirection = mul(pxDirection, TBN);
+
+    Material.Diffuse *= saturate(dot(pxDirection, -GlobalLight.Direction));
+}
+
+void NormalMapping(float2 uv, float3 normal, float3 tangent)
+{
+    NormalMapping(uv, normal, tangent, LinearSampler);
 }

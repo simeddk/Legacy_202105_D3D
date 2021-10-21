@@ -23,26 +23,30 @@ public:
 		Vector3 Position;
 		Vector2 Uv;
 		Vector3 Normal;
+		Vector3 Tangent;
 
 		VertexMesh()
 		{
 			Position = Vector3(0, 0, 0);
 			Uv = Vector2(0, 0);
-			Normal = Vector3(0, 0, 0);
+			Normal = Vector3(0, 1, 0);
+			Tangent = Vector3(1, 0, 0);
 		}
 
-		VertexMesh(float x, float y, float z, float u, float v, float nx, float ny, float nz)
+		VertexMesh(float x, float y, float z, float u, float v, float nx, float ny, float nz, float tx, float ty, float tz)
 		{
 			Position = Vector3(x, y, z);
 			Uv = Vector2(u, v);
 			Normal = Vector3(nx, ny, nz);
+			Tangent = Vector3(tx, ty, tz);
 		}
 
-		VertexMesh(Vector3 position, Vector2 uv, Vector3 normal)
+		VertexMesh(Vector3 position, Vector2 uv, Vector3 normal, Vector3 tangent)
 		{
 			Position = position;
 			Uv = uv;
 			Normal = normal;
+			Tangent = tangent;
 		}
 	};
 

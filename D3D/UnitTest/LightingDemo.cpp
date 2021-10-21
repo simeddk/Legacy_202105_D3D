@@ -44,8 +44,11 @@ void LightingDemo::Update()
 {
 	ImGui::SliderFloat3("LightDirection", Context::Get()->Direction(), -1, 1);
 
-	//ImGui::ColorEdit3("SpecularColor", wall->Specular());
-	//ImGui::SliderFloat("SpecularAlpha", &wall->Specular().a, 0.1f, 50.0f);
+	//Pass(3);
+	static UINT Mode = 0;
+	ImGui::InputInt("Mode", (int*)&Mode);
+	Mode %= 4;
+	shader->AsScalar("Mode")->SetInt(Mode);
 
 	sky->Update();
 
@@ -64,10 +67,7 @@ void LightingDemo::Update()
 		weapon->GetTransform(i)->World(weaponTransform->World() * worlds[40]);
 	}
 
-	static Color swordColor;
-	ImGui::ColorEdit3("SworldColor", (float*)&swordColor);
-	weapon->SetColor(1, swordColor);
-
+	
 	weapon->UpdateTransforms();
 	weapon->Update();
 
@@ -103,23 +103,29 @@ void LightingDemo::Mesh()
 		floor = new Material(shader);
 		floor->DiffuseMap("Floor.png");
 		floor->Specular(1, 1, 1, 20);
+		floor->NormalMap("Floor_Normal.png");
 		floor->SpecularMap("Floor_Specular.png");
 
 		stone = new Material(shader);
 		stone->DiffuseMap("Stones.png");
 		stone->Specular(1, 1, 1, 20);
+		stone->NormalMap("Stones_Normal.png");
 		stone->SpecularMap("Stones_Specular.png");
+		stone->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 
 		brick = new Material(shader);
 		brick->DiffuseMap("Bricks.png");
 		brick->Specular(1, 1, 1, 20);
+		brick->NormalMap("Bricks_Normal.png");
 		brick->SpecularMap("Bricks_Specular.png");
+		brick->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 
 		wall = new Material(shader);
 		wall->DiffuseMap("Wall.png");
 		wall->Specular(1, 1, 1, 20);
+		wall->NormalMap("Wall_Normal.png");
 		wall->SpecularMap("Wall_Specular.png");
-		wall->Emissive(1, 0, 0, 0.7);
+		wall->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 	}
 
 	//Create Mesh
