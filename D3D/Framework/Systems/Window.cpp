@@ -19,8 +19,11 @@ WPARAM Window::Run(IExecute * main)
 	Time::Get()->Start();
 
 	Gui::Create();
+	Gizmo::Create();
 	Context::Create();
 	DebugLine::Create();
+
+	Lighting::Create();
 
 	mainExecute->Initialize();
 
@@ -44,8 +47,10 @@ WPARAM Window::Run(IExecute * main)
 	}
 	mainExecute->Destroy();
 
+	Lighting::Delete();
 	DebugLine::Delete();
 	Context::Delete();
+	Gizmo::Delete();
 	Gui::Delete();
 	Time::Delete();
 	Mouse::Delete();
@@ -180,15 +185,17 @@ void Window::MainRender()
 {
 	Time::Get()->Update();
 
-	if (ImGui::IsMouseHoveringAnyWindow() == false)
+	if (ImGui::IsAnyItemHovered() == false && ImGui::IsAnyWindowHovered() == false)
 	{
 		Keyboard::Get()->Update();
 		Mouse::Get()->Update();
 	}
 
 	Gui::Get()->Update();
+	Gizmo::Get()->Update();
 	Context::Get()->Update();
 	DebugLine::Get()->Update();
+	Lighting::Get()->Update();
 
 	mainExecute->Update();
 
@@ -207,6 +214,7 @@ void Window::MainRender()
 		mainExecute->PostRender();
 
 		DebugLine::Get()->Render();
+		Gizmo::Get()->Render();
 		Gui::Get()->Render();
 	}
 	D3D::Get()->Present();

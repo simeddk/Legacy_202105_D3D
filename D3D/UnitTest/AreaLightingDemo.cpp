@@ -1,23 +1,28 @@
 #include "stdafx.h"
-#include "FrameworkDemo.h"
+#include "AreaLightingDemo.h"
 
 
-void FrameworkDemo::Initialize()
+void AreaLightingDemo::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(20, 0, 0);
 	Context::Get()->GetCamera()->Position(0, 36, -85);
 	((Freedom*)Context::Get()->GetCamera())->Speed(50, 2);
 	
-	shader = new Shader(L"19_Surface.fxo");
+	shader = new Shader(L"22_AreaLighting.fxo");
 	sky = new CubeSky(L"Environment/Mountain1024.dds");
 
 	Mesh();
 	Airplane();
 	Kachujin();
 	Weapon();
+
+	PointLights();
+	SpotLights();
+
+	//Gizmo::Get()->SetTransform(kachujin->GetTransform(0));
 }
 
-void FrameworkDemo::Destroy()
+void AreaLightingDemo::Destroy()
 {
 	SafeDelete(shader);
 	SafeDelete(sky);
@@ -40,9 +45,52 @@ void FrameworkDemo::Destroy()
 	SafeDelete(weapon);
 }
 
-void FrameworkDemo::Update()
+void AreaLightingDemo::Update()
 {
 	ImGui::SliderFloat3("LightDirection", Lighting::Get()->Direction(), -1, 1);
+
+	ImGui::Separator();
+	{
+		//PointLight
+		{
+			/*static UINT pointIndex = 0;
+			ImGui::InputInt("PointLight Index", (int*)&pointIndex);
+			pointIndex %= Lighting::Get()->PointLightCount();
+
+			Transform* transform = Lighting::Get()->GetPointLightTransform(pointIndex);
+			Gizmo::Get()->SetTransform(transform);
+
+			PointLight& pointLight = Lighting::Get()->GetPointLight(pointIndex);
+			ImGui::ColorEdit3("PointLight Ambient", pointLight.Ambient);
+			ImGui::ColorEdit3("PointLight Diffuse", pointLight.Diffuse);
+			ImGui::ColorEdit3("PointLight Specular", pointLight.Specular);
+			ImGui::ColorEdit3("PointLight Emissive", pointLight.Emissive);
+
+			ImGui::SliderFloat("PointLight Range", &pointLight.Range, 0, 20);
+			ImGui::SliderFloat("PointLight Intensity", &pointLight.Intensity, 0, 1);*/
+		}
+
+		//SpotLight
+		{
+			static UINT spotIndex = 0;
+			ImGui::InputInt("SpotLight Index", (int*)&spotIndex);
+			spotIndex %= Lighting::Get()->SpotLightCount();
+
+			Transform* transform = Lighting::Get()->GetSpotLightTransform(spotIndex);
+			Gizmo::Get()->SetTransform(transform);
+
+			SpotLight& spotLight = Lighting::Get()->GetSpotLight(spotIndex);
+			ImGui::ColorEdit3("SpotLight Ambient", spotLight.Ambient);
+			ImGui::ColorEdit3("SpotLight Diffuse", spotLight.Diffuse);
+			ImGui::ColorEdit3("SpotLight Specular", spotLight.Specular);
+			ImGui::ColorEdit3("SpotLight Emissive", spotLight.Emissive);
+
+			ImGui::SliderFloat3("SpotLight Direction", spotLight.Direction, -1, 1);
+			ImGui::SliderFloat("SpotLight Range", &spotLight.Range, 1, 50);
+			ImGui::SliderFloat("SpotLight Angle", &spotLight.Angle, 1, 90);
+			ImGui::SliderFloat("SpotLight Intensity", &spotLight.Intensity, 0, 1);
+		}
+	}
 
 	sky->Update();
 
@@ -53,6 +101,7 @@ void FrameworkDemo::Update()
 
 	airplane->Update();
 	kachujin->Update();
+	//kachujin->UpdateTransforms();
 
 	Matrix worlds[MAX_MODEL_TRANSFORMS];
 	for (UINT i = 0; i < kachujin->TransformCount(); i++)
@@ -61,12 +110,13 @@ void FrameworkDemo::Update()
 		weapon->GetTransform(i)->World(weaponTransform->World() * worlds[40]);
 	}
 
+	
 	weapon->UpdateTransforms();
 	weapon->Update();
 
 }
 
-void FrameworkDemo::Render()
+void AreaLightingDemo::Render()
 {
 	sky->Render();
 
@@ -89,21 +139,36 @@ void FrameworkDemo::Render()
 	weapon->Render();
 }
 
-void FrameworkDemo::Mesh()
+void AreaLightingDemo::Mesh()
 {
 	//Create Material
 	{
 		floor = new Material(shader);
 		floor->DiffuseMap("Floor.png");
+		floor->Specular(1, 1, 1, 20);
+		floor->NormalMap("Floor_Normal.png");
+		floor->SpecularMap("Floor_Specular.png");
 
 		stone = new Material(shader);
 		stone->DiffuseMap("Stones.png");
+		stone->Specular(1, 1, 1, 20);
+		stone->NormalMap("Stones_Normal.png");
+		stone->SpecularMap("Stones_Specular.png");
+		stone->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 
 		brick = new Material(shader);
 		brick->DiffuseMap("Bricks.png");
+		brick->Specular(1, 1, 1, 20);
+		brick->NormalMap("Bricks_Normal.png");
+		brick->SpecularMap("Bricks_Specular.png");
+		brick->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 
 		wall = new Material(shader);
 		wall->DiffuseMap("Wall.png");
+		wall->Specular(1, 1, 1, 20);
+		wall->NormalMap("Wall_Normal.png");
+		wall->SpecularMap("Wall_Specular.png");
+		wall->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 	}
 
 	//Create Mesh
@@ -152,11 +217,11 @@ void FrameworkDemo::Mesh()
 	meshes.push_back(sphere);
 }
 
-void FrameworkDemo::Airplane()
+void AreaLightingDemo::Airplane()
 {
 	airplane = new ModelRender(shader);
 	airplane->ReadMesh(L"B787/Airplane");
-	airplane->ReadMaterial(L"B787/Airplane");
+	airplane->ReadMaterial(L"B787/Airplane"); //TODO. 노멀맵 머티리얼 변경하기
 	
 	Transform* transform = airplane->AddTransform();
 	transform->Scale(0.004f, 0.004f, 0.004f);
@@ -166,7 +231,7 @@ void FrameworkDemo::Airplane()
 	models.push_back(airplane);
 }
 
-void FrameworkDemo::Kachujin()
+void AreaLightingDemo::Kachujin()
 {
 	kachujin = new ModelAnimator(shader);
 	kachujin->ReadMesh(L"Kachujin/Mesh");
@@ -210,7 +275,7 @@ void FrameworkDemo::Kachujin()
 	animators.push_back(kachujin);
 }
 
-void FrameworkDemo::Weapon()
+void AreaLightingDemo::Weapon()
 {
 	weapon = new ModelRender(shader);
 	weapon->ReadMesh(L"Weapon/Sword");
@@ -230,7 +295,95 @@ void FrameworkDemo::Weapon()
 	weaponTransform->Rotation(0, 0, 1);
 }
 
-void FrameworkDemo::Pass(UINT val)
+void AreaLightingDemo::PointLights()
+{
+	PointLight light;
+	light =
+	{
+		Color(0.0f, 0.0f, 0.0f, 1.0f), //Ambient;
+		Color(0.0f, 0.3f, 1.0f, 1.0f),//Diffuse;
+		Color(0.0f, 0.0f, 0.7f, 1.0f),//Specular;
+		Color(0.0f, 0.0f, 0.7f, 1.0f),//Emissive;
+		Vector3(-30, 10, -30),//Position;
+		15.0f, //Range;
+		0.9f //Intensity;
+	};
+	Lighting::Get()->AddPointLight(light);
+
+	light =
+	{
+		Color(0.0f, 0.0f, 0.0f, 1.0f), //Ambient;
+		Color(1.0f, 0.0f, 0.0f, 1.0f),//Diffuse;
+		Color(0.6f, 0.2f, 0.0f, 1.0f),//Specular;
+		Color(0.6f, 0.3f, 0.0f, 1.0f),//Emissive;
+		Vector3(15, 10, -30),//Position;
+		10.0f, //Range;
+		1.0f //Intensity;
+	};
+	Lighting::Get()->AddPointLight(light);
+
+	light =
+	{
+		Color(0.0f, 0.0f, 0.0f, 1.0f), //Ambient;
+		Color(0.0f, 1.0f, 0.0f, 1.0f),//Diffuse;
+		Color(0.0f, 0.7f, 0.0f, 1.0f),//Specular;
+		Color(0.0f, 0.7f, 0.0f, 1.0f),//Emissive;
+		Vector3(-5, 1, -17.0f),//Position;
+		5.0f, //Range;
+		0.9f //Intensity;
+	};
+	Lighting::Get()->AddPointLight(light);
+
+	light =
+	{
+		Color(0.0f, 0.0f, 0.0f, 1.0f), //Ambient;
+		Color(0.0f, 0.0f, 1.0f, 1.0f),//Diffuse;
+		Color(0.0f, 0.0f, 0.7f, 1.0f),//Specular;
+		Color(0.0f, 0.0f, 0.7f, 1.0f),//Emissive;
+		Vector3(-10, 1, -17.0f),//Position;
+		5.0f, //Range;
+		0.9f //Intensity;
+	};
+	Lighting::Get()->AddPointLight(light);
+}
+
+void AreaLightingDemo::SpotLights()
+{
+	SpotLight light;
+	light =
+	{
+		Color(0.3f, 1.0f, 0.0f, 1.0f), //Ambient
+		Color(0.7f, 1.0f, 0.0f, 1.0f), //Diffuse
+		Color(0.3f, 1.0f, 0.0f, 1.0f), //Specular
+		Color(0.3f, 1.0f, 0.0f, 1.0f), //Emissive
+		Vector3(-15, 20, -30), //Position
+		25.0f, //Range
+		Vector3(0, -1, 0), //Direction
+		30.0f, //Angle
+		0.9f //Intensity
+	};
+	Lighting::Get()->AddSpotLight(light);
+
+
+	light =
+	{
+		Color(1.0f, 0.2f, 0.9f, 1.0f), //Ambient
+		Color(1.0f, 0.2f, 0.9f, 1.0f), //Diffuse
+		Color(1.0f, 0.2f, 0.9f, 1.0f), //Specular
+		Color(1.0f, 0.2f, 0.9f, 1.0f), //Emissive
+		Vector3(0, 20, -30), //Position
+		30.0f, //Range
+		Vector3(0, -1, 0), //Direction
+		40.0f, //Angle
+		0.9f //Intensity
+	};
+	Lighting::Get()->AddSpotLight(light);
+
+
+
+}
+
+void AreaLightingDemo::Pass(UINT val)
 {
 	for (MeshRender* mesh : meshes)
 		mesh->Pass(val);

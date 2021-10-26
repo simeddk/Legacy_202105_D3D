@@ -1,23 +1,30 @@
 #include "stdafx.h"
-#include "FrameworkDemo.h"
+#include "BillbaordDemo.h"
 
 
-void FrameworkDemo::Initialize()
+void BillbaordDemo::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(20, 0, 0);
 	Context::Get()->GetCamera()->Position(0, 36, -85);
 	((Freedom*)Context::Get()->GetCamera())->Speed(50, 2);
 	
-	shader = new Shader(L"19_Surface.fxo");
+	shader = new Shader(L"22_AreaLighting.fxo");
 	sky = new CubeSky(L"Environment/Mountain1024.dds");
 
 	Mesh();
 	Airplane();
 	Kachujin();
 	Weapon();
+
+	PointLights();
+	SpotLights();
+
+	Billboards();
+
+	//Gizmo::Get()->SetTransform(kachujin->GetTransform(0));
 }
 
-void FrameworkDemo::Destroy()
+void BillbaordDemo::Destroy()
 {
 	SafeDelete(shader);
 	SafeDelete(sky);
@@ -38,9 +45,12 @@ void FrameworkDemo::Destroy()
 	SafeDelete(airplane);
 	SafeDelete(kachujin);
 	SafeDelete(weapon);
+
+	//Billboard
+	SafeDelete(billboard);
 }
 
-void FrameworkDemo::Update()
+void BillbaordDemo::Update()
 {
 	ImGui::SliderFloat3("LightDirection", Lighting::Get()->Direction(), -1, 1);
 
@@ -60,13 +70,15 @@ void FrameworkDemo::Update()
 		kachujin->GetAttachBones(i, worlds);
 		weapon->GetTransform(i)->World(weaponTransform->World() * worlds[40]);
 	}
-
+	
 	weapon->UpdateTransforms();
 	weapon->Update();
 
+	billboard->Update();
+
 }
 
-void FrameworkDemo::Render()
+void BillbaordDemo::Render()
 {
 	sky->Render();
 
@@ -87,23 +99,40 @@ void FrameworkDemo::Render()
 	airplane->Render();
 	kachujin->Render();
 	weapon->Render();
+
+	billboard->Render();
 }
 
-void FrameworkDemo::Mesh()
+void BillbaordDemo::Mesh()
 {
 	//Create Material
 	{
 		floor = new Material(shader);
 		floor->DiffuseMap("Floor.png");
+		floor->Specular(1, 1, 1, 20);
+		floor->NormalMap("Floor_Normal.png");
+		floor->SpecularMap("Floor_Specular.png");
 
 		stone = new Material(shader);
 		stone->DiffuseMap("Stones.png");
+		stone->Specular(1, 1, 1, 20);
+		stone->NormalMap("Stones_Normal.png");
+		stone->SpecularMap("Stones_Specular.png");
+		stone->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 
 		brick = new Material(shader);
 		brick->DiffuseMap("Bricks.png");
+		brick->Specular(1, 1, 1, 20);
+		brick->NormalMap("Bricks_Normal.png");
+		brick->SpecularMap("Bricks_Specular.png");
+		brick->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 
 		wall = new Material(shader);
 		wall->DiffuseMap("Wall.png");
+		wall->Specular(1, 1, 1, 20);
+		wall->NormalMap("Wall_Normal.png");
+		wall->SpecularMap("Wall_Specular.png");
+		wall->Emissive(0.15f, 0.15f, 0.15f, 0.3f);
 	}
 
 	//Create Mesh
@@ -152,11 +181,11 @@ void FrameworkDemo::Mesh()
 	meshes.push_back(sphere);
 }
 
-void FrameworkDemo::Airplane()
+void BillbaordDemo::Airplane()
 {
 	airplane = new ModelRender(shader);
 	airplane->ReadMesh(L"B787/Airplane");
-	airplane->ReadMaterial(L"B787/Airplane");
+	airplane->ReadMaterial(L"B787/Airplane"); //TODO. 노멀맵 머티리얼 변경하기
 	
 	Transform* transform = airplane->AddTransform();
 	transform->Scale(0.004f, 0.004f, 0.004f);
@@ -166,7 +195,7 @@ void FrameworkDemo::Airplane()
 	models.push_back(airplane);
 }
 
-void FrameworkDemo::Kachujin()
+void BillbaordDemo::Kachujin()
 {
 	kachujin = new ModelAnimator(shader);
 	kachujin->ReadMesh(L"Kachujin/Mesh");
@@ -210,7 +239,7 @@ void FrameworkDemo::Kachujin()
 	animators.push_back(kachujin);
 }
 
-void FrameworkDemo::Weapon()
+void BillbaordDemo::Weapon()
 {
 	weapon = new ModelRender(shader);
 	weapon->ReadMesh(L"Weapon/Sword");
@@ -230,7 +259,107 @@ void FrameworkDemo::Weapon()
 	weaponTransform->Rotation(0, 0, 1);
 }
 
-void FrameworkDemo::Pass(UINT val)
+void BillbaordDemo::PointLights()
+{
+	PointLight light;
+	light =
+	{
+		Color(0.0f, 0.0f, 0.0f, 1.0f), //Ambient;
+		Color(0.0f, 0.3f, 1.0f, 1.0f),//Diffuse;
+		Color(0.0f, 0.0f, 0.7f, 1.0f),//Specular;
+		Color(0.0f, 0.0f, 0.7f, 1.0f),//Emissive;
+		Vector3(-30, 10, -30),//Position;
+		15.0f, //Range;
+		0.9f //Intensity;
+	};
+	Lighting::Get()->AddPointLight(light);
+
+	light =
+	{
+		Color(0.0f, 0.0f, 0.0f, 1.0f), //Ambient;
+		Color(1.0f, 0.0f, 0.0f, 1.0f),//Diffuse;
+		Color(0.6f, 0.2f, 0.0f, 1.0f),//Specular;
+		Color(0.6f, 0.3f, 0.0f, 1.0f),//Emissive;
+		Vector3(15, 10, -30),//Position;
+		10.0f, //Range;
+		1.0f //Intensity;
+	};
+	Lighting::Get()->AddPointLight(light);
+
+	light =
+	{
+		Color(0.0f, 0.0f, 0.0f, 1.0f), //Ambient;
+		Color(0.0f, 1.0f, 0.0f, 1.0f),//Diffuse;
+		Color(0.0f, 0.7f, 0.0f, 1.0f),//Specular;
+		Color(0.0f, 0.7f, 0.0f, 1.0f),//Emissive;
+		Vector3(-5, 1, -17.0f),//Position;
+		5.0f, //Range;
+		0.9f //Intensity;
+	};
+	Lighting::Get()->AddPointLight(light);
+
+	light =
+	{
+		Color(0.0f, 0.0f, 0.0f, 1.0f), //Ambient;
+		Color(0.0f, 0.0f, 1.0f, 1.0f),//Diffuse;
+		Color(0.0f, 0.0f, 0.7f, 1.0f),//Specular;
+		Color(0.0f, 0.0f, 0.7f, 1.0f),//Emissive;
+		Vector3(-10, 1, -17.0f),//Position;
+		5.0f, //Range;
+		0.9f //Intensity;
+	};
+	Lighting::Get()->AddPointLight(light);
+}
+
+void BillbaordDemo::SpotLights()
+{
+	SpotLight light;
+	light =
+	{
+		Color(0.3f, 1.0f, 0.0f, 1.0f), //Ambient
+		Color(0.7f, 1.0f, 0.0f, 1.0f), //Diffuse
+		Color(0.3f, 1.0f, 0.0f, 1.0f), //Specular
+		Color(0.3f, 1.0f, 0.0f, 1.0f), //Emissive
+		Vector3(-15, 20, -30), //Position
+		25.0f, //Range
+		Vector3(0, -1, 0), //Direction
+		30.0f, //Angle
+		0.9f //Intensity
+	};
+	Lighting::Get()->AddSpotLight(light);
+
+
+	light =
+	{
+		Color(1.0f, 0.2f, 0.9f, 1.0f), //Ambient
+		Color(1.0f, 0.2f, 0.9f, 1.0f), //Diffuse
+		Color(1.0f, 0.2f, 0.9f, 1.0f), //Specular
+		Color(1.0f, 0.2f, 0.9f, 1.0f), //Emissive
+		Vector3(0, 20, -30), //Position
+		30.0f, //Range
+		Vector3(0, -1, 0), //Direction
+		40.0f, //Angle
+		0.9f //Intensity
+	};
+	Lighting::Get()->AddSpotLight(light);
+
+
+
+}
+
+void BillbaordDemo::Billboards()
+{
+	billboard = new Billboard(L"Terrain/grass_14.tga");
+	for (UINT i = 0; i < 2400; i++)
+	{
+		Vector2 position = Math::RandomVec2(-60, 60);
+		Vector2 scale = Math::RandomVec2(5, 10);
+
+		billboard->Add(Vector3(position.x, scale.y * 0.5f, position.y), scale);
+	}
+}
+
+void BillbaordDemo::Pass(UINT val)
 {
 	for (MeshRender* mesh : meshes)
 		mesh->Pass(val);

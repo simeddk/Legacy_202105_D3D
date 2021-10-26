@@ -22,7 +22,7 @@ Gui * Gui::Get()
 
 LRESULT Gui::MsgProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	return ImGui_ImplWin32_Proc(handle, message, wParam, lParam);
+	return ImGui_ImplWin32_WndProcHandler(handle, message, wParam, lParam);
 }
 
 void Gui::Resize()
@@ -40,9 +40,9 @@ void Gui::Update()
 
 void Gui::Render()
 {
-	ImGuiViewport* viewport = ImGui::GetMainViewport();
-	ImGui::SetNextWindowPos(viewport->Pos);
-	ImGui::SetNextWindowSize(viewport->Size);
+	Viewport* vp = Context::Get()->GetViewport();
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImVec2(vp->GetWidth(), vp->GetHeight()));
 	ImGui::SetNextWindowBgAlpha(0.0f);
 
 	ImGui::Begin
@@ -58,7 +58,6 @@ void Gui::Render()
 		ImGuiWindowFlags_NoInputs |
 		ImGuiWindowFlags_NoFocusOnAppearing |
 		ImGuiWindowFlags_NoBringToFrontOnFocus |
-		ImGuiWindowFlags_NoDocking |
 		ImGuiWindowFlags_NoNavFocus
 	);
 
@@ -75,13 +74,7 @@ void Gui::Render()
 
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-	ImGuiIO& io = ImGui::GetIO();
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-	}
+	
 }
 
 void Gui::RenderText(GuiText & text)

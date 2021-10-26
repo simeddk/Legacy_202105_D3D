@@ -12,6 +12,15 @@
     <ClCompile Include="LightingDemo.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="AreaLightingDemo.cpp">
+      <Filter>Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="BillbaordDemo.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="WeatherDemo.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -25,6 +34,15 @@
     <ClInclude Include="LightingDemo.h">
       <Filter>Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="AreaLightingDemo.h">
+      <Filter>Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="BillbaordDemo.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="WeatherDemo.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Objects">
@@ -32,6 +50,9 @@
     </Filter>
     <Filter Include="Lighting">
       <UniqueIdentifier>{06e528a1-5491-44d4-bd90-64c5b035bc8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment">
+      <UniqueIdentifier>{a0767196-c466-4e45-b488-424cc471e43e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

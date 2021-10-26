@@ -42,7 +42,7 @@ void LightingDemo::Destroy()
 
 void LightingDemo::Update()
 {
-	ImGui::SliderFloat3("LightDirection", Context::Get()->Direction(), -1, 1);
+	ImGui::SliderFloat3("LightDirection", Lighting::Get()->Direction(), -1, 1);
 
 	//Pass(3);
 	static UINT Mode = 0;
@@ -178,7 +178,7 @@ void LightingDemo::Airplane()
 {
 	airplane = new ModelRender(shader);
 	airplane->ReadMesh(L"B787/Airplane");
-	airplane->ReadMaterial(L"B787/Airplane");
+	airplane->ReadMaterial(L"B787/Airplane"); //TODO. 노멀맵 머티리얼 변경하기
 	
 	Transform* transform = airplane->AddTransform();
 	transform->Scale(0.004f, 0.004f, 0.004f);

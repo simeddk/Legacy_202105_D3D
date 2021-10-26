@@ -100,6 +100,20 @@ DepthStencilState DepthEnable_False
     DepthEnable = false;
 };
 
+BlendState AlphaBlend
+{
+    BlendEnable[0] = true;
+    SrcBlend[0] = SRC_ALPHA;
+    DestBlend[0] = INV_SRC_ALPHA;
+    BlendOp[0] = ADD;
+
+    SrcBlendAlpha[0] = ONE;
+    DestBlendAlpha[0] = ZERO;
+    BlendOpAlpha[0] = ADD;
+
+    RenderTargetWriteMask[0] = 0x0F;
+};
+
 //-----------------------------------------------------------------------------
 //VS -> PS
 //-----------------------------------------------------------------------------

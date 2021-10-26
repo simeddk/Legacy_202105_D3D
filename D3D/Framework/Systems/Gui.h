@@ -12,6 +12,8 @@ struct GuiText
 	}
 };
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
+
 class Gui
 {
 public:

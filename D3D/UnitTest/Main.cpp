@@ -4,10 +4,12 @@
 #include "FrameworkDemo.h"
 #include "ObbDemo.h"
 #include "LightingDemo.h"
+#include "AreaLightingDemo.h"
+#include "BillbaordDemo.h"
 
 void Main::Initialize()
 {
-	Push(new LightingDemo());
+	Push(new BillbaordDemo());
 }
 
 

@@ -35,10 +35,11 @@ using namespace std;
 #pragma comment(lib, "Effects11d.lib")
 
 //ImGui
-#include <ImGui_New/imgui.h>
-#include <ImGui_New/imgui_impl_dx11.h>
-#include <ImGui_New/imgui_impl_win32.h>
-#pragma comment(lib, "ImGui_New/imgui.lib")
+#include <ImGui/imgui.h>
+#include <ImGui/imgui_impl_dx11.h>
+#include <ImGui/imgui_impl_win32.h>
+#include <ImGui/ImGuizmo.h>
+#pragma comment(lib, "ImGui/imgui.lib")
 
 //DirectXTex
 #include <DirectXTex.h>
@@ -77,9 +78,11 @@ typedef D3DXPLANE Plane;
 #include "Renders/Shader.h"
 #include "Renders/Texture.h"
 #include "Renders/Context.h"
+#include "Renders/Gizmo.h"
 #include "Renders/DebugLine.h"
 #include "Renders/Buffers.h"
 #include "Renders/Transform.h"
+#include "Renders/Lighting.h"
 #include "Renders/PerFrame.h"
 #include "Renders/Renderer.h"
 #include "Renders/Material.h"
@@ -104,6 +107,8 @@ typedef D3DXPLANE Plane;
 
 #include "Environment/Terrain.h"
 #include "Environment/CubeSky.h"
+#include "Environment/Rain.h"
 
 #include "Objects/Render2D.h"
 #include "Objects/Collider.h"
+#include "Objects/Billboard.h"
