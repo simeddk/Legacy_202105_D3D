@@ -46,4 +46,7 @@ float4 PS(VertexOutput input) : SV_Target
 technique11 T0
 {
     P_BS_VP(P0, AlphaBlend, VS, PS)
+    P_BS_VP(P1, AlphaBlend_AlphaToCoverageEnable, VS, PS)
+    P_BS_VP(P2, AdditiveBlend, VS, PS)
+    P_BS_VP(P3, AdditiveBlend_AlphaToCoverageEnable, VS, PS)
 }

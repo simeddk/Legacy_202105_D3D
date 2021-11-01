@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Environment\CubeSky.cpp" />
     <ClCompile Include="Environment\Rain.cpp" />
+    <ClCompile Include="Environment\Snow.cpp" />
     <ClCompile Include="Environment\Terrain.cpp" />
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -40,6 +41,7 @@
     <ClCompile Include="Objects\Billboard.cpp" />
     <ClCompile Include="Objects\Collider.cpp" />
     <ClCompile Include="Objects\Render2D.cpp" />
+    <ClCompile Include="Particle\Particle.cpp" />
     <ClCompile Include="Renders\Buffers.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
     <ClCompile Include="Renders\DebugLine.cpp" />
@@ -72,6 +74,7 @@
   <ItemGroup>
     <ClInclude Include="Environment\CubeSky.h" />
     <ClInclude Include="Environment\Rain.h" />
+    <ClInclude Include="Environment\Snow.h" />
     <ClInclude Include="Environment\Terrain.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Meshes\Mesh.h" />
@@ -89,6 +92,8 @@
     <ClInclude Include="Objects\Billboard.h" />
     <ClInclude Include="Objects\Collider.h" />
     <ClInclude Include="Objects\Render2D.h" />
+    <ClInclude Include="Particle\Particle.h" />
+    <ClInclude Include="Particle\ParticleData.h" />
     <ClInclude Include="Renders\Buffers.h" />
     <ClInclude Include="Renders\Context.h" />
     <ClInclude Include="Renders\DebugLine.h" />

@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{0C
 		_Shaders\22_AreaLighting.fx = _Shaders\22_AreaLighting.fx
 		_Shaders\23_Billboard.fx = _Shaders\23_Billboard.fx
 		_Shaders\24_Rain.fx = _Shaders\24_Rain.fx
+		_Shaders\25_Snow.fx = _Shaders\25_Snow.fx
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelEditor", "ModelEditor\ModelEditor.vcxproj", "{A35E45E3-53F2-40F9-9A40-E34C3A711691}"

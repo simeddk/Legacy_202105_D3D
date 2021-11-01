@@ -6,10 +6,11 @@
 #include "LightingDemo.h"
 #include "AreaLightingDemo.h"
 #include "BillbaordDemo.h"
+#include "WeatherDemo.h"
 
 void Main::Initialize()
 {
-	Push(new BillbaordDemo());
+	Push(new WeatherDemo());
 }
 
 
