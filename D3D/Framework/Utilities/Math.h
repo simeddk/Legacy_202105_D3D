@@ -18,6 +18,14 @@ public:
 	static D3DXCOLOR RandomColor3();
 	static D3DXCOLOR RandomColor4();
 
+
+	static void LerpMatrix(OUT D3DXMATRIX& out, const D3DXMATRIX& m1, const D3DXMATRIX& m2, float amount);
+
+	static D3DXQUATERNION LookAt(const D3DXVECTOR3& origin, const D3DXVECTOR3& target, const D3DXVECTOR3& up);
+	static float Gaussian(float val, UINT blurCount);
+
+	static void MatrixDecompose(const D3DXMATRIX& m, OUT Vector3& S, OUT Vector3& R, OUT Vector3& T);
+
 	template<typename T>
 	static T Clamp(T value, T min, T max)
 	{
@@ -26,10 +34,10 @@ public:
 		return value;
 	}
 
-	static void LerpMatrix(OUT D3DXMATRIX& out, const D3DXMATRIX& m1, const D3DXMATRIX& m2, float amount);
-
-	static D3DXQUATERNION LookAt(const D3DXVECTOR3& origin, const D3DXVECTOR3& target, const D3DXVECTOR3& up);
-	static float Gaussian(float val, UINT blurCount);
-
-	static void MatrixDecompose(const D3DXMATRIX& m, OUT Vector3& S, OUT Vector3& R, OUT Vector3& T);
+	template<typename T>
+	static T Lerp(T a, T b, T alpha)
+	{
+		//return (1 - alpha) * a + alpha * b;
+		return a + (b - a) * alpha;
+	}
 };

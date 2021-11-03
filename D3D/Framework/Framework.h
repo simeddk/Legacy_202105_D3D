@@ -115,3 +115,4 @@ typedef D3DXPLANE Plane;
 #include "Objects/Billboard.h"
 
 #include "Particle/ParticleData.h"
+#include "Particle/Particle.h"

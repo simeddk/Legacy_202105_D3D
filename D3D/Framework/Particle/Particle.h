@@ -7,12 +7,12 @@ public:
 	~Particle();
 
 	void Reset();
-	void Emit();
+	void Emit(Vector3& position);
 
 	void Update();
 
 private:
-	void MapVertices();
+	void MapVertices(); //Copy To Subresource
 	void Activation();
 	void Deactivation();
 
