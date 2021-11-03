@@ -108,6 +108,8 @@ void Particle::Emit(Vector3& position)
 	leadCount = next;
 }
 
+D3D11_DEPTH_STENCIL_DESC;
+
 void Particle::Update()
 {
 	Super::Update();
@@ -222,7 +224,7 @@ void Particle::Render()
 	
 	sMap->SetResource(map->SRV());
 
-	UINT pass = 0;
+	UINT pass = (UINT)data.Type;
 	if (activeCount != gpuCount)
 	{
 		if (gpuCount > activeCount)

@@ -100,6 +100,14 @@ DepthStencilState DepthEnable_False
     DepthEnable = false;
 };
 
+DepthStencilState PixelDepthEnable_False
+{
+    DepthEnable = true;
+    DepthFunc = LESS_EQUAL;
+    DepthWriteMask = Zero;
+
+};
+
 BlendState AlphaBlend
 {
     BlendEnable[0] = true;
