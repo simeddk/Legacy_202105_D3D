@@ -8,7 +8,7 @@ void BillbaordDemo::Initialize()
 	Context::Get()->GetCamera()->Position(0, 36, -85);
 	((Freedom*)Context::Get()->GetCamera())->Speed(50, 2);
 	
-	shader = new Shader(L"22_AreaLighting.fxo");
+	shader = new Shader(L"27_GeometryBillboard.fxo");
 	sky = new CubeSky(L"Environment/Mountain1024.dds");
 
 	Mesh();
@@ -53,6 +53,10 @@ void BillbaordDemo::Destroy()
 void BillbaordDemo::Update()
 {
 	ImGui::SliderFloat3("LightDirection", Lighting::Get()->Direction(), -1, 1);
+
+	static UINT billPass = billboard->GetShader()->PassCount() - 1;
+	ImGui::SliderInt("Pass", (int*)&billPass, 3, billboard->GetShader()->PassCount() - 1);
+	billboard->Pass(billPass);
 
 	sky->Update();
 
@@ -100,6 +104,7 @@ void BillbaordDemo::Render()
 	kachujin->Render();
 	weapon->Render();
 
+	//billboard->Pass(3);
 	billboard->Render();
 }
 
@@ -349,13 +354,35 @@ void BillbaordDemo::SpotLights()
 
 void BillbaordDemo::Billboards()
 {
-	billboard = new Billboard(L"Terrain/grass_14.tga");
-	for (UINT i = 0; i < 2400; i++)
+	billboard = new Billboard(shader);
+	billboard->Pass(3);
+
+	billboard->AddTexture(L"Terrain/grass_14.tga");
+	billboard->AddTexture(L"Terrain/grass_07.tga");
+	billboard->AddTexture(L"Terrain/grass_11.tga");
+
+	for (UINT i = 0; i < 1200; i++)
 	{
 		Vector2 position = Math::RandomVec2(-60, 60);
-		Vector2 scale = Math::RandomVec2(5, 10);
+		Vector2 scale = Math::RandomVec2(1, 3);
 
-		billboard->Add(Vector3(position.x, scale.y * 0.5f, position.y), scale);
+		billboard->Add(Vector3(position.x, scale.y * 0.5f, position.y), scale, 0);
+	}
+
+	for (UINT i = 0; i < 1200; i++)
+	{
+		Vector2 position = Math::RandomVec2(-60, 60);
+		Vector2 scale = Math::RandomVec2(2, 4);
+
+		billboard->Add(Vector3(position.x, scale.y * 0.5f, position.y), scale, 1);
+	}
+
+	for (UINT i = 0; i < 1200; i++)
+	{
+		Vector2 position = Math::RandomVec2(-60, 60);
+		Vector2 scale = Math::RandomVec2(3, 5);
+
+		billboard->Add(Vector3(position.x, scale.y * 0.5f, position.y), scale, 2);
 	}
 }
 

@@ -321,3 +321,26 @@ void ComputeSpotLight(out MaterialDesc output, float3 normal, float3 wPosition)
 
     } //for(i)
 }
+
+
+float4 PS_Phong(MeshOutput input)
+{
+    NormalMapping(input.Uv, input.Normal, input.Tangent);
+
+    Texture(Material.Diffuse, DiffuseMap, input.Uv);
+    Texture(Material.Specular, SpecularMap, input.Uv);
+
+    MaterialDesc output = (MaterialDesc) 0;
+    MaterialDesc result = (MaterialDesc) 0;
+
+    ComputeLight(output, input.Normal, input.wPosition);
+    AddMaterial(result, output);
+
+    ComputePointLight(output, input.Normal, input.wPosition);
+    AddMaterial(result, output);
+
+    ComputeSpotLight(output, input.Normal, input.wPosition);
+    AddMaterial(result, output);
+    
+    return float4(MaterialToColor(result), 1.0f) + input.Color;
+}

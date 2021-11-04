@@ -299,6 +299,16 @@ pass name \
     SetPixelShader(CompileShader(ps_5_0, ps())); \
 }
 
+#define P_RS_DSS_BS_VGP(name, rs, dss, bs, vs, gs, ps) \
+pass name \
+{ \
+    SetRasterizerState(rs); \
+    SetDepthStencilState(dss, 1); \
+    SetBlendState(bs, float4(0, 0, 0, 0), 0xFF); \
+    SetVertexShader(CompileShader(vs_5_0, vs())); \
+    SetGeometryShader(CompileShader(gs_5_0, gs())); \
+    SetPixelShader(CompileShader(ps_5_0, ps())); \
+}
 
 //-----------------------------------------------------------------------------
 // + TS
