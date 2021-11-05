@@ -40,6 +40,7 @@
     <ClCompile Include="Model\ModelRender.cpp" />
     <ClCompile Include="Objects\Billboard.cpp" />
     <ClCompile Include="Objects\Collider.cpp" />
+    <ClCompile Include="Objects\PostProcess.cpp" />
     <ClCompile Include="Objects\Render2D.cpp" />
     <ClCompile Include="Particle\Particle.cpp" />
     <ClCompile Include="Renders\Buffers.cpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="Utilities\String.cpp" />
     <ClCompile Include="Utilities\Xml.cpp" />
     <ClCompile Include="Viewer\Camera.cpp" />
+    <ClCompile Include="Viewer\DepthStencil.cpp" />
     <ClCompile Include="Viewer\Freedom.cpp" />
     <ClCompile Include="Viewer\Orthographic.cpp" />
     <ClCompile Include="Viewer\Perspective.cpp" />
@@ -92,6 +94,7 @@
     <ClInclude Include="Model\ModelRender.h" />
     <ClInclude Include="Objects\Billboard.h" />
     <ClInclude Include="Objects\Collider.h" />
+    <ClInclude Include="Objects\PostProcess.h" />
     <ClInclude Include="Objects\Render2D.h" />
     <ClInclude Include="Particle\Particle.h" />
     <ClInclude Include="Particle\ParticleData.h" />
@@ -120,6 +123,7 @@
     <ClInclude Include="Utilities\String.h" />
     <ClInclude Include="Utilities\Xml.h" />
     <ClInclude Include="Viewer\Camera.h" />
+    <ClInclude Include="Viewer\DepthStencil.h" />
     <ClInclude Include="Viewer\Freedom.h" />
     <ClInclude Include="Viewer\Orthographic.h" />
     <ClInclude Include="Viewer\Perspective.h" />

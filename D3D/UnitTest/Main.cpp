@@ -7,10 +7,12 @@
 #include "AreaLightingDemo.h"
 #include "BillbaordDemo.h"
 #include "WeatherDemo.h"
+#include "RtvDemo.h"
+#include "PostProcessDemo.h"
 
 void Main::Initialize()
 {
-	Push(new BillbaordDemo());
+	Push(new PostProcessDemo());
 }
 
 

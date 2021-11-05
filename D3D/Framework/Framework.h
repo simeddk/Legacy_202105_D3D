@@ -74,6 +74,8 @@ typedef D3DXPLANE Plane;
 #include "Viewer/Orthographic.h"
 #include "Viewer/Camera.h"
 #include "Viewer/Freedom.h"
+#include "Viewer/RenderTarget.h"
+#include "Viewer/DepthStencil.h"
 
 #include "Renders/Shader.h"
 #include "Renders/Texture.h"
@@ -113,6 +115,7 @@ typedef D3DXPLANE Plane;
 #include "Objects/Render2D.h"
 #include "Objects/Collider.h"
 #include "Objects/Billboard.h"
+#include "Objects/PostProcess.h"
 
 #include "Particle/ParticleData.h"
 #include "Particle/Particle.h"

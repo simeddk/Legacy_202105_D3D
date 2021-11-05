@@ -21,6 +21,12 @@
     <ClCompile Include="WeatherDemo.cpp">
       <Filter>Environment</Filter>
     </ClCompile>
+    <ClCompile Include="RtvDemo.cpp">
+      <Filter>RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessDemo.cpp">
+      <Filter>RenderTarget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -43,6 +49,12 @@
     <ClInclude Include="WeatherDemo.h">
       <Filter>Environment</Filter>
     </ClInclude>
+    <ClInclude Include="RtvDemo.h">
+      <Filter>RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessDemo.h">
+      <Filter>RenderTarget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Objects">
@@ -53,6 +65,9 @@
     </Filter>
     <Filter Include="Environment">
       <UniqueIdentifier>{a0767196-c466-4e45-b488-424cc471e43e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderTarget">
+      <UniqueIdentifier>{7492e505-573b-496a-b096-63cbbb07b253}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
