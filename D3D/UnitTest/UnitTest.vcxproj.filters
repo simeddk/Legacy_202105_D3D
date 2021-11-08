@@ -27,6 +27,15 @@
     <ClCompile Include="PostProcessDemo.cpp">
       <Filter>RenderTarget</Filter>
     </ClCompile>
+    <ClCompile Include="MrtDemo.cpp">
+      <Filter>RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="BlurDemo.cpp">
+      <Filter>RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicCubeMapDemo.cpp">
+      <Filter>RenderTarget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -53,6 +62,15 @@
       <Filter>RenderTarget</Filter>
     </ClInclude>
     <ClInclude Include="PostProcessDemo.h">
+      <Filter>RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="MrtDemo.h">
+      <Filter>RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="BlurDemo.h">
+      <Filter>RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicCubeMapDemo.h">
       <Filter>RenderTarget</Filter>
     </ClInclude>
   </ItemGroup>

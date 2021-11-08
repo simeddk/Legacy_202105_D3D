@@ -133,9 +133,12 @@
   <ItemGroup>
     <ClCompile Include="AreaLightingDemo.cpp" />
     <ClCompile Include="BillbaordDemo.cpp" />
+    <ClCompile Include="BlurDemo.cpp" />
+    <ClCompile Include="DynamicCubeMapDemo.cpp" />
     <ClCompile Include="LightingDemo.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="FrameworkDemo.cpp" />
+    <ClCompile Include="MrtDemo.cpp" />
     <ClCompile Include="ObbDemo.cpp" />
     <ClCompile Include="PostProcessDemo.cpp" />
     <ClCompile Include="RtvDemo.cpp" />
@@ -147,9 +150,12 @@
   <ItemGroup>
     <ClInclude Include="AreaLightingDemo.h" />
     <ClInclude Include="BillbaordDemo.h" />
+    <ClInclude Include="BlurDemo.h" />
+    <ClInclude Include="DynamicCubeMapDemo.h" />
     <ClInclude Include="LightingDemo.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="FrameworkDemo.h" />
+    <ClInclude Include="MrtDemo.h" />
     <ClInclude Include="ObbDemo.h" />
     <ClInclude Include="PostProcessDemo.h" />
     <ClInclude Include="RtvDemo.h" />

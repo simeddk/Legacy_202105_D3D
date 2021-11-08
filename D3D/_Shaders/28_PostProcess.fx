@@ -100,6 +100,68 @@ float4 PS_Wiggle(VertexOutput input) : SV_Target
 
 }
 
+float Power = 2.0f;
+float2 Scale = float2(2, 2);
+float4 PS_Vignette(VertexOutput input) : SV_Target
+{
+    float4 diffuse = DiffuseMap.Sample(LinearSampler, input.Uv);
+
+    float radius = length((input.Uv - 0.5f) * 2 / Scale);
+    float vignette = pow(abs(radius + 1e-6f), Power);
+
+    return saturate(1 - vignette) * diffuse;
+}
+
+float Strength = 1.0f;
+int InteraceValue = 2;
+float4 PS_Interace(VertexOutput input) : SV_Target
+{
+    float4 diffuse = DiffuseMap.Sample(LinearSampler, input.Uv);
+
+    float vpHeight = 1.0f / PixelSize.y;
+    int value = (int) ((floor(input.Uv.y * vpHeight) % InteraceValue) / (InteraceValue / 2));
+
+    [flatten]
+    if (value)
+    {
+        float3 grayScale = float3(0.2126f, 0.7152f, 0.0722f);
+        float gray = dot(grayScale, diffuse.rgb);
+
+        gray = min(0.999f, gray);
+
+        diffuse.rgb = lerp(diffuse.rgb, diffuse.rgb * gray, Strength);
+    }
+
+    return diffuse;
+}
+
+float LensPower = 1.0f;
+float3 Distortion = -0.02f;
+float4 PS_Distortion(VertexOutput input) : SV_Target
+{
+    float2 uv = input.Uv * 2 - 1;
+
+    float2 vpSize = float2(1.0f / PixelSize.x, 1.0f / PixelSize.y);
+    float aspect = vpSize.x / vpSize.y;
+
+    float radiusSqaured = aspect * aspect + uv.x * uv.x + uv.y * uv.y;
+    float radius = sqrt(radiusSqaured);
+
+    float3 d = Distortion * pow(abs(radius + 1e-6f), LensPower) + 1.0f;
+
+    float2 r = (d.r * uv + 1) * 0.5f;
+    float2 g = (d.g * uv + 1) * 0.5f;
+    float2 b = (d.b * uv + 1) * 0.5f;
+
+    float4 color = 0;
+    color.r = DiffuseMap.Sample(LinearSampler, r).r;
+    color.g = DiffuseMap.Sample(LinearSampler, g).g;
+    color.b = DiffuseMap.Sample(LinearSampler, b).b;
+
+    return color;
+
+}
+
 technique11 T0
 {
     P_VP(P0, VS, PS_Diffuse)
@@ -110,4 +172,7 @@ technique11 T0
     P_VP(P5, VS, PS_Saturation)
     P_VP(P6, VS, PS_Sharpness)
     P_VP(P7, VS, PS_Wiggle)
+    P_VP(P8, VS, PS_Vignette)
+    P_VP(P9, VS, PS_Interace)
+    P_VP(P10, VS, PS_Distortion)
 }

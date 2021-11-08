@@ -107,6 +107,60 @@ void PostProcessDemo::Update()
 		ImGui::SliderFloat("Sharpness", &sharpness, 0.1f, 1.0f);
 		postProcess->GetShader()->AsScalar("Sharpness")->SetFloat(sharpness);
 	}
+	break;
+
+	case 8 : 
+	{
+		ImGui::Separator();
+		static float power = 2.0f;
+		ImGui::InputFloat("Power", &power, 0.05f);
+		postProcess->GetShader()->AsScalar("Power")->SetFloat(power);
+
+		static float scaleX = 2.0f;
+		ImGui::InputFloat("ScaleX", &scaleX, 0.05f);
+
+		static float scaleY = 2.0f;
+		ImGui::InputFloat("ScaleY", &scaleY, 0.05f);
+		postProcess->GetShader()->AsVector("Scale")->SetFloatVector(Vector2(scaleX, scaleY));
+
+	}
+	break;
+
+	case 9 :
+	{
+		ImGui::Separator();
+		static float strength = 1.0f;
+		ImGui::InputFloat("Strength", &strength, 0.01f);
+		postProcess->GetShader()->AsScalar("Strength")->SetFloat(strength);
+
+		static int interaceValue = 2;
+		ImGui::InputInt("Value", &interaceValue);
+		postProcess->GetShader()->AsScalar("InteraceValue")->SetInt(interaceValue);
+	}
+	break;
+
+	case 10:
+	{
+		ImGui::Separator();
+
+		static float lensPower = 1.0f;
+		ImGui::InputFloat("LensPower", &lensPower, 0.01f);
+		postProcess->GetShader()->AsScalar("LensPower")->SetFloat(lensPower);
+
+		static float distortion = -0.02f;
+		ImGui::InputFloat("Distortion", &distortion, 0.001f);
+
+		static float weight = -0.01f;
+		ImGui::InputFloat("Weight", &weight, 0.001f);
+
+		Vector3 channel = Vector3(distortion, 0, 0);
+		channel.y = distortion + weight;
+		channel.z = distortion + 2 * weight;
+
+		postProcess->GetShader()->AsVector("Distortion")->SetFloatVector(channel);
+	}
+	break;
+
 	}
 	
 

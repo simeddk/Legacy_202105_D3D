@@ -52,3 +52,20 @@ void RenderTarget::PreRender(DepthStencil * depthStencil)
 	D3D::GetDC()->OMSetRenderTargets(1, &rtv, depthStencil->DSV());
 	D3D::Get()->Clear(Color(0, 0, 0, 1), rtv, depthStencil->DSV());
 }
+
+void RenderTarget::PreRender(RenderTarget ** target, UINT count, DepthStencil * depthStencil)
+{
+	vector<ID3D11RenderTargetView*> rtvs;
+	for (UINT i = 0; i < count; i++)
+	{
+		ID3D11RenderTargetView* rtv = target[i]->RTV();
+		rtvs.push_back(rtv);
+
+		D3D::GetDC()->ClearRenderTargetView(rtv, Color(0, 0, 0, 1));
+	}
+
+	D3D::GetDC()->ClearDepthStencilView(depthStencil->DSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+
+	D3D::GetDC()->OMSetRenderTargets(count, &rtvs[0], depthStencil->DSV());
+
+}
