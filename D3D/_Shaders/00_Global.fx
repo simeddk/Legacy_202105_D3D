@@ -32,6 +32,8 @@ struct MeshOutput
     float3 Tangent : Tangent;
     float2 Uv : Uv;
     float4 Color : Color;
+
+    uint TargetIndex : SV_RenderTargetArrayIndex;
 };
 
 //-----------------------------------------------------------------------------

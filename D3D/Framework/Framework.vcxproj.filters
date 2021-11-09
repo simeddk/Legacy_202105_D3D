@@ -153,6 +153,9 @@
       <Filter>Viewer</Filter>
     </ClCompile>
     <ClCompile Include="Objects\PostProcess.cpp" />
+    <ClCompile Include="Objects\DynamicCube.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -314,6 +317,9 @@
       <Filter>Viewer</Filter>
     </ClInclude>
     <ClInclude Include="Objects\PostProcess.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\DynamicCube.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

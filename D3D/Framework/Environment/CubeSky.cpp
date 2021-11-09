@@ -1,11 +1,20 @@
 #include "Framework.h"
 #include "CubeSky.h"
 
-CubeSky::CubeSky(wstring file)
+CubeSky::CubeSky(wstring file, Shader* shader)
+	: shader(shader)
 {
-	shader = new Shader(L"00_CubeSky.fxo");
+	if (this->shader == nullptr)
+	{
+		this->shader = new Shader(L"00_CubeSky.fxo");
+		bCreateShader = true;
+	}
+
+
 	sphere = new MeshRender(shader, new MeshSphere(0.5f));
-	sphere->AddTransform();
+	Transform* transform = sphere->AddTransform();
+	transform->Scale(500, 500, 500);
+
 	sphere->Pass(0);
 	
 	file = L"../../_Textures/" + file;
@@ -18,7 +27,9 @@ CubeSky::CubeSky(wstring file)
 
 CubeSky::~CubeSky()
 {
-	SafeDelete(shader);
+	if (bCreateShader == true)
+		SafeDelete(shader);
+
 	SafeDelete(sphere);
 	SafeRelease(srv);
 }
@@ -36,5 +47,7 @@ void CubeSky::Update()
 void CubeSky::Render()
 {
 	sSrv->SetResource(srv);
+	
+	sphere->Pass(pass);
 	sphere->Render();
 }

@@ -36,7 +36,7 @@ void SetMeshWorld(inout matrix world, VertexMesh input)
 
 MeshOutput VS_Mesh(VertexMesh input)
 {
-    MeshOutput output;
+    MeshOutput output = (MeshOutput)0;
     SetMeshWorld(World, input);
 
     VS_GENERATE
@@ -86,7 +86,7 @@ void SetModelWorld(inout matrix world, VertexModel input)
 
 MeshOutput VS_Model(VertexModel input)
 {
-    MeshOutput output;
+    MeshOutput output = (MeshOutput) 0;
 
     SetModelWorld(World, input);
     
@@ -273,7 +273,7 @@ void SetBlendWorld(inout matrix world, VertexModel input)
 
 MeshOutput VS_Animation(VertexModel input)
 {
-    MeshOutput output;
+    MeshOutput output = (MeshOutput) 0;
 
     World = input.Transform;
 
@@ -285,4 +285,115 @@ MeshOutput VS_Animation(VertexModel input)
     VS_GENERATE
 
     return output;
+}
+
+//-----------------------------------------------------------------------------
+//DynamicCubeMap - GS
+//-----------------------------------------------------------------------------
+struct DynamicCubeDesc
+{
+    uint Type;
+    float Alpha;
+    float RefractAmount;
+    float Padding;
+
+    float FresnelAmount;
+    float FresnelBias;
+    float FresnelScale;
+    float Padding2;
+
+    matrix Views[6];
+    matrix Projection;
+};
+
+cbuffer CB_DynamicCube
+{
+    DynamicCubeDesc DynamicCube;
+};
+
+[maxvertexcount(18)]
+void GS_DynamicCube_PreRender(triangle MeshOutput input[3], inout TriangleStream<MeshOutput> stream)
+{
+    int vertex = 0;
+    MeshOutput output = (MeshOutput)0;
+
+    [unroll(6)]
+    for (int i = 0; i < 6; i++)
+    {
+        output.TargetIndex = i;
+
+        [unroll(3)]
+        for (vertex = 0; vertex < 3; vertex++)
+        {
+            output.Position = mul(float4(input[vertex].wPosition, 1), DynamicCube.Views[i]);
+            output.Position = mul(output.Position, DynamicCube.Projection);
+
+            output.oPosition = input[vertex].oPosition;
+            output.wPosition = input[vertex].wPosition;
+            output.Normal = input[vertex].Normal;
+            output.Tangent = input[vertex].Tangent;
+            output.Uv = input[vertex].Uv;
+            output.Color = input[vertex].Color;
+
+            stream.Append(output);
+        }
+
+        stream.RestartStrip();
+
+    }
+}
+
+//-----------------------------------------------------------------------------
+//DynamicCubeMap - PS
+//-----------------------------------------------------------------------------
+float4 PS_DynamicCube(MeshOutput input) : SV_Target
+{
+    float4 diffuse = 0;
+
+    float3 view = normalize(input.wPosition - ViewPosition());
+    float3 normal = normalize(input.Normal);
+
+    float3 reflection = reflect(view, normal);
+    float3 refraction = refract(view, normal, DynamicCube.RefractAmount);
+
+    //ÀÏ¹Ý
+    if (DynamicCube.Type == 0)
+    {
+        diffuse = DynamicCubeMap.Sample(LinearSampler, input.oPosition);
+        diffuse.a = 1.0f;
+    }
+    //¹Ý»ç
+    else if (DynamicCube.Type == 1)
+    {
+        diffuse = DynamicCubeMap.Sample(LinearSampler, reflection);
+        diffuse.a = DynamicCube.Alpha;
+    }
+    //±¼Àý
+    else if (DynamicCube.Type == 2)
+    {
+        diffuse = DynamicCubeMap.Sample(LinearSampler, -refraction);
+        diffuse.a = DynamicCube.Alpha;
+    }
+    //ÇÁ¸®³Ú
+    else if (DynamicCube.Type == 3)
+    {
+        float4 phong = PS_Phong(input);
+        diffuse = DynamicCubeMap.Sample(LinearSampler, reflection);
+
+        float4 fresnel = 
+        DynamicCube.FresnelBias + (1.0f - DynamicCube.FresnelScale)
+        * pow(abs(1.0f - dot(view, normal)), DynamicCube.FresnelAmount);
+
+        diffuse = DynamicCube.FresnelAmount * diffuse + lerp(phong, diffuse, fresnel);
+        diffuse *= 0.75f;
+
+        diffuse.a = DynamicCube.Alpha;
+    }
+
+    return diffuse;
+}
+
+float4 PS_Sky(MeshOutput input) : SV_Target
+{
+    return SkyCubeMap.Sample(LinearSampler, input.oPosition);
 }

@@ -40,6 +40,7 @@
     <ClCompile Include="Model\ModelRender.cpp" />
     <ClCompile Include="Objects\Billboard.cpp" />
     <ClCompile Include="Objects\Collider.cpp" />
+    <ClCompile Include="Objects\DynamicCube.cpp" />
     <ClCompile Include="Objects\PostProcess.cpp" />
     <ClCompile Include="Objects\Render2D.cpp" />
     <ClCompile Include="Particle\Particle.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="Model\ModelRender.h" />
     <ClInclude Include="Objects\Billboard.h" />
     <ClInclude Include="Objects\Collider.h" />
+    <ClInclude Include="Objects\DynamicCube.h" />
     <ClInclude Include="Objects\PostProcess.h" />
     <ClInclude Include="Objects\Render2D.h" />
     <ClInclude Include="Particle\Particle.h" />

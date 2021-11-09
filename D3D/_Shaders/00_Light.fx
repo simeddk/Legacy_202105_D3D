@@ -5,6 +5,9 @@ Texture2D DiffuseMap;
 Texture2D SpecularMap;
 Texture2D NormalMap;
 
+TextureCube DynamicCubeMap;
+TextureCube SkyCubeMap;
+
 //-----------------------------------------------------------------------------
 //GlobalLight
 //-----------------------------------------------------------------------------

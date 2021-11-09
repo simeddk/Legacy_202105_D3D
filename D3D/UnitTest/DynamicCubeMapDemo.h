@@ -20,20 +20,14 @@ private:
 
 	void PointLights();
 	void SpotLights();
-	
-	void Billboards();
 
 	void Pass(UINT val);
 	
 private:
 	Shader* shader;
 
-	RenderTarget* renderTarget;
-	DepthStencil* depthStencil;
-	Viewport* viewport;
-
-	PostProcess* postProcess;
-	Render2D* render2D;
+	DynamicCube* dynamicCube;
+	MeshRender* sphere2;
 
 	CubeSky* sky;
 
@@ -53,8 +47,6 @@ private:
 	ModelRender* weapon;
 	Transform* weaponTransform;
 	
-	Billboard* billboard;
-
 	vector<MeshRender*> meshes;
 	vector<ModelRender*> models;
 	vector<ModelAnimator*> animators;

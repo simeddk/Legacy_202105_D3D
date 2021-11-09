@@ -11,10 +11,11 @@
 #include "PostProcessDemo.h"
 #include "MrtDemo.h"
 #include "BlurDemo.h"
+#include "DynamicCubeMapDemo.h"
 
 void Main::Initialize()
 {
-	Push(new BlurDemo());
+	Push(new DynamicCubeMapDemo());
 }
 
 

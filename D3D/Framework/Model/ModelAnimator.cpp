@@ -362,7 +362,7 @@ void ModelAnimator::CreateTexture()
 			}
 		}
 
-		int a = model->ClipCount();
+		//int a = model->ClipCount();
 
 		D3D11_SUBRESOURCE_DATA* subResource = new D3D11_SUBRESOURCE_DATA[model->ClipCount()];
 		for (UINT c = 0; c < model->ClipCount(); c++)

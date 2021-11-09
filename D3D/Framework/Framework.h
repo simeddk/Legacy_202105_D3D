@@ -116,6 +116,7 @@ typedef D3DXPLANE Plane;
 #include "Objects/Collider.h"
 #include "Objects/Billboard.h"
 #include "Objects/PostProcess.h"
+#include "Objects/DynamicCube.h"
 
 #include "Particle/ParticleData.h"
 #include "Particle/Particle.h"

@@ -8,23 +8,10 @@ void DynamicCubeMapDemo::Initialize()
 	Context::Get()->GetCamera()->Position(0, 36, -85);
 	((Freedom*)Context::Get()->GetCamera())->Speed(50, 2);
 	
-	shader = new Shader(L"27_GeometryBillboard.fxo");
-	sky = new CubeSky(L"Environment/Mountain1024.dds");
+	shader = new Shader(L"31_DynamicCube.fxo");
+	dynamicCube = new DynamicCube(shader, 256, 256);
 
-	float w = D3D::Width(), h = D3D::Height();
-	renderTarget = new RenderTarget(w, h);
-
-	
-	depthStencil = new DepthStencil(w, h) ;
-	viewport = new Viewport(w, h);
-
-	render2D = new Render2D();
-	render2D->GetTransform()->Scale(355, 200, 1);
-	render2D->GetTransform()->Position(200, 120, 0);
-	render2D->SRV(renderTarget->SRV());
-
-	postProcess = new PostProcess(L"30_Blur.fxo");
-	postProcess->SRV(renderTarget->SRV());
+	sky = new CubeSky(L"Environment/Mountain1024.dds", shader);
 
 	Mesh();
 	Airplane();
@@ -34,9 +21,6 @@ void DynamicCubeMapDemo::Initialize()
 	PointLights();
 	SpotLights();
 
-	Billboards();
-
-	//Gizmo::Get()->SetTransform(kachujin->GetTransform(0));
 }
 
 void DynamicCubeMapDemo::Destroy()
@@ -61,15 +45,10 @@ void DynamicCubeMapDemo::Destroy()
 	SafeDelete(kachujin);
 	SafeDelete(weapon);
 
-	//Billboard
-	SafeDelete(billboard);
-
-	//RenderTarget
-	SafeDelete(renderTarget);
-	SafeDelete(depthStencil);
-	SafeDelete(viewport);
-	SafeDelete(postProcess);
-	SafeDelete(render2D);
+	//DynamicCube
+	SafeDelete(dynamicCube);
+	SafeDelete(sphere2);
+	
 
 }
 
@@ -77,40 +56,14 @@ void DynamicCubeMapDemo::Update()
 {
 	ImGui::SliderFloat3("LightDirection", Lighting::Get()->Direction(), -1, 1);
 
-	static UINT pass = postProcess->GetShader()->PassCount() - 1;
-	ImGui::InputInt("BlurPass", (int*)&pass);
-	pass %= postProcess->GetShader()->PassCount();
-	postProcess->Pass(pass);
-
-	Vector2 pixelSize = Vector2(1 / D3D::Width(), 1 / D3D::Height());
-	postProcess->GetShader()->AsVector("PixelSize")->SetFloatVector(pixelSize);
-	
-	//Blur
+	//DynamicCube
 	{
-		static UINT blurCount = 1;
-		ImGui::InputInt("BlurCount", (int*)&blurCount, 1, 32);
-		postProcess->GetShader()->AsScalar("BlurCount")->SetInt(blurCount);
+		ImGui::InputInt("Type", (int*)&dynamicCube->Type());
+		dynamicCube->Type() %= 4;
+
+		ImGui::SliderFloat("Alpha", &dynamicCube->Alpha(), 0, 1);
+		ImGui::InputFloat("RefractAmount", &dynamicCube->RefractAmount(), 0.01f);
 	}
-
-	//RadialBlur
-	{
-		static UINT blurCount = 8;
-		ImGui::SliderInt("RadialBlurCount", (int*)&blurCount, 1, 32);
-		postProcess->GetShader()->AsScalar("RadialBlurCount")->SetInt(blurCount);
-
-		static float radius = 0.6f;
-		ImGui::InputFloat("RadialBlurRadius", &radius, 0.01f);
-		postProcess->GetShader()->AsScalar("RadialBlurRadius")->SetFloat(radius);
-
-		static float amount = 0.04f;
-		ImGui::InputFloat("RadialBlurAmout", &amount, 0.001f);
-		postProcess->GetShader()->AsScalar("RadialBlurAmout")->SetFloat(amount);
-
-		static Vector2 center = Vector2(0.5f, 0.5f);
-		ImGui::SliderFloat2("Center", (float*)&center, 0.0f, 1.0f);
-		postProcess->GetShader()->AsVector("RadialCenter")->SetFloatVector(center);
-	}
-
 
 	sky->Update();
 
@@ -118,6 +71,7 @@ void DynamicCubeMapDemo::Update()
 	plane->Update();
 	cylinder->Update();
 	sphere->Update();
+	sphere2->Update();
 
 	airplane->Update();
 	kachujin->Update();
@@ -132,21 +86,20 @@ void DynamicCubeMapDemo::Update()
 	weapon->UpdateTransforms();
 	weapon->Update();
 
-	billboard->Update();
-
-	postProcess->Update();
-	render2D->Update();
-
 }
 
 void DynamicCubeMapDemo::PreRender()
 {
-	renderTarget->PreRender(depthStencil);
-	viewport->RSSetViewport();
+	Vector3 p, s;
+	sphere2->GetTransform(0)->Position(&p);
+	sphere2->GetTransform(0)->Scale(&s);
+
+	dynamicCube->PreRender(p, s);
 	{
+		sky->Pass(0);
 		sky->Render();
 
-		Pass(0);
+		Pass(1);
 
 		wall->Render();
 		sphere->Render();
@@ -163,17 +116,38 @@ void DynamicCubeMapDemo::PreRender()
 		airplane->Render();
 		kachujin->Render();
 		weapon->Render();
-
-		billboard->Pass(6);
-		billboard->Render();
+		
 	}
 
 }
 
 void DynamicCubeMapDemo::Render()
 { 
-	postProcess->Render();
-	render2D->Render();
+	sky->Pass(4);
+	sky->Render();
+
+	Pass(5);
+
+	wall->Render();
+	sphere->Render();
+
+	brick->Render();
+	cylinder->Render();
+
+	stone->Render();
+	cube->Render();
+
+	floor->Render();
+	plane->Render();
+
+	airplane->Render();
+	kachujin->Render();
+	weapon->Render();
+
+	dynamicCube->Render();
+	brick->Render();
+	sphere2->Pass(8);
+	sphere2->Render();
 }
 
 void DynamicCubeMapDemo::Mesh()
@@ -241,6 +215,13 @@ void DynamicCubeMapDemo::Mesh()
 			transform->Position(+30, 15.5f, (float)i * 15.0f - 15.0f);
 			transform->Scale(5, 5, 5);
 		}
+
+
+		sphere2 = new MeshRender(shader, new MeshSphere(0.5f));
+		transform = sphere2->AddTransform();
+		transform->Position(0, 20, 0);
+		transform->Scale(5, 5, 5);
+		sphere2->UpdateTransforms();
 	}
 
 	cube->UpdateTransforms();
@@ -252,6 +233,7 @@ void DynamicCubeMapDemo::Mesh()
 	meshes.push_back(plane);
 	meshes.push_back(cylinder);
 	meshes.push_back(sphere);
+	meshes.push_back(sphere2);
 }
 
 void DynamicCubeMapDemo::Airplane()
@@ -420,39 +402,6 @@ void DynamicCubeMapDemo::SpotLights()
 
 }
 
-void DynamicCubeMapDemo::Billboards()
-{
-	billboard = new Billboard(shader);
-	billboard->Pass(3);
-
-	billboard->AddTexture(L"Terrain/grass_14.tga");
-	billboard->AddTexture(L"Terrain/grass_07.tga");
-	billboard->AddTexture(L"Terrain/grass_11.tga");
-
-	for (UINT i = 0; i < 1200; i++)
-	{
-		Vector2 position = Math::RandomVec2(-60, 60);
-		Vector2 scale = Math::RandomVec2(1, 3);
-
-		billboard->Add(Vector3(position.x, scale.y * 0.5f, position.y), scale, 0);
-	}
-
-	for (UINT i = 0; i < 1200; i++)
-	{
-		Vector2 position = Math::RandomVec2(-60, 60);
-		Vector2 scale = Math::RandomVec2(2, 4);
-
-		billboard->Add(Vector3(position.x, scale.y * 0.5f, position.y), scale, 1);
-	}
-
-	for (UINT i = 0; i < 1200; i++)
-	{
-		Vector2 position = Math::RandomVec2(-60, 60);
-		Vector2 scale = Math::RandomVec2(3, 5);
-
-		billboard->Add(Vector3(position.x, scale.y * 0.5f, position.y), scale, 2);
-	}
-}
 
 void DynamicCubeMapDemo::Pass(UINT val)
 {
