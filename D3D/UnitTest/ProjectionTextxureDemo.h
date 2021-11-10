@@ -1,7 +1,7 @@
 #pragma once
 #include "Systems/IExecute.h"
 
-class DynamicCubeMapDemo : public IExecute
+class ProjectionTextxureDemo : public IExecute
 {
 public:
 	virtual void Initialize() override;
@@ -16,7 +16,6 @@ private:
 	void Mesh();
 	void Airplane();
 	void Kachujin();
-	void Kachujin2();
 	void Weapon();
 
 	void PointLights();
@@ -26,9 +25,7 @@ private:
 	
 private:
 	Shader* shader;
-
-	DynamicCube* dynamicCube;
-	MeshRender* sphere2;
+	Projector* projector;
 
 	CubeSky* sky;
 
@@ -45,7 +42,6 @@ private:
 	ModelRender* airplane;
 
 	ModelAnimator* kachujin;
-	ModelAnimator* kachujin2;
 	ModelRender* weapon;
 	Transform* weaponTransform;
 	

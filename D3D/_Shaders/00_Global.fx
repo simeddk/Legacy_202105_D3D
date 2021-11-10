@@ -19,6 +19,22 @@ cbuffer CB_World
     matrix World;
 };
 
+struct ShadowDesc
+{
+    matrix View;
+    matrix Projection;
+
+    float2 MapSize;
+    float Bias;
+
+    uint Quality;
+};
+
+cbuffer CB_Shadow
+{
+    ShadowDesc Shadow;
+};
+
 //-----------------------------------------------------------------------------
 //MeshOutput(Out - RS)
 //-----------------------------------------------------------------------------
@@ -27,6 +43,8 @@ struct MeshOutput
     float4 Position : SV_Position; //Rasterizing Position
     float3 oPosition : Position1; //NDC Position
     float3 wPosition : Position2; //World Position
+    float4 wvpPosition : Position3; //WVP <- MainCamera
+    float4 wvpPosition_Sub : Position4; //WVP <- Fixity(Projection)
 
     float3 Normal : Normal;
     float3 Tangent : Tangent;
@@ -34,6 +52,12 @@ struct MeshOutput
     float4 Color : Color;
 
     uint TargetIndex : SV_RenderTargetArrayIndex;
+};
+
+struct MeshDepthOutput
+{
+    float4 Position : SV_Position;
+    float4 sPosition : Position1;
 };
 
 //-----------------------------------------------------------------------------

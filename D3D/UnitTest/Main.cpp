@@ -12,10 +12,12 @@
 #include "MrtDemo.h"
 #include "BlurDemo.h"
 #include "DynamicCubeMapDemo.h"
+#include "ProjectionTextxureDemo.h"
+#include "DepthDemo.h"
 
 void Main::Initialize()
 {
-	Push(new DynamicCubeMapDemo());
+	Push(new DepthDemo());
 }
 
 

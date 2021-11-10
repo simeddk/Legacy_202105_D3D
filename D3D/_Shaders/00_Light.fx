@@ -4,6 +4,7 @@
 Texture2D DiffuseMap;
 Texture2D SpecularMap;
 Texture2D NormalMap;
+Texture2D ProjectorMap;
 
 TextureCube DynamicCubeMap;
 TextureCube SkyCubeMap;
@@ -69,6 +70,29 @@ void AddMaterial(inout MaterialDesc result, MaterialDesc val)
     result.Diffuse += val.Diffuse;
     result.Specular += val.Specular;
     result.Emissive += val.Emissive;
+}
+
+//-----------------------------------------------------------------------------
+//ProjectorTexture
+//-----------------------------------------------------------------------------
+struct ProjectorDesc
+{
+    float4 Color;
+
+    Matrix View;
+    Matrix Projection;
+};
+
+cbuffer CB_Projector
+{
+    ProjectorDesc Projector;
+};
+
+void VS_Projector(inout float4 wvp, float4 oPosition)
+{
+    wvp = WorldPosition(oPosition);
+    wvp = mul(wvp, Projector.View);
+    wvp = mul(wvp, Projector.Projection);
 }
 
 //-----------------------------------------------------------------------------
@@ -346,4 +370,14 @@ float4 PS_Phong(MeshOutput input)
     AddMaterial(result, output);
     
     return float4(MaterialToColor(result), 1.0f) + input.Color;
+}
+
+//-----------------------------------------------------------------------------
+//Shadow
+//-----------------------------------------------------------------------------
+float4 PS_Shadow_Depth(MeshDepthOutput input) : SV_Target
+{
+    float depth = input.sPosition.z / input.sPosition.w;
+
+    return float4(depth, depth, depth, 1);
 }

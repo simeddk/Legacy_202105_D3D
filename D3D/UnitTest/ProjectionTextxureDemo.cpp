@@ -1,22 +1,22 @@
 #include "stdafx.h"
-#include "DynamicCubeMapDemo.h"
+#include "ProjectionTextxureDemo.h"
 
 
-void DynamicCubeMapDemo::Initialize()
+void ProjectionTextxureDemo::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(20, 0, 0);
 	Context::Get()->GetCamera()->Position(0, 36, -85);
 	((Freedom*)Context::Get()->GetCamera())->Speed(50, 2);
 	
-	shader = new Shader(L"31_DynamicCube.fxo");
-	dynamicCube = new DynamicCube(shader, 256, 256);
+	shader = new Shader(L"32_ProjectionTexture.fxo");
+
+	projector = new Projector(shader, L"Environment/MagicCircle.png", 10, 10);
 
 	sky = new CubeSky(L"Environment/Mountain1024.dds", shader);
 
 	Mesh();
 	Airplane();
 	Kachujin();
-	Kachujin2();
 	Weapon();
 
 	PointLights();
@@ -24,7 +24,7 @@ void DynamicCubeMapDemo::Initialize()
 
 }
 
-void DynamicCubeMapDemo::Destroy()
+void ProjectionTextxureDemo::Destroy()
 {
 	SafeDelete(shader);
 	SafeDelete(sky);
@@ -46,42 +46,24 @@ void DynamicCubeMapDemo::Destroy()
 	SafeDelete(kachujin);
 	SafeDelete(weapon);
 
-	//DynamicCube
-	SafeDelete(dynamicCube);
-	SafeDelete(sphere2);
-	SafeDelete(kachujin2);
-	
-
+	SafeDelete(projector);
 }
 
-void DynamicCubeMapDemo::Update()
+void ProjectionTextxureDemo::Update()
 {
 	ImGui::SliderFloat3("LightDirection", Lighting::Get()->Direction(), -1, 1);
 
-	//DynamicCube
-	{
-		ImGui::InputInt("Type", (int*)&dynamicCube->Type());
-		dynamicCube->Type() %= 4;
-
-		ImGui::SliderFloat("Alpha", &dynamicCube->Alpha(), 0, 1);
-		ImGui::InputFloat("RefractAmount", &dynamicCube->RefractAmount(), 0.01f);
-
-		ImGui::InputFloat("FresnelAmount", &dynamicCube->FresnelAmount(), 0.01f);
-		ImGui::InputFloat("FresnelBias", &dynamicCube->FresnelBias(), 0.01f);
-		ImGui::InputFloat("FresnelScale", &dynamicCube->FresnelScale(), 0.01f);
-	}
-
+	projector->Update();
+	
 	sky->Update();
 
 	cube->Update();
 	plane->Update();
 	cylinder->Update();
 	sphere->Update();
-	sphere2->Update();
 
 	airplane->Update();
 	kachujin->Update();
-	kachujin2->Update();
 
 	Matrix worlds[MAX_MODEL_TRANSFORMS];
 	for (UINT i = 0; i < kachujin->TransformCount(); i++)
@@ -95,47 +77,19 @@ void DynamicCubeMapDemo::Update()
 
 }
 
-void DynamicCubeMapDemo::PreRender()
+void ProjectionTextxureDemo::PreRender()
 {
-	Vector3 p, s;
-	//sphere2->GetTransform(0)->Position(&p);
-	//sphere2->GetTransform(0)->Scale(&s);
-	kachujin2->GetTransform(0)->Position(&p);
-	kachujin2->GetTransform(0)->Scale(&s);
-
-	dynamicCube->PreRender(p, s);
-	{
-		sky->Pass(0);
-		sky->Render();
-
-		Pass(1);
-
-		wall->Render();
-		sphere->Render();
-
-		brick->Render();
-		cylinder->Render();
-
-		stone->Render();
-		cube->Render();
-
-		floor->Render();
-		plane->Render();
-
-		airplane->Render();
-		kachujin->Render();
-		weapon->Render();
-		
-	}
-
+	
 }
 
-void DynamicCubeMapDemo::Render()
+void ProjectionTextxureDemo::Render()
 { 
-	sky->Pass(4);
+	projector->Render();
+
+	sky->Pass(0);
 	sky->Render();
 
-	Pass(5);
+	Pass(1);
 
 	wall->Render();
 	sphere->Render();
@@ -153,16 +107,9 @@ void DynamicCubeMapDemo::Render()
 	kachujin->Render();
 	weapon->Render();
 
-	dynamicCube->Render();
-	//brick->Render();
-	//sphere2->Pass(8);
-	//sphere2->Render();
-
-	kachujin2->Pass(10);
-	kachujin2->Render();
 }
 
-void DynamicCubeMapDemo::Mesh()
+void ProjectionTextxureDemo::Mesh()
 {
 	//Create Material
 	{
@@ -228,12 +175,7 @@ void DynamicCubeMapDemo::Mesh()
 			transform->Scale(5, 5, 5);
 		}
 
-
-		sphere2 = new MeshRender(shader, new MeshSphere(0.5f));
-		transform = sphere2->AddTransform();
-		transform->Position(0, 20, 0);
-		transform->Scale(5, 5, 5);
-		sphere2->UpdateTransforms();
+		
 	}
 
 	cube->UpdateTransforms();
@@ -245,10 +187,9 @@ void DynamicCubeMapDemo::Mesh()
 	meshes.push_back(plane);
 	meshes.push_back(cylinder);
 	meshes.push_back(sphere);
-	meshes.push_back(sphere2);
 }
 
-void DynamicCubeMapDemo::Airplane()
+void ProjectionTextxureDemo::Airplane()
 {
 	airplane = new ModelRender(shader);
 	airplane->ReadMesh(L"B787/Airplane");
@@ -262,7 +203,7 @@ void DynamicCubeMapDemo::Airplane()
 	models.push_back(airplane);
 }
 
-void DynamicCubeMapDemo::Kachujin()
+void ProjectionTextxureDemo::Kachujin()
 {
 	kachujin = new ModelAnimator(shader);
 	kachujin->ReadMesh(L"Kachujin/Mesh");
@@ -306,30 +247,8 @@ void DynamicCubeMapDemo::Kachujin()
 	animators.push_back(kachujin);
 }
 
-void DynamicCubeMapDemo::Kachujin2()
-{
-	kachujin2 = new ModelAnimator(shader);
-	kachujin2->ReadMesh(L"Kachujin/Mesh");
-	kachujin2->ReadMaterial(L"Kachujin/Mesh");
-	kachujin2->ReadClip(L"Kachujin/Idle");
-	kachujin2->ReadClip(L"Kachujin/Walk");
-	kachujin2->ReadClip(L"Kachujin/Run");
-	kachujin2->ReadClip(L"Kachujin/Slash");
-	kachujin2->ReadClip(L"Kachujin/Uprock");
 
-	Transform* transform = nullptr;
-
-	transform = kachujin2->AddTransform();
-	transform->Position(0, 0, -40);
-	transform->Scale(0.075f, 0.075f, 0.075f);
-	kachujin2->PlayTweenMode(0, 4, 1.0f);
-
-	kachujin2->UpdateTransforms();
-
-	animators.push_back(kachujin2);
-}
-
-void DynamicCubeMapDemo::Weapon()
+void ProjectionTextxureDemo::Weapon()
 {
 	weapon = new ModelRender(shader);
 	weapon->ReadMesh(L"Weapon/Sword");
@@ -349,7 +268,7 @@ void DynamicCubeMapDemo::Weapon()
 	weaponTransform->Rotation(0, 0, 1);
 }
 
-void DynamicCubeMapDemo::PointLights()
+void ProjectionTextxureDemo::PointLights()
 {
 	PointLight light;
 	light =
@@ -401,7 +320,7 @@ void DynamicCubeMapDemo::PointLights()
 	Lighting::Get()->AddPointLight(light);
 }
 
-void DynamicCubeMapDemo::SpotLights()
+void ProjectionTextxureDemo::SpotLights()
 {
 	SpotLight light;
 	light =
@@ -438,7 +357,7 @@ void DynamicCubeMapDemo::SpotLights()
 }
 
 
-void DynamicCubeMapDemo::Pass(UINT val)
+void ProjectionTextxureDemo::Pass(UINT val)
 {
 	for (MeshRender* mesh : meshes)
 		mesh->Pass(val);

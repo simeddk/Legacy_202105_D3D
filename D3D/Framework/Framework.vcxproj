@@ -42,7 +42,9 @@
     <ClCompile Include="Objects\Collider.cpp" />
     <ClCompile Include="Objects\DynamicCube.cpp" />
     <ClCompile Include="Objects\PostProcess.cpp" />
+    <ClCompile Include="Objects\Projector.cpp" />
     <ClCompile Include="Objects\Render2D.cpp" />
+    <ClCompile Include="Objects\Shadow.cpp" />
     <ClCompile Include="Particle\Particle.cpp" />
     <ClCompile Include="Renders\Buffers.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
@@ -68,6 +70,7 @@
     <ClCompile Include="Utilities\Xml.cpp" />
     <ClCompile Include="Viewer\Camera.cpp" />
     <ClCompile Include="Viewer\DepthStencil.cpp" />
+    <ClCompile Include="Viewer\Fixity.cpp" />
     <ClCompile Include="Viewer\Freedom.cpp" />
     <ClCompile Include="Viewer\Orthographic.cpp" />
     <ClCompile Include="Viewer\Perspective.cpp" />
@@ -97,7 +100,9 @@
     <ClInclude Include="Objects\Collider.h" />
     <ClInclude Include="Objects\DynamicCube.h" />
     <ClInclude Include="Objects\PostProcess.h" />
+    <ClInclude Include="Objects\Projector.h" />
     <ClInclude Include="Objects\Render2D.h" />
+    <ClInclude Include="Objects\Shadow.h" />
     <ClInclude Include="Particle\Particle.h" />
     <ClInclude Include="Particle\ParticleData.h" />
     <ClInclude Include="Renders\Buffers.h" />
@@ -126,6 +131,7 @@
     <ClInclude Include="Utilities\Xml.h" />
     <ClInclude Include="Viewer\Camera.h" />
     <ClInclude Include="Viewer\DepthStencil.h" />
+    <ClInclude Include="Viewer\Fixity.h" />
     <ClInclude Include="Viewer\Freedom.h" />
     <ClInclude Include="Viewer\Orthographic.h" />
     <ClInclude Include="Viewer\Perspective.h" />

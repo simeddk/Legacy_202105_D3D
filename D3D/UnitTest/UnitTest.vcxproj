@@ -134,6 +134,7 @@
     <ClCompile Include="AreaLightingDemo.cpp" />
     <ClCompile Include="BillbaordDemo.cpp" />
     <ClCompile Include="BlurDemo.cpp" />
+    <ClCompile Include="DepthDemo.cpp" />
     <ClCompile Include="DynamicCubeMapDemo.cpp" />
     <ClCompile Include="LightingDemo.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -141,6 +142,7 @@
     <ClCompile Include="MrtDemo.cpp" />
     <ClCompile Include="ObbDemo.cpp" />
     <ClCompile Include="PostProcessDemo.cpp" />
+    <ClCompile Include="ProjectionTextxureDemo.cpp" />
     <ClCompile Include="RtvDemo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -151,6 +153,7 @@
     <ClInclude Include="AreaLightingDemo.h" />
     <ClInclude Include="BillbaordDemo.h" />
     <ClInclude Include="BlurDemo.h" />
+    <ClInclude Include="DepthDemo.h" />
     <ClInclude Include="DynamicCubeMapDemo.h" />
     <ClInclude Include="LightingDemo.h" />
     <ClInclude Include="Main.h" />
@@ -158,6 +161,7 @@
     <ClInclude Include="MrtDemo.h" />
     <ClInclude Include="ObbDemo.h" />
     <ClInclude Include="PostProcessDemo.h" />
+    <ClInclude Include="ProjectionTextxureDemo.h" />
     <ClInclude Include="RtvDemo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="WeatherDemo.h" />
