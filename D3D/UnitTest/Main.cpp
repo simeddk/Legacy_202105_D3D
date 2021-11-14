@@ -14,10 +14,11 @@
 #include "DynamicCubeMapDemo.h"
 #include "ProjectionTextxureDemo.h"
 #include "DepthDemo.h"
+#include "ShadowDemo.h"
 
 void Main::Initialize()
 {
-	Push(new DepthDemo());
+	Push(new ShadowDemo());
 }
 
 

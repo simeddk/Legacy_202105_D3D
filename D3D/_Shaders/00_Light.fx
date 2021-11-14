@@ -5,6 +5,7 @@ Texture2D DiffuseMap;
 Texture2D SpecularMap;
 Texture2D NormalMap;
 Texture2D ProjectorMap;
+Texture2D ShadowMap;
 
 TextureCube DynamicCubeMap;
 TextureCube SkyCubeMap;
@@ -380,4 +381,66 @@ float4 PS_Shadow_Depth(MeshDepthOutput input) : SV_Target
     float depth = input.sPosition.z / input.sPosition.w;
 
     return float4(depth, depth, depth, 1);
+}
+
+float4 PS_Shadow(float4 sPosition, float4 color)
+{
+    float4 position = sPosition;
+    position.xyz /= position.w;
+
+    [flatten]
+    if (position.x < -1.0f || position.x > 1.0f &&
+        position.y < -1.0f || position.y > 1.0f &&
+        position.z < 0.0f || position.z > 1.0f)
+    {
+        return color;
+    }
+
+    position.x = position.x * 0.5f + 0.5f;
+    position.y = -position.y * 0.5f + 0.5f;
+
+    float depth = 0.0f;
+    float z = position.z - Shadow.Bias;
+    float factor = 0.0f;
+
+    if (Shadow.Quality == 0)
+    {
+        depth = ShadowMap.Sample(LinearSampler, position.xy).r;
+        factor = (float) (depth >= z);
+    }
+    else if (Shadow.Quality == 1)
+    {
+        depth = z;
+        factor = ShadowMap.SampleCmpLevelZero(ShadowSampler, position.xy, depth).r;
+    }
+    else if (Shadow.Quality == 2)
+    {
+        depth = z;
+
+        float2 size = 1.0f / Shadow.MapSize;
+        float2 offsets[] =
+        {
+            float2(-size.x, -size.y), float2(0, -size.y), float2(+size.x, -size.y),
+            float2(-size.x, 0.0), float2(0, 0), float2(+size.x, 0),
+            float2(-size.x, +size.y), float2(0, +size.y), float2(+size.x, +size.y)
+        };
+
+        float2 uv = 0;
+        float sum = 0;
+        
+        [unroll(9)]
+        for (int i = 0; i < 9; i++)
+        {
+            uv = position.xy + offsets[i];
+            sum += ShadowMap.SampleCmpLevelZero(ShadowSampler, uv, depth).r;
+        }
+
+        factor = sum / 9.0f;
+    
+    }
+    
+
+    factor = saturate(factor + depth);
+
+    return float4(color.rgb * factor, 1);
 }

@@ -1,10 +1,11 @@
 #include "Framework.h"
 #include "Terrain.h"
 
-Terrain::Terrain(Shader * shader, wstring heightMapFile)
+Terrain::Terrain(Shader * shader, wstring imageFile)
 	: Renderer(shader)
+	, imageFile(imageFile)
 {
-	heightMap = new Texture(heightMapFile);
+	ReadHeightData();
 
 	CreateVertexData();
 	CreateIndexData();
@@ -12,6 +13,12 @@ Terrain::Terrain(Shader * shader, wstring heightMapFile)
 	
 	vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(VertexTerrain));
 	indexBuffer = new IndexBuffer(indices, indexCount);
+
+	material = new Material(shader);
+	material->Diffuse(1, 1, 1, 1);
+	material->Specular(1, 1, 1, 200);
+
+	sBaseMap = shader->AsSRV("BaseMap");
 }
 
 Terrain::~Terrain()
@@ -19,7 +26,10 @@ Terrain::~Terrain()
 	SafeDeleteArray(vertices);
 	SafeDeleteArray(indices);
 
-	SafeDelete(heightMap);
+	SafeDeleteArray(heights);
+	
+	SafeDelete(material);
+	SafeDelete(baseMap);
 }
 
 void Terrain::Update()
@@ -29,14 +39,16 @@ void Terrain::Update()
 
 void Terrain::Render()
 {
-	VisibleNormal();
+	Super::Render();
 
 	if (baseMap != nullptr)
-		shader->AsSRV("BaseMap")->SetResource(baseMap->SRV());
+		sBaseMap->SetResource(baseMap->SRV());
 
-	Super::Render();
+	material->Render();
 	
 	shader->DrawIndexed(0, Pass(), indexCount);
+
+	VisibleNormal();
 }
 
 void Terrain::BaseMap(wstring path)
@@ -162,14 +174,72 @@ Vector3 Terrain::GetMousePosition()
 	return Vector3(-1, -1, -1);
 }
 
-void Terrain::CreateVertexData()
+void Terrain::ReadHeightData()
 {
+	wstring ext = Path::GetExtension(imageFile);
+
+	if (ext == L"dds")
+	{
+		Texture* texture = new Texture(imageFile);
+		ID3D11Texture2D* srcTexture = texture->GetTexture();
+
+		D3D11_TEXTURE2D_DESC srcDesc;
+		srcTexture->GetDesc(&srcDesc);
+
+		ID3D11Texture2D* readTexture;
+		D3D11_TEXTURE2D_DESC readDesc;
+		ZeroMemory(&readDesc, sizeof(D3D11_TEXTURE2D_DESC));
+		readDesc.Width = srcDesc.Width;
+		readDesc.Height = srcDesc.Height;
+		readDesc.ArraySize = 1;
+		readDesc.Format = srcDesc.Format;
+		readDesc.MipLevels = 1;
+		readDesc.SampleDesc = srcDesc.SampleDesc;
+		readDesc.Usage = D3D11_USAGE_STAGING;
+		readDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		Check(D3D::GetDevice()->CreateTexture2D(&readDesc, nullptr, &readTexture));
+		D3D::GetDC()->CopyResource(readTexture, srcTexture);
+
+
+		UINT* pixels = new UINT[readDesc.Width * readDesc.Height];
+		D3D11_MAPPED_SUBRESOURCE subResource;
+		D3D::GetDC()->Map(readTexture, 0, D3D11_MAP_READ, 0, &subResource);
+		{
+			memcpy(pixels, subResource.pData, sizeof(UINT) * readDesc.Width * readDesc.Height);
+		}
+		D3D::GetDC()->Unmap(readTexture, 0);
+
+		width = texture->GetWidth();
+		height = texture->GetHeight();
+
+		heights = new float[width * height];
+		for (UINT i = 0; i < width * height; i++)
+		{
+			UINT temp = (pixels[i] & 0xFF000000) >> 24;
+			heights[i] = (float)temp / 255.0f;
+		}
+
+		return;
+	}
+
+
+	Texture* heightMap = new Texture(imageFile);
+
+	vector<Color> pixels;
+	heightMap->ReadPixel(&pixels);
+
 	width = heightMap->GetWidth();
 	height = heightMap->GetHeight();
+
+	heights = new float[width * height];
+	for (UINT i = 0; i < pixels.size(); i++)
+		heights[i] = pixels[i].r;
 	
-	vector<Color> colors;
-	heightMap->ReadPixel(&colors);
-	
+	SafeDelete(heightMap);
+}
+
+void Terrain::CreateVertexData()
+{
 	vertexCount = width * height;
 	vertices = new VertexTerrain[vertexCount];
 
@@ -181,7 +251,7 @@ void Terrain::CreateVertexData()
 			UINT reverse = width * (height - y - 1) + x;
 
 			vertices[index].Position.x = (float)x;
-			vertices[index].Position.y = colors[reverse].r * 255.0f / 10.0f;
+			vertices[index].Position.y = heights[reverse] * 255.0f / 10.0f;
 			vertices[index].Position.z = (float)y;
 
 			vertices[index].Uv.x = x / (float)(width - 1);

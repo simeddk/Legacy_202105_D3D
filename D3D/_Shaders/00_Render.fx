@@ -11,6 +11,10 @@ output.Position = ViewProjection(output.Position); \
 output.wvpPosition = output.Position; \
 output.wvpPosition_Sub = output.Position;\
 \
+output.sPosition = WorldPosition(input.Position); \
+output.sPosition = mul(output.sPosition, Shadow.View); \
+output.sPosition = mul(output.sPosition, Shadow.Projection); \
+\
 output.Normal = WorldNormal(input.Normal); \
 output.Tangent = WorldTangent(input.Tangent); \
 output.Uv = input.Uv; \

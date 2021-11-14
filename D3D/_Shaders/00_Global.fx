@@ -45,6 +45,7 @@ struct MeshOutput
     float3 wPosition : Position2; //World Position
     float4 wvpPosition : Position3; //WVP <- MainCamera
     float4 wvpPosition_Sub : Position4; //WVP <- Fixity(Projection)
+    float4 sPosition : Position5; //WVP <- GlobalLight(Shadow)
 
     float3 Normal : Normal;
     float3 Tangent : Tangent;
@@ -105,6 +106,8 @@ SamplerState LinearSampler
     AddressU = Wrap;
     AddressV = Wrap;
 };
+
+SamplerComparisonState ShadowSampler;
 
 RasterizerState FillMode_WireFrame
 {
