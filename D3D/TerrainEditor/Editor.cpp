@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Editor.h"
+#include "Brush.h"
 
 void Editor::Initialize()
 {
@@ -14,8 +15,16 @@ void Editor::Initialize()
 	shadow = new Shadow(shader, Vector3(128, 0, 128), 65);
 
 	sky = new CubeSky(L"Environment/Mountain1024.dds", shader);
+	brush = new Brush(shader, terrain);
 
 	openFunc = bind(&Editor::OpenComplete, this, placeholders::_1);
+
+	wstring path = L"Terrain/Gray256.dds";
+	terrain = new Terrain(shader, path);
+	terrain->BaseMap(L"Terrain/Dirt3.png");
+	terrain->Layer1(L"Terrain/Dirt.png");
+
+	brush = new Brush(shader, terrain);
 }
 
 void Editor::Destroy()
@@ -24,6 +33,7 @@ void Editor::Destroy()
 	SafeDelete(shadow);
 	SafeDelete(sky);
 	SafeDelete(terrain);
+	SafeDelete(brush);
 }
 
 void Editor::Update()
@@ -64,16 +74,23 @@ void Editor::Update()
 			if (ImGui::Button(String::ToString(dataMapList[i]).c_str(), ImVec2(200, 0)))
 			{
 				SafeDelete(terrain);
+				SafeDelete(brush);
 
 				wstring path = L"Terrain/" + dataMapList[i] + L".dds";
 				terrain = new Terrain(shader, path);
-				terrain->BaseMap(L"Terrain/Dirt3.png");
+				terrain->BaseMap(L"Terrain/Snow.jpg");
+				terrain->Layer1(L"Terrain/Dirt.png");
+
+				brush = new Brush(shader, terrain);
 			}
 		}
 	}
 
 	if (terrain != nullptr)
+	{
 		terrain->Update();
+		brush->Update();
+	}
 
 	
 	sky->Update();
@@ -89,6 +106,8 @@ void Editor::Render()
 	{
 		terrain->Pass(8);
 		terrain->Render();
+
+		brush->Render();
 	}
 }
 

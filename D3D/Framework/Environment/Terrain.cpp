@@ -11,7 +11,7 @@ Terrain::Terrain(Shader * shader, wstring imageFile)
 	CreateIndexData();
 	CreateNormalData();
 	
-	vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(VertexTerrain));
+	vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(VertexTerrain), 0, true);
 	indexBuffer = new IndexBuffer(indices, indexCount);
 
 	material = new Material(shader);
@@ -19,6 +19,8 @@ Terrain::Terrain(Shader * shader, wstring imageFile)
 	material->Specular(1, 1, 1, 200);
 
 	sBaseMap = shader->AsSRV("BaseMap");
+	layer1.sSRV = shader->AsSRV("Layer1AlphaMap");
+	layer1.sMap = shader->AsSRV("Layer1ColorMap");
 }
 
 Terrain::~Terrain()
@@ -44,6 +46,12 @@ void Terrain::Render()
 	if (baseMap != nullptr)
 		sBaseMap->SetResource(baseMap->SRV());
 
+	if (layer1.Data != nullptr)
+	{
+		layer1.sSRV->SetResource(layer1.SRV);
+		layer1.sMap->SetResource(layer1.Map->SRV());
+	}
+
 	material->Render();
 	
 	shader->DrawIndexed(0, Pass(), indexCount);
@@ -55,6 +63,22 @@ void Terrain::BaseMap(wstring path)
 {
 	SafeDelete(baseMap);
 	baseMap = new Texture(path);
+}
+
+void Terrain::Layer1(wstring path)
+{
+	SafeDelete(layer1.Map);
+	layer1.Map = new Texture(path);
+}
+
+void Terrain::UpdateVertexData()
+{
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	D3D::GetDC()->Map(vertexBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, vertices, sizeof(VertexTerrain) * vertexCount);
+	}
+	D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
 }
 
 float Terrain::GetHeight(Vector3 & position)
@@ -218,6 +242,46 @@ void Terrain::ReadHeightData()
 			UINT temp = (pixels[i] & 0xFF000000) >> 24;
 			heights[i] = (float)temp / 255.0f;
 		}
+
+		//R채널 정보 읽어오기
+		layer1.Data = new float[width * height];
+		for (UINT i = 0; i < width * height; i++)
+		{
+			UINT temp = pixels[i] & 0x000000FF;
+			layer1.Data[i] = (float)temp / 255.0f;
+		}
+
+		SafeDelete(texture);
+		SafeRelease(readTexture);
+
+		//읽어온 R채널을 통해 신규 텍스쳐 생성
+		D3D11_TEXTURE2D_DESC layerDesc;
+		ZeroMemory(&layerDesc, sizeof(D3D11_TEXTURE2D_DESC));
+		layerDesc.Width = srcDesc.Width;
+		layerDesc.Height = srcDesc.Height;
+		layerDesc.ArraySize = 1;
+		layerDesc.Format = DXGI_FORMAT_R32_FLOAT;
+		layerDesc.MipLevels = 1;
+		layerDesc.SampleDesc = srcDesc.SampleDesc;
+		layerDesc.Usage = D3D11_USAGE_DYNAMIC;
+		layerDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		layerDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+
+		D3D11_SUBRESOURCE_DATA layerSubresource;
+		layerSubresource.pSysMem = layer1.Data;
+		layerSubresource.SysMemPitch = width * 4;
+		layerSubresource.SysMemSlicePitch = width * 4 * height;
+
+		Check(D3D::GetDevice()->CreateTexture2D(&layerDesc, &layerSubresource, &layer1.Texture2D));
+		//Check(D3DX11SaveTextureToFile(D3D::GetDC(), layer1.Texture2D, D3DX11_IFF_PNG, L"../../Red.png"));
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+		ZeroMemory(&srvDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+		srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = 1;
+		Check(D3D::GetDevice()->CreateShaderResourceView(layer1.Texture2D, &srvDesc, &layer1.SRV));
+
 
 		return;
 	}
