@@ -45,6 +45,15 @@
     <ClCompile Include="ShadowDemo.cpp">
       <Filter>Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="TessTriangleDemo.cpp">
+      <Filter>Tessellation</Filter>
+    </ClCompile>
+    <ClCompile Include="TessRectDemo.cpp">
+      <Filter>Tessellation</Filter>
+    </ClCompile>
+    <ClCompile Include="TessLodDemo.cpp">
+      <Filter>Tessellation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -91,6 +100,15 @@
     <ClInclude Include="ShadowDemo.h">
       <Filter>Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="TessTriangleDemo.h">
+      <Filter>Tessellation</Filter>
+    </ClInclude>
+    <ClInclude Include="TessRectDemo.h">
+      <Filter>Tessellation</Filter>
+    </ClInclude>
+    <ClInclude Include="TessLodDemo.h">
+      <Filter>Tessellation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Objects">
@@ -104,6 +122,9 @@
     </Filter>
     <Filter Include="RenderTarget">
       <UniqueIdentifier>{7492e505-573b-496a-b096-63cbbb07b253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tessellation">
+      <UniqueIdentifier>{94550e27-8a13-4f8c-b989-41d69c37b2d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

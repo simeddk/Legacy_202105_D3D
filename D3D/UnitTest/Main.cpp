@@ -2,7 +2,7 @@
 #include "Main.h"
 #include "Systems/Window.h"
 #include "FrameworkDemo.h"
-#include "ObbDemo.h"
+#include "TessTriangleDemo.h"
 #include "LightingDemo.h"
 #include "AreaLightingDemo.h"
 #include "BillbaordDemo.h"
@@ -15,10 +15,13 @@
 #include "ProjectionTextxureDemo.h"
 #include "DepthDemo.h"
 #include "ShadowDemo.h"
+#include "TessTriangleDemo.h"
+#include "TessRectDemo.h"
+#include "TessLodDemo.h"
 
 void Main::Initialize()
 {
-	Push(new ShadowDemo());
+	Push(new TessLodDemo());
 }
 
 

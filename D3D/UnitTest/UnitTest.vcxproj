@@ -148,6 +148,9 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TessLodDemo.cpp" />
+    <ClCompile Include="TessRectDemo.cpp" />
+    <ClCompile Include="TessTriangleDemo.cpp" />
     <ClCompile Include="WeatherDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +169,9 @@
     <ClInclude Include="RtvDemo.h" />
     <ClInclude Include="ShadowDemo.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TessLodDemo.h" />
+    <ClInclude Include="TessRectDemo.h" />
+    <ClInclude Include="TessTriangleDemo.h" />
     <ClInclude Include="WeatherDemo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
