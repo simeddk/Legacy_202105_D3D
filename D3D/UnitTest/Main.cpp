@@ -18,10 +18,11 @@
 #include "TessTriangleDemo.h"
 #include "TessRectDemo.h"
 #include "TessLodDemo.h"
+#include "TerrainLODDemo.h"
 
 void Main::Initialize()
 {
-	Push(new TessLodDemo());
+	Push(new TerrainLODDemo());
 }
 
 

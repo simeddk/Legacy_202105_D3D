@@ -2,6 +2,8 @@ Texture2D BaseMap;
 Texture2D Layer1AlphaMap;
 Texture2D Layer1ColorMap;
 
+Texture2D HeightMap;
+
 struct VertexTerrain
 {
     float4 Position : Position;

@@ -23,6 +23,7 @@
     <ClCompile Include="Environment\Rain.cpp" />
     <ClCompile Include="Environment\Snow.cpp" />
     <ClCompile Include="Environment\Terrain.cpp" />
+    <ClCompile Include="Environment\TerrainLOD.cpp" />
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
@@ -83,6 +84,7 @@
     <ClInclude Include="Environment\Rain.h" />
     <ClInclude Include="Environment\Snow.h" />
     <ClInclude Include="Environment\Terrain.h" />
+    <ClInclude Include="Environment\TerrainLOD.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Meshes\Mesh.h" />
     <ClInclude Include="Meshes\MeshCube.h" />

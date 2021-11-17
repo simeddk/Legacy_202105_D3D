@@ -148,6 +148,7 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TerrainLODDemo.cpp" />
     <ClCompile Include="TessLodDemo.cpp" />
     <ClCompile Include="TessRectDemo.cpp" />
     <ClCompile Include="TessTriangleDemo.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="RtvDemo.h" />
     <ClInclude Include="ShadowDemo.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TerrainLODDemo.h" />
     <ClInclude Include="TessLodDemo.h" />
     <ClInclude Include="TessRectDemo.h" />
     <ClInclude Include="TessTriangleDemo.h" />
