@@ -42,6 +42,7 @@
     <ClCompile Include="Objects\Billboard.cpp" />
     <ClCompile Include="Objects\Collider.cpp" />
     <ClCompile Include="Objects\DynamicCube.cpp" />
+    <ClCompile Include="Objects\Frustum.cpp" />
     <ClCompile Include="Objects\PostProcess.cpp" />
     <ClCompile Include="Objects\Projector.cpp" />
     <ClCompile Include="Objects\Render2D.cpp" />
@@ -101,6 +102,7 @@
     <ClInclude Include="Objects\Billboard.h" />
     <ClInclude Include="Objects\Collider.h" />
     <ClInclude Include="Objects\DynamicCube.h" />
+    <ClInclude Include="Objects\Frustum.h" />
     <ClInclude Include="Objects\PostProcess.h" />
     <ClInclude Include="Objects\Projector.h" />
     <ClInclude Include="Objects\Render2D.h" />

@@ -168,6 +168,9 @@
     <ClCompile Include="Environment\TerrainLOD.cpp">
       <Filter>Environment</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\Frustum.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -345,6 +348,9 @@
     </ClInclude>
     <ClInclude Include="Environment\TerrainLOD.h">
       <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Frustum.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -132,7 +132,31 @@ DomainOutput DS(CHullOutput input, const OutputPatch<HullOutput, 4> patch, float
 
 float4 PS(DomainOutput input) : SV_Target
 {
-    return BaseMap.Sample(LinearSampler, input.Uv);
+    float2 left =   input.Uv + float2(-TerrainLOD.CellSpacingU, 0.0f);
+    float2 right =  input.Uv + float2(+TerrainLOD.CellSpacingU, 0.0f);
+    float2 top =    input.Uv + float2(0.0f, -TerrainLOD.CellSpacingV);
+    float2 bottom = input.Uv + float2(0.0f, +TerrainLOD.CellSpacingV);
+
+    float leftY = HeightMap.Sample(LinearSampler, left).r * 255.0f / TerrainLOD.HeightScale;
+    float rightY = HeightMap.Sample(LinearSampler, right).r * 255.0f / TerrainLOD.HeightScale;
+    float topY = HeightMap.Sample(LinearSampler, top).r * 255.0f / TerrainLOD.HeightScale;
+    float bottomY = HeightMap.Sample(LinearSampler, bottom).r * 255.0f / TerrainLOD.HeightScale;
+
+    float3 T = normalize(float3(TerrainLOD.CellSpacing * 2.0f, rightY - leftY, 0.0f));
+    float3 B = normalize(float3(0.0f, bottomY - topY, -TerrainLOD.CellSpacing * 2.0f));
+    float3 N = normalize(cross(T, B));
+
+
+    Material.Diffuse = BaseMap.Sample(LinearSampler, input.Uv);
+
+    float3 map = NormalMap.Sample(LinearSampler, input.Uv).rgb;
+    float3 coord = map.rgb * 2.0f - 1.0f;
+    float3x3 TBN = float3x3(T, B, N);
+    
+    coord = mul(coord, TBN);
+    
+    return Material.Diffuse * saturate(dot(coord, -GlobalLight.Direction));
+
 }
 
 technique11 T0
