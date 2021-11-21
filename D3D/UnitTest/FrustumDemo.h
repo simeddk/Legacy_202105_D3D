@@ -12,6 +12,8 @@ public:
 	virtual void PostRender() override {};
 	virtual void ResizeScreen() override {};
 
+private:
+	void CreateMeshData();
 	
 private:
 	Shader* shader;
@@ -25,6 +27,8 @@ private:
 	Shader* gridShader;
 	Material* floor;
 	MeshRender* plane;
+
+	ModelRender* model;
 
 	Fixity* camera;
 	Perspective* perspective;

@@ -14,6 +14,7 @@ public:
 
 	void BaseMap(wstring path);
 	void Layer1(wstring path);
+	void NormalMap(wstring path);
 
 	UINT Width() { return width; }
 	UINT Height() { return height; }

@@ -79,3 +79,97 @@ bool Frustum::CheckPoint(Vector3 & position)
 
 	return true;
 }
+
+bool Frustum::CheckCube(Vector3 & center, Vector3 & size)
+{
+	for (int i = 0; i < 6; i++)
+	{
+		if (D3DXPlaneDotCoord(&planes[i], &Vector3(center.x - size.x, center.y - size.y, center.z - size.z)) >= 0.0f)
+			continue;
+
+		if (D3DXPlaneDotCoord(&planes[i], &Vector3(center.x + size.x, center.y - size.y, center.z - size.z)) >= 0.0f)
+			continue;
+
+		if (D3DXPlaneDotCoord(&planes[i], &Vector3(center.x - size.x, center.y + size.y, center.z - size.z)) >= 0.0f)
+			continue;
+
+		if (D3DXPlaneDotCoord(&planes[i], &Vector3(center.x - size.x, center.y - size.y, center.z + size.z)) >= 0.0f)
+			continue;
+
+		if (D3DXPlaneDotCoord(&planes[i], &Vector3(center.x + size.x, center.y + size.y, center.z - size.z)) >= 0.0f)
+			continue;
+
+		if (D3DXPlaneDotCoord(&planes[i], &Vector3(center.x + size.x, center.y - size.y, center.z + size.z)) >= 0.0f)
+			continue;
+
+		if (D3DXPlaneDotCoord(&planes[i], &Vector3(center.x - size.x, center.y + size.y, center.z + size.z)) >= 0.0f)
+			continue;
+
+		if (D3DXPlaneDotCoord(&planes[i], &Vector3(center.x + size.x, center.y + size.y, center.z + size.z)) >= 0.0f)
+			continue;
+
+		return false;
+	}
+
+	return true;
+}
+
+bool Frustum::CheckRadius(Vector3 & center, float radius)
+{
+	Vector3 check;
+
+	for (int i = 0; i < 6; i++)
+	{
+		check.x = center.x - radius;
+		check.y = center.y - radius;
+		check.z = center.z - radius;
+		if (D3DXPlaneDotCoord(&planes[i], &check) >= 0.0f)
+			continue;
+
+		check.x = center.x + radius;
+		check.y = center.y - radius;
+		check.z = center.z - radius;
+		if (D3DXPlaneDotCoord(&planes[i], &check) >= 0.0f)
+			continue;
+
+		check.x = center.x - radius;
+		check.y = center.y + radius;
+		check.z = center.z - radius;
+		if (D3DXPlaneDotCoord(&planes[i], &check) >= 0.0f)
+			continue;
+
+		check.x = center.x + radius;
+		check.y = center.y + radius;
+		check.z = center.z - radius;
+		if (D3DXPlaneDotCoord(&planes[i], &check) >= 0.0f)
+			continue;
+
+		check.x = center.x - radius;
+		check.y = center.y - radius;
+		check.z = center.z + radius;
+		if (D3DXPlaneDotCoord(&planes[i], &check) >= 0.0f)
+			continue;
+
+		check.x = center.x + radius;
+		check.y = center.y - radius;
+		check.z = center.z + radius;
+		if (D3DXPlaneDotCoord(&planes[i], &check) >= 0.0f)
+			continue;
+
+		check.x = center.x - radius;
+		check.y = center.y + radius;
+		check.z = center.z + radius;
+		if (D3DXPlaneDotCoord(&planes[i], &check) >= 0.0f)
+			continue;
+
+		check.x = center.x + radius;
+		check.y = center.y + radius;
+		check.z = center.z + radius;
+		if (D3DXPlaneDotCoord(&planes[i], &check) >= 0.0f)
+			continue;
+
+		return false;
+	}
+
+	return true;
+}

@@ -46,6 +46,9 @@ void PerFrame::Update()
 
 void PerFrame::Render()
 {
+	memcpy(desc.Culling, Context::Get()->Culling(), sizeof(Plane) * 4);
+	desc.Clipping = Context::Get()->Clipping();
+
 	buffer->Render();
 	sBuffer->SetConstantBuffer(buffer->Buffer());
 

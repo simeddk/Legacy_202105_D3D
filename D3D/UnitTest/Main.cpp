@@ -19,10 +19,11 @@
 #include "TessRectDemo.h"
 #include "TessLodDemo.h"
 #include "TerrainLODDemo.h"
+#include "FrustumDemo.h"
 
 void Main::Initialize()
 {
-	Push(new TerrainLODDemo());
+	Push(new FrustumDemo());
 }
 
 

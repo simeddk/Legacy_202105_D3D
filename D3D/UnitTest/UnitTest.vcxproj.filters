@@ -60,6 +60,9 @@
     <ClCompile Include="FrustumDemo.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="ScatteringDemo.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -120,6 +123,9 @@
     </ClInclude>
     <ClInclude Include="FrustumDemo.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="ScatteringDemo.h">
+      <Filter>Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

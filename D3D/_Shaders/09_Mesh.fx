@@ -1,7 +1,8 @@
 #include "00_Global.fx"
+#include "00_Light.fx"
 
-float3 LightDirection;
-Texture2D DiffuseMap;
+//float3 LightDirection;
+//Texture2D DiffuseMap;
 uint Albedo = 0;
 
 //------------------------------------------------------------------
@@ -43,7 +44,7 @@ VertexOutput VS(VertexInput input)
 float4 PS(VertexOutput input) : SV_Target
 {
     float3 N = normalize(input.Normal);
-    float3 L = LightDirection;
+    float3 L = GlobalLight.Direction;
     float lambert = dot(N, -L);
    
     float4 diffuse = DiffuseMap.Sample(LinearSampler, input.Uv);

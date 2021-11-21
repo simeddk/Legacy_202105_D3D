@@ -24,6 +24,10 @@ public:
 	class Viewport* GetViewport() { return viewport; }
 	class Camera* GetCamera() { return camera; }
 
+	Plane* Culling() { return culling; }
+	Plane& Culling(UINT index) { return culling[index]; }
+
+	Plane& Clipping() { return clipping; }
 	
 
 private:
@@ -35,5 +39,7 @@ private:
 
 	class Camera* camera;
 
-	
+	Plane culling[4];
+	Plane clipping;
+
 };

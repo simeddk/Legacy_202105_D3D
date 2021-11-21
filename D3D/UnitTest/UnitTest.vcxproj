@@ -145,6 +145,7 @@
     <ClCompile Include="PostProcessDemo.cpp" />
     <ClCompile Include="ProjectionTextxureDemo.cpp" />
     <ClCompile Include="RtvDemo.cpp" />
+    <ClCompile Include="ScatteringDemo.cpp" />
     <ClCompile Include="ShadowDemo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -170,6 +171,7 @@
     <ClInclude Include="PostProcessDemo.h" />
     <ClInclude Include="ProjectionTextxureDemo.h" />
     <ClInclude Include="RtvDemo.h" />
+    <ClInclude Include="ScatteringDemo.h" />
     <ClInclude Include="ShadowDemo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TerrainLODDemo.h" />

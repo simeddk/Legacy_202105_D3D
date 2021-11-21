@@ -71,6 +71,11 @@ void Terrain::Layer1(wstring path)
 	layer1.Map = new Texture(path);
 }
 
+void Terrain::NormalMap(wstring path)
+{
+	material->NormalMap(path);
+}
+
 void Terrain::UpdateVertexData()
 {
 	D3D11_MAPPED_SUBRESOURCE subResource;

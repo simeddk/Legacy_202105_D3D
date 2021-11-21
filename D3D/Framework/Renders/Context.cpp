@@ -32,6 +32,9 @@ Context::Context()
 	viewport = new Viewport(desc.Width, desc.Height);
 
 	camera = new Freedom();
+
+	ZeroMemory(culling, sizeof(Plane) * 4);
+	clipping = Plane(0, 0, 0, 0);
 }
 
 Context::~Context()
