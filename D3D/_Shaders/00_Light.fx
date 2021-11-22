@@ -370,7 +370,7 @@ float4 PS_Phong(MeshOutput input)
     ComputeSpotLight(output, input.Normal, input.wPosition);
     AddMaterial(result, output);
     
-    return float4(MaterialToColor(result), 1.0f) + input.Color;
+    return float4(MaterialToColor(result), 1.0f);
 }
 
 //-----------------------------------------------------------------------------

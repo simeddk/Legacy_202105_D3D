@@ -2,13 +2,14 @@
 #include "00_Light.fx"
 #include "00_Render.fx"
 #include "00_Terrain.fx"
+#include "00_Sky.fx"
 
 //-----------------------------------------------------------------------------
 //Mesh, Model, Animation
 //-----------------------------------------------------------------------------
 float4 PS(MeshOutput input) : SV_Target
 {
-    return PS_Phong(input);
+    return PS_Shadow(input.sPosition, PS_Phong(input));
 }
 
 
@@ -25,4 +26,8 @@ technique11 T0
     P_VP(P5, VS_Model, PS)
     P_VP(P6, VS_Animation, PS)
     P_VP(P7, VS_Terrain, PS_Terrain)
+
+    //2Pass - Sky
+    P_VP(P8, VS_Scattering, PS_Scattering)
+    P_DSS_VP(P9, DepthEnable_False, VS_Dome, PS_Dome)
 }

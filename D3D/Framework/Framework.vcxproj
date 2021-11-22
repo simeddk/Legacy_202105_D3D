@@ -20,7 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Environment\CubeSky.cpp" />
+    <ClCompile Include="Environment\Dome.cpp" />
     <ClCompile Include="Environment\Rain.cpp" />
+    <ClCompile Include="Environment\Scattering.cpp" />
+    <ClCompile Include="Environment\Sky.cpp" />
     <ClCompile Include="Environment\Snow.cpp" />
     <ClCompile Include="Environment\Terrain.cpp" />
     <ClCompile Include="Environment\TerrainLOD.cpp" />
@@ -82,7 +85,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Environment\CubeSky.h" />
+    <ClInclude Include="Environment\Dome.h" />
     <ClInclude Include="Environment\Rain.h" />
+    <ClInclude Include="Environment\Scattering.h" />
+    <ClInclude Include="Environment\Sky.h" />
     <ClInclude Include="Environment\Snow.h" />
     <ClInclude Include="Environment\Terrain.h" />
     <ClInclude Include="Environment\TerrainLOD.h" />

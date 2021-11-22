@@ -20,10 +20,11 @@
 #include "TessLodDemo.h"
 #include "TerrainLODDemo.h"
 #include "FrustumDemo.h"
+#include "ScatteringDemo.h"
 
 void Main::Initialize()
 {
-	Push(new FrustumDemo());
+	Push(new ScatteringDemo());
 }
 
 

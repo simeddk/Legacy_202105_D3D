@@ -56,7 +56,7 @@ void Terrain::Render()
 	
 	shader->DrawIndexed(0, Pass(), indexCount);
 
-	VisibleNormal();
+	//VisibleNormal();
 }
 
 void Terrain::BaseMap(wstring path)

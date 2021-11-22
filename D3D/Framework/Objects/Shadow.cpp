@@ -53,6 +53,7 @@ void Shadow::PreRender()
 	Vector3 up = Vector3(0, 1, 0);
 	Vector3 direction = Lighting::Get()->Direction();
 	Vector3 eye = direction * radius * -2.0f;
+	eye += at;
 
 	D3DXMatrixLookAtLH(&desc.View, &eye, &at, &up);
 

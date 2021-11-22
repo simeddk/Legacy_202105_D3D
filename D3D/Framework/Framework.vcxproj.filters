@@ -171,6 +171,15 @@
     <ClCompile Include="Objects\Frustum.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Environment\Sky.cpp">
+      <Filter>Environment\Scattering</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment\Scattering.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment\Dome.cpp">
+      <Filter>Environment\Scattering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -352,6 +361,15 @@
     <ClInclude Include="Objects\Frustum.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Environment\Sky.h">
+      <Filter>Environment\Scattering</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment\Scattering.h">
+      <Filter>Environment\Scattering</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment\Dome.h">
+      <Filter>Environment\Scattering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Renders">
@@ -380,6 +398,9 @@
     </Filter>
     <Filter Include="Particle">
       <UniqueIdentifier>{b926ec9d-3bb4-4d80-8e22-01053aa23b39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment\Scattering">
+      <UniqueIdentifier>{5e0a9a44-718d-4d45-85f6-d40ec7a6b3ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

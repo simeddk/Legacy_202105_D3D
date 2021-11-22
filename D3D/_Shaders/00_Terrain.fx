@@ -129,7 +129,6 @@ MeshOutput VS_Terrain_Projector(VertexTerrain input)
 float4 PS_Terrain(MeshOutput input) : SV_Target
 {
     float4 color = BaseMap.Sample(LinearSampler, input.Uv);
-    //float4 color = float4(0, 0, 0, 1);
 
     float alphaMap = Layer1AlphaMap.Sample(LinearSampler, input.Uv).r;
     float4 colorMap = Layer1ColorMap.Sample(LinearSampler, input.Uv);
@@ -137,8 +136,11 @@ float4 PS_Terrain(MeshOutput input) : SV_Target
     if (alphaMap > 0.0f)
         color = lerp(color, colorMap, alphaMap);
 
-    color += GetBrushColor(input.wPosition);
-    color += GetLineColor(input.wPosition);
+    Material.Diffuse = color;
+    color = PS_Shadow(input.sPosition, PS_Phong(input));
+
+   color += GetBrushColor(input.wPosition);
+   color += GetLineColor(input.wPosition);
 
     return color;
 }

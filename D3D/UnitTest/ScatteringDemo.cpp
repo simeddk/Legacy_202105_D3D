@@ -8,18 +8,14 @@ void ScatteringDemo::Initialize()
 	((Freedom*)Context::Get()->GetCamera())->Speed(50, 2);
 	
 	shader = new Shader(L"41_Scattering.fxo");
-	shadow = new Shadow(shader, Vector3(128, 0, 128), 65);
+	shadow = new Shadow(shader, Vector3(128, 0, 128), 128);
 
-	sky = new CubeSky(L"Environment/Mountain1024.dds", shader);
+	sky = new Sky(shader);
 
 	terrain = new Terrain(shader, L"Terrain/Gray256.png");
 	terrain->BaseMap(L"Terrain/Cliff (Layered Rock).jpg");
 	terrain->NormalMap(L"Terrain/Cliff (Layered Rock)_NormalMap.png");
 
-	render2D = new Render2D();
-	render2D->GetTransform()->Position(200, 120, 0);
-	render2D->GetTransform()->Scale(320, 180, 1);
-	render2D->SRV(shadow->SRV());
 
 	Mesh();
 	Airplane();
@@ -45,7 +41,6 @@ void ScatteringDemo::Destroy()
 	
 	//Mesh
 	SafeDelete(cube);
-	SafeDelete(plane);
 	SafeDelete(cylinder);
 	SafeDelete(sphere);
 
@@ -56,26 +51,21 @@ void ScatteringDemo::Destroy()
 
 	//Shadow
 	SafeDelete(shadow);
-	SafeDelete(render2D);
 }
 
 void ScatteringDemo::Update()
 {
-	ImGui::SliderFloat3("LightDirection", Lighting::Get()->Direction(), -1, 1);
+	//ImGui::SliderFloat3("LightDirection", Lighting::Get()->Direction(), -1, 1);
 	
-	static UINT q = 0;
-	ImGui::InputInt("Quality", (int*)&q);
-	q %= 3;
-	shadow->Quality(q);
-
-	static float bias = 0;
-	ImGui::SliderFloat("Bias", &bias, -0.2f, 0.2f);
-	shadow->Bias(bias);
+	static bool bRealTime = false;
+	static float speed = 1.0f;
+	ImGui::Checkbox("RealTime", &bRealTime);
+	ImGui::SliderFloat("Speed", &speed, 0.5f, 3.0f);
+	sky->RealTime(bRealTime, speed);
 
 	sky->Update();
 
 	cube->Update();
-	plane->Update();
 	cylinder->Update();
 	sphere->Update();
 
@@ -92,7 +82,6 @@ void ScatteringDemo::Update()
 	weapon->UpdateTransforms();
 	weapon->Update();
 
-	render2D->Update();
 
 	terrain->Update();
 }
@@ -119,11 +108,13 @@ void ScatteringDemo::PreRender()
 		terrain->Pass(3);
 		terrain->Render();
 	}
+
+	sky->PreRender();
 }
 
 void ScatteringDemo::Render()
 { 
-	sky->Pass(3);
+	sky->Pass(8);
 	sky->Render();
 
 	Pass(4);
@@ -138,13 +129,10 @@ void ScatteringDemo::Render()
 	cube->Render();
 
 	floor->Render();
-	plane->Render();
 
 	airplane->Render();
 	kachujin->Render();
 	weapon->Render();
-	
-	render2D->Render();
 
 	terrain->Pass(7);
 	terrain->Render();
@@ -152,6 +140,7 @@ void ScatteringDemo::Render()
 
 void ScatteringDemo::PostRender()
 {
+	sky->PostRender();
 }
 
 void ScatteringDemo::Mesh()
@@ -192,13 +181,10 @@ void ScatteringDemo::Mesh()
 
 		cube = new MeshRender(shader, new MeshCube());
 		transform = cube->AddTransform();
-		transform->Position(128, 5, 128);
+		transform->Position(128, 0, 128);
 		transform->Scale(20, 10, 20);
 		SetTransform(transform);
 
-		plane = new MeshRender(shader, new MeshPlane(2.5f, 2.5f));
-		transform = plane->AddTransform();
-		transform->Scale(12, 1, 12);
 
 		cylinder = new MeshRender(shader, new MeshCylinder(0.3f, 0.5f, 3.0f, 20, 20));
 		sphere = new MeshRender(shader, new MeshSphere(0.5f, 20, 20));
@@ -229,12 +215,10 @@ void ScatteringDemo::Mesh()
 	}
 
 	cube->UpdateTransforms();
-	plane->UpdateTransforms();
 	cylinder->UpdateTransforms();
 	sphere->UpdateTransforms();
 
 	meshes.push_back(cube);
-	meshes.push_back(plane);
 	meshes.push_back(cylinder);
 	meshes.push_back(sphere);
 }
@@ -248,6 +232,7 @@ void ScatteringDemo::Airplane()
 	Transform* transform = airplane->AddTransform();
 	transform->Scale(0.004f, 0.004f, 0.004f);
 	transform->Position(128 + 2.0f, 9.91f, 128 + 2.0f);
+	SetTransform(transform);
 	airplane->UpdateTransforms();
 
 	models.push_back(airplane);

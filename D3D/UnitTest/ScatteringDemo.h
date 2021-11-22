@@ -27,9 +27,8 @@ private:
 private:
 	Shader* shader;
 	Shadow* shadow;
-	Render2D* render2D;
 
-	CubeSky* sky;
+	Sky* sky;
 	Terrain* terrain;
 
 	Material* floor;
