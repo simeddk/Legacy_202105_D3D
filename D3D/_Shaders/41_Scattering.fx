@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 float4 PS(MeshOutput input) : SV_Target
 {
-    return PS_Shadow(input.sPosition, PS_Phong(input));
+    return CalcualteFogColor(PS_Shadow(input.sPosition, PS_Phong(input)), input.wPosition);
 }
 
 
@@ -30,4 +30,5 @@ technique11 T0
     //2Pass - Sky
     P_VP(P8, VS_Scattering, PS_Scattering)
     P_DSS_VP(P9, DepthEnable_False, VS_Dome, PS_Dome)
+    P_DSS_BS_VP(P10, DepthEnable_False, AlphaBlend, VS_Moon, PS_Moon)
 }

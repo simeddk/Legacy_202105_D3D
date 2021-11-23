@@ -57,11 +57,29 @@ void ScatteringDemo::Update()
 {
 	//ImGui::SliderFloat3("LightDirection", Lighting::Get()->Direction(), -1, 1);
 	
-	static bool bRealTime = false;
-	static float speed = 1.0f;
-	ImGui::Checkbox("RealTime", &bRealTime);
-	ImGui::SliderFloat("Speed", &speed, 0.5f, 3.0f);
-	sky->RealTime(bRealTime, speed);
+	//Scattering Test
+	{
+		static bool bRealTime = false;
+		static float speed = 1.0f;
+		ImGui::Checkbox("RealTime", &bRealTime);
+		ImGui::SliderFloat("Speed", &speed, 0.5f, 3.0f);
+		sky->RealTime(bRealTime, speed);
+	}
+
+	//Fog Test
+	{
+		ImGui::Separator();
+		static UINT type = Lighting::Get()->FogType();
+		ImGui::InputInt("Fog Type", (int*)&type);
+		type %= 3;
+		Lighting::Get()->FogType() = type;
+
+		ImGui::ColorEdit3("Fog Color", Lighting::Get()->FogColor());
+		ImGui::SliderFloat2("Fog Distance", Lighting::Get()->FogDistance(), 1, 200);
+		ImGui::SliderFloat("Fog Density", &Lighting::Get()->FogDensity(), 0, 5);
+		ImGui::Separator();
+	}
+
 
 	sky->Update();
 

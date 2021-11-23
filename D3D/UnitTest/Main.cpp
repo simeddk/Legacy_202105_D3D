@@ -21,10 +21,11 @@
 #include "TerrainLODDemo.h"
 #include "FrustumDemo.h"
 #include "ScatteringDemo.h"
+#include "RefractionDemo.h"
 
 void Main::Initialize()
 {
-	Push(new ScatteringDemo());
+	Push(new RefractionDemo());
 }
 
 

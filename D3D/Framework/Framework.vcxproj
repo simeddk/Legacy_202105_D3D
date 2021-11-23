@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Environment\CubeSky.cpp" />
     <ClCompile Include="Environment\Dome.cpp" />
+    <ClCompile Include="Environment\Moon.cpp" />
     <ClCompile Include="Environment\Rain.cpp" />
     <ClCompile Include="Environment\Scattering.cpp" />
     <ClCompile Include="Environment\Sky.cpp" />
@@ -48,6 +49,8 @@
     <ClCompile Include="Objects\Frustum.cpp" />
     <ClCompile Include="Objects\PostProcess.cpp" />
     <ClCompile Include="Objects\Projector.cpp" />
+    <ClCompile Include="Objects\Reflection.cpp" />
+    <ClCompile Include="Objects\Refraction.cpp" />
     <ClCompile Include="Objects\Render2D.cpp" />
     <ClCompile Include="Objects\Shadow.cpp" />
     <ClCompile Include="Particle\Particle.cpp" />
@@ -86,6 +89,7 @@
   <ItemGroup>
     <ClInclude Include="Environment\CubeSky.h" />
     <ClInclude Include="Environment\Dome.h" />
+    <ClInclude Include="Environment\Moon.h" />
     <ClInclude Include="Environment\Rain.h" />
     <ClInclude Include="Environment\Scattering.h" />
     <ClInclude Include="Environment\Sky.h" />
@@ -111,6 +115,8 @@
     <ClInclude Include="Objects\Frustum.h" />
     <ClInclude Include="Objects\PostProcess.h" />
     <ClInclude Include="Objects\Projector.h" />
+    <ClInclude Include="Objects\Reflection.h" />
+    <ClInclude Include="Objects\Refraction.h" />
     <ClInclude Include="Objects\Render2D.h" />
     <ClInclude Include="Objects\Shadow.h" />
     <ClInclude Include="Particle\Particle.h" />

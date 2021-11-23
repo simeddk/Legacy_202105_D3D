@@ -108,7 +108,6 @@ void Particle::Emit(Vector3& position)
 	leadCount = next;
 }
 
-D3D11_DEPTH_STENCIL_DESC;
 
 void Particle::Update()
 {

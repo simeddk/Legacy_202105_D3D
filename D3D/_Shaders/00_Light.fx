@@ -10,6 +10,9 @@ Texture2D ShadowMap;
 TextureCube DynamicCubeMap;
 TextureCube SkyCubeMap;
 
+Texture2D RefractionMap;
+Texture2D ReflectionMap;
+
 //-----------------------------------------------------------------------------
 //GlobalLight
 //-----------------------------------------------------------------------------

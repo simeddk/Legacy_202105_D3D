@@ -63,6 +63,9 @@
     <ClCompile Include="ScatteringDemo.cpp">
       <Filter>Environment</Filter>
     </ClCompile>
+    <ClCompile Include="RefractionDemo.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -125,6 +128,9 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="ScatteringDemo.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="RefractionDemo.h">
       <Filter>Environment</Filter>
     </ClInclude>
   </ItemGroup>

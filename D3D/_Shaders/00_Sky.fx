@@ -263,3 +263,26 @@ float4 PS_Dome(MeshOutput input) : SV_TARGET0
     float starIntensity = GlobalLight.Direction.y;
     return float4(color, 1) + StarMap.Sample(LinearSampler, input.Uv) * saturate(starIntensity);
 }
+
+
+//-----------------------------------------------------------------------------
+//Moon
+//-----------------------------------------------------------------------------
+MeshOutput VS_Moon(VertexInput_Scattering input)
+{
+    MeshOutput output = (MeshOutput) 0;
+
+    VS_SKY_GENERATE
+
+    return output;
+}
+
+Texture2D MoonMap;
+float MoonAlpha;
+float4 PS_Moon(MeshOutput input) : SV_Target0
+{
+    float4 color = MoonMap.Sample(LinearSampler, input.Uv);
+    color.a *= MoonAlpha;
+
+    return color;
+}

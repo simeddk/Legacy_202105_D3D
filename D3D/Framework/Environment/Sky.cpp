@@ -2,6 +2,7 @@
 #include "Sky.h"
 #include "Scattering.h"
 #include "Dome.h"
+#include "Moon.h"
 
 Sky::Sky(Shader * shader, Vector3 position, Vector3 scale)
 	: shader(shader)
@@ -22,6 +23,7 @@ Sky::Sky(Shader * shader, Vector3 position, Vector3 scale)
 	sMieMap = shader->AsSRV("MieMap");
 
 	dome = new Dome(shader, position, scale);
+	moon = new Moon(shader);
 }
 
 Sky::~Sky()
@@ -29,18 +31,21 @@ Sky::~Sky()
 	SafeDelete(dome);
 	SafeDelete(scattering);
 	SafeDelete(scatterBuffer);
+	SafeDelete(moon);
 }
 
 void Sky::Pass(UINT scatteringPass, UINT domePass, UINT moonPass)
 {
 	scattering->Pass(scatteringPass);
 	dome->Pass(domePass);
+	moon->Pass(moonPass);
 }
 
 void Sky::Pass(UINT pass)
 {
 	scattering->Pass(pass++);
 	dome->Pass(pass++);
+	moon->Pass(pass++);
 }
 
 void Sky::Update()
@@ -56,7 +61,7 @@ void Sky::Update()
 
 		float x = sinf(theta) * cosf(phi);
 		float y = cosf(theta);
-		float z = sinf(theta) * sinf(theta);
+		float z = sinf(theta) * sinf(phi);
 
 		Lighting::Get()->Direction() = Vector3(x, y, z);
 	}
@@ -67,11 +72,13 @@ void Sky::Update()
 
 		float x = sinf(theta) * cosf(phi);
 		float y = cosf(theta);
-		float z = sinf(theta) * sinf(theta);
+		float z = sinf(theta) * sinf(phi);
 
 		Lighting::Get()->Direction() = Vector3(x, y, z);
 	}
 
+	dome->Update();
+	moon->Update();
 }
 
 void Sky::PreRender()
@@ -90,6 +97,11 @@ void Sky::Render()
 		sMieMap->SetResource(scattering->MieRTV()->SRV());
 
 		dome->Render();
+	}
+
+	//Moon
+	{
+		moon->Render(theta);
 	}
 }
 

@@ -92,6 +92,53 @@ float3 ViewPosition()
     return ViewInverse._41_42_43;
 }
 
+//-----------------------------------------------------------------------------
+//Fog
+//-----------------------------------------------------------------------------
+cbuffer CB_Fog
+{
+    float4 FogColor;
+    float2 FogDistance;
+    float FogDensity; //Exp, Exp2에서만 사용
+    uint FogType;
+};
+
+float4 LinearFogBlend(float4 color, float3 wPosition)
+{
+    float dist = saturate((distance(wPosition, ViewPosition()) - FogDistance.x) / (FogDistance.y + FogDistance.x));
+
+    return float4(lerp(color.rgb, FogColor.rgb, dist), 1);
+}
+
+float4 ExpFogBlend(float4 color, float3 wPosition)
+{
+    float dist = distance(wPosition, ViewPosition());
+    dist = dist / FogDistance.y * FogDistance.x;
+    
+    float factor = exp(-dist * FogDensity);
+    return float4(lerp(FogColor.rgb, color.rgb, factor), 1);
+}
+
+float4 Exp2FogBlend(float4 color, float3 wPosition)
+{
+    float dist = distance(wPosition, ViewPosition());
+    dist = dist / FogDistance.y * FogDistance.x;
+    
+    float factor = exp(-(dist * FogDensity) * (dist * FogDensity));
+    return float4(lerp(FogColor.rgb, color.rgb, factor), 1);
+}
+
+float4 CalcualteFogColor(float4 color, float3 wPosition)
+{
+    if (FogType == 0)
+        color = LinearFogBlend(color, wPosition);
+    else if (FogType == 1)
+        color = ExpFogBlend(color, wPosition);
+    else if (FogType == 2)
+        color = Exp2FogBlend(color, wPosition);
+    
+    return color;
+}
 
 //-----------------------------------------------------------------------------
 //States
