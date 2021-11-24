@@ -40,7 +40,7 @@ void Refraction::PreRender()
 
 	Vector3 position;
 	transform->Position(&position);
-	Plane plane = Plane(0, -1, 0, position.y);
+	Plane plane = Plane(0, -1, 0, position.y + 0.5f);
 	Context::Get()->Clipping() = plane;
 
 }

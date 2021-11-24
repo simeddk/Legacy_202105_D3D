@@ -189,6 +189,9 @@
     <ClCompile Include="Objects\Reflection.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Environment\Water.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
@@ -387,6 +390,9 @@
     </ClInclude>
     <ClInclude Include="Objects\Reflection.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment\Water.h">
+      <Filter>Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

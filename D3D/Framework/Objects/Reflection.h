@@ -3,7 +3,7 @@
 class Reflection
 {
 public:
-	Reflection(Shader* shader, Transform* transform, wstring normalFile, float width = 0, float height = 0);
+	Reflection(Shader* shader, Transform* transform, float width = 0, float height = 0);
 	~Reflection();
 
 	void Update();

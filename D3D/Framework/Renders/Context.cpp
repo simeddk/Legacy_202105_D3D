@@ -58,6 +58,7 @@ void Context::Update()
 void Context::Render()
 {
 	viewport->RSSetViewport();
+	Context::Get()->Clipping() = Plane(0, 0, 0, 0);
 
 	//FPS
 	string str = string("FPS : ") + to_string(ImGui::GetIO().Framerate);

@@ -66,6 +66,12 @@
     <ClCompile Include="RefractionDemo.cpp">
       <Filter>Environment</Filter>
     </ClCompile>
+    <ClCompile Include="ReflectionDemo.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterDemo.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -131,6 +137,12 @@
       <Filter>Environment</Filter>
     </ClInclude>
     <ClInclude Include="RefractionDemo.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="ReflectionDemo.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterDemo.h">
       <Filter>Environment</Filter>
     </ClInclude>
   </ItemGroup>

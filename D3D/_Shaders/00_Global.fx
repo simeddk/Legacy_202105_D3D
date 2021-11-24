@@ -19,6 +19,11 @@ cbuffer CB_World
     matrix World;
 };
 
+cbuffer CB_Reflection
+{
+    matrix ReflectionView;
+};
+
 struct ShadowDesc
 {
     matrix View;

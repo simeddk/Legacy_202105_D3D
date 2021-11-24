@@ -22,10 +22,11 @@
 #include "FrustumDemo.h"
 #include "ScatteringDemo.h"
 #include "RefractionDemo.h"
+#include "ReflectionDemo.h"
 
 void Main::Initialize()
 {
-	Push(new RefractionDemo());
+	Push(new ReflectionDemo());
 }
 
 

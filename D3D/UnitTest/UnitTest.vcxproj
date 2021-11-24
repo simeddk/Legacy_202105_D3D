@@ -144,6 +144,7 @@
     <ClCompile Include="ObbDemo.cpp" />
     <ClCompile Include="PostProcessDemo.cpp" />
     <ClCompile Include="ProjectionTextxureDemo.cpp" />
+    <ClCompile Include="ReflectionDemo.cpp" />
     <ClCompile Include="RefractionDemo.cpp" />
     <ClCompile Include="RtvDemo.cpp" />
     <ClCompile Include="ScatteringDemo.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="TessLodDemo.cpp" />
     <ClCompile Include="TessRectDemo.cpp" />
     <ClCompile Include="TessTriangleDemo.cpp" />
+    <ClCompile Include="WaterDemo.cpp" />
     <ClCompile Include="WeatherDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +173,7 @@
     <ClInclude Include="ObbDemo.h" />
     <ClInclude Include="PostProcessDemo.h" />
     <ClInclude Include="ProjectionTextxureDemo.h" />
+    <ClInclude Include="ReflectionDemo.h" />
     <ClInclude Include="RefractionDemo.h" />
     <ClInclude Include="RtvDemo.h" />
     <ClInclude Include="ScatteringDemo.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="TessLodDemo.h" />
     <ClInclude Include="TessRectDemo.h" />
     <ClInclude Include="TessTriangleDemo.h" />
+    <ClInclude Include="WaterDemo.h" />
     <ClInclude Include="WeatherDemo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -39,6 +39,26 @@ output.Culling.w = dot(float4(output.wPosition, 1), Culling[3]); \
 output.Clipping = float4(0, 0, 0, 0); \
 output.Clipping.x = dot(float4(output.wPosition, 1), Clipping);
 
+///////////////////////////////////////////////////////////////////////////////
+#define VS_SKY_REFLECTION_GENERATE \
+output.Position = WorldPosition(input.Position); \
+output.wPosition = output.Position.xyz; \
+\
+output.Position = mul(output.Position, ReflectionView); \
+output.Position = mul(output.Position, Projection); \
+output.wvpPosition = output.Position; \
+output.wvpPosition_Sub = output.Position;\
+\
+output.Uv = input.Uv;\
+\
+output.Culling.x = dot(float4(output.wPosition, 1), Culling[0]); \
+output.Culling.y = dot(float4(output.wPosition, 1), Culling[1]); \
+output.Culling.z = dot(float4(output.wPosition, 1), Culling[2]); \
+output.Culling.w = dot(float4(output.wPosition, 1), Culling[3]); \
+\
+output.Clipping = float4(0, 0, 0, 0); \
+output.Clipping.x = dot(float4(output.wPosition, 1), Clipping);
+
 
 //-----------------------------------------------------------------------------
 // Scattering
@@ -218,6 +238,17 @@ MeshOutput VS_Dome(VertexInput_Scattering input)
     return output;
 }
 
+MeshOutput VS_Dome_Reflection(VertexInput_Scattering input)
+{
+    MeshOutput output = (MeshOutput) 0;
+    
+    output.oPosition = -input.Position.xyz;
+    
+    VS_SKY_REFLECTION_GENERATE
+    
+    return output;
+}
+
 float GetRayleighPhase(float c)
 {
     return 0.75f * (1.0f + c);
@@ -273,6 +304,15 @@ MeshOutput VS_Moon(VertexInput_Scattering input)
     MeshOutput output = (MeshOutput) 0;
 
     VS_SKY_GENERATE
+
+    return output;
+}
+
+MeshOutput VS_Moon_Reflection(VertexInput_Scattering input)
+{
+    MeshOutput output = (MeshOutput) 0;
+
+    VS_SKY_REFLECTION_GENERATE
 
     return output;
 }

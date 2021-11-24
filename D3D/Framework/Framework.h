@@ -114,6 +114,7 @@ typedef D3DXPLANE Plane;
 #include "Environment/Snow.h"
 #include "Environment/TerrainLOD.h"
 #include "Environment/Sky.h"
+#include "Environment/Water.h"
 
 #include "Objects/Render2D.h"
 #include "Objects/Collider.h"
@@ -124,6 +125,7 @@ typedef D3DXPLANE Plane;
 #include "Objects/Shadow.h"
 #include "Objects/Frustum.h"
 #include "Objects/Refraction.h"
+#include "Objects/Reflection.h"
 
 #include "Particle/ParticleData.h"
 #include "Particle/Particle.h"
