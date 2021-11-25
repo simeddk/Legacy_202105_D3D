@@ -29,7 +29,7 @@ void WaterDemo::Initialize()
 	(
 		Water::InitializeDesc{shader, 128, L"Terrain/Gray256.png", 0, 0 }
 	);
-	water->GetTransform()->Position(128, 5, 128);
+	water->GetTransform()->Position(128, 10, 128);
 
 }
 
@@ -89,6 +89,31 @@ void WaterDemo::Update()
 		ImGui::Separator();
 	}
 
+	//NormalMap Test
+	{
+		static UINT item = 2;
+		const WCHAR* waveFiles[] =
+		{
+			L"Environment/Wave.dds",
+			L"Environment/Wave1.dds",
+			L"Environment/Wave2.dds",
+			L"Environment/Wave3.jpg"
+		};
+		ImGui::RadioButton("Wave", (int*)&item, 0); ImGui::SameLine();
+		ImGui::RadioButton("Wave1", (int*)&item, 1); ImGui::SameLine();
+		ImGui::RadioButton("Wave2", (int*)&item, 2); ImGui::SameLine();
+		ImGui::RadioButton("Wave3", (int*)&item, 3);
+		water->NormalMap(waveFiles[item]);
+	}
+	//WaterMap
+	{
+		if (ImGui::Button("WaterMap"))
+		{
+			wstring filePath = L"../../_Textures/Environment/";
+			Path::OpenFileDialog(L"", Path::ImageFilter, filePath, water->OnButtonPressed_WaterMap);
+		}
+	}
+
 	
 	sky->Update();
 
@@ -139,33 +164,6 @@ void WaterDemo::PreRender()
 	//Refraction
 	water->PreRender_Refraction();
 	{
-		sky->Pass(15);
-		sky->Render();
-
-		Pass(11);
-
-		wall->Render();
-		sphere->Render();
-
-		brick->Render();
-		cylinder->Render();
-
-		stone->Render();
-		cube->Render();
-
-		floor->Render();
-
-		airplane->Render();
-		kachujin->Render();
-		weapon->Render();
-
-		terrain->Pass(14);
-		terrain->Render();
-	}
-
-	//Reflection
-	water->PreRender_Reflection();
-	{
 		sky->Pass(8);
 		sky->Render();
 
@@ -187,6 +185,33 @@ void WaterDemo::PreRender()
 		weapon->Render();
 
 		terrain->Pass(7);
+		terrain->Render();
+	}
+
+	//Reflection
+	water->PreRender_Reflection();
+	{
+		sky->Pass(15);
+		sky->Render();
+
+		Pass(11);
+
+		wall->Render();
+		sphere->Render();
+
+		brick->Render();
+		cylinder->Render();
+
+		stone->Render();
+		cube->Render();
+
+		floor->Render();
+
+		airplane->Render();
+		kachujin->Render();
+		weapon->Render();
+
+		terrain->Pass(14);
 		terrain->Render();
 	}
 

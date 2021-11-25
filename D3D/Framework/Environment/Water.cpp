@@ -37,18 +37,18 @@ Water::Water(InitializeDesc & initDesc)
 	sWaterMap = shader->AsSRV("WaterMap");
 
 	OnButtonPressed_WaterMap = bind(&Water::WaterMap, this, placeholders::_1);
+
+	reflection = new Reflection(shader, transform, this->initDesc.Width, this->initDesc.Height);
+	refraction = new Refraction(shader, transform, L"Environment/Wave2.dds", this->initDesc.Width, this->initDesc.Height);
 }
 
 Water::~Water()
 {
 	SafeDelete(buffer);
-
-	SafeDelete(refraction);
 	SafeDelete(reflection);
-
+	SafeDelete(refraction);
 	SafeDelete(heightMap);
 	SafeDelete(waterMap);
-
 }
 
 void Water::Update()
@@ -61,14 +61,14 @@ void Water::Update()
 	reflection->Update();
 }
 
-void Water::PreRender_Refraction()
-{
-	refraction->PreRender();
-}
-
 void Water::PreRender_Reflection()
 {
 	reflection->PreRender();
+}
+
+void Water::PreRender_Refraction()
+{
+	refraction->PreRender();
 }
 
 void Water::Render()
@@ -81,13 +81,12 @@ void Water::Render()
 	desc.TerrainWidth = (float)heightMap->GetWidth();
 	desc.TerrainHeight = (float)heightMap->GetHeight();
 
-	Vector3 scale;
+	Vector3 scale, position;
 	GetTransform()->Scale(&scale);
 
-	desc.WaterWidth = scale.x * initDesc.Radius * 2;
-	desc.WaterHeight = scale.y * initDesc.Radius * 2;
+	desc.WaterWidth = scale.x * initDesc.Radius * 2.0f;
+	desc.WaterHeight = scale.y * initDesc.Radius * 2.0f;
 
-	Vector3 position;
 	GetTransform()->Position(&position);
 
 	desc.WaterPositionY = position.y;

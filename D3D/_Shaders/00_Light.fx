@@ -12,6 +12,7 @@ TextureCube SkyCubeMap;
 
 Texture2D RefractionMap;
 Texture2D ReflectionMap;
+Texture2D WaterMap;
 
 //-----------------------------------------------------------------------------
 //GlobalLight

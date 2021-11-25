@@ -23,10 +23,11 @@
 #include "ScatteringDemo.h"
 #include "RefractionDemo.h"
 #include "ReflectionDemo.h"
+#include "WaterDemo.h"
 
 void Main::Initialize()
 {
-	Push(new ReflectionDemo());
+	Push(new WaterDemo());
 }
 
 

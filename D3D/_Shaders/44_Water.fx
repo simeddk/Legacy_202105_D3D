@@ -41,7 +41,7 @@ cbuffer CB_Water
 
 struct VertexInput_Water
 {
-    float4 Position : Positoin;
+    float4 Position : Position;
     float2 Uv : Uv;
 };
 
@@ -84,10 +84,67 @@ VertexOutput_Water VS_Water(VertexInput_Water input)
 
 float4 PS_Water(VertexOutput_Water input) : SV_Target
 {
+    //return float4(1, 0, 0, 1);
+
     input.Normal1.y += Water.WaveTranlation;
     input.Normal2.x += Water.WaveTranlation;
 
-    //TODO
+    float4 normalMap = NormalMap.Sample(LinearSampler, input.Normal1) * 2.0f - 1.0f;
+    float4 normalMap2 = NormalMap.Sample(LinearSampler, input.Normal2) * 2.0f - 1.0f;
+    float3 normal = normalMap.rgb + normalMap2.rgb;
+
+    //Reflection
+    float2 reflection = 0;
+    reflection.x = input.ReflectionPosition.x / input.ReflectionPosition.w * 0.5f + 0.5f;
+    reflection.y = -input.ReflectionPosition.y / input.ReflectionPosition.w * 0.5f + 0.5f;
+    float4 reflectionColor = ReflectionMap.Sample(LinearSampler, reflection);
+    //return float4(reflectionColor);
+
+    //Refraction
+    float2 refraction = 0;
+    refraction.x = input.RefractionPosition.x / input.RefractionPosition.w * 0.5f + 0.5f;
+    refraction.y = -input.RefractionPosition.y / input.RefractionPosition.w * 0.5f + 0.5f;
+    refraction += normal.xy * Water.WaveScale;
+    float4 refractionColor = RefractionMap.Sample(LinearSampler, refraction);
+    //return refractionColor;
+
+    //Specualr
+    float3 light = GlobalLight.Direction;
+    light.yz *= -1.0f;
+    float3 E = normalize(ViewPosition() - input.wPosition);
+    float3 R = normalize(reflect(light, normal));
+    float specular = saturate(dot(R, E));
+    float4 diffuse = 0;
+    [flatten]
+    if (specular > 0.0f)
+    {
+        specular = pow(specular, Water.WaterShiness);
+        diffuse = saturate(diffuse + specular);
+    }
+    //return float4(diffuse.rgb, 1);
+
+    //Fresnel
+    float3 heightView = E.yyy;
+    float r = 0.16667f;
+    float fresnel = saturate(min(1, r + (1 - r) * pow(1 - dot(normal, heightView), 2)));
+    diffuse += lerp(reflectionColor, refractionColor, fresnel);
+    //return float4(diffuse.rgb, 1);
+
+    float x = (Water.TerrainWidth / 2 - Water.WaterWidth / 2) / Water.TerrainWidth; //수면과 지면의 크기 차이 -> 비율화
+    float y = (Water.TerrainHeight / 2 - Water.WaterHeight / 2) / Water.TerrainHeight;
+    
+    float u = input.Uv.x / Water.TerrainWidth * Water.WaterWidth; //전체 분에 1
+    float v = input.Uv.y / Water.TerrainHeight * Water.WaterHeight;
+    float2 uv = float2(x, y) + float2(u, v);
+    
+    float height = HeightMap.Sample(LinearSampler, uv /*float2(u, v)*/).r * 255.0f / 10.0f;
+    height = saturate(Water.WaterPositionY * height / Water.WaterPositionY); //수면과 지면의 떨어진 정도
+    
+    float4 waterColor = WaterMap.Sample(LinearSampler, input.Uv * 0.2f /*reflection*/) * 2.0f; //워터맵이 너무 통짜네
+    diffuse += (waterColor * height * 0.5f); //너무 밝군
+    
+    return float4(diffuse.rgb, 1 - (height * 0.75f));
+
 }
 
 technique11 T0
@@ -121,5 +178,5 @@ technique11 T0
     P_DSS_BS_VP(P17, DepthEnable_False, AlphaBlend, VS_Moon_Reflection, PS_Moon)
 
     //2Pass - Reflection Surface
-    P_BS_VP(P18, AlphaBlend, VS_Reflection, PS_Reflection)
+    P_BS_VP(P18, AlphaBlend, VS_Water, PS_Water)
 }
